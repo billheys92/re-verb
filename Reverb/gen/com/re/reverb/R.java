@@ -1097,7 +1097,6 @@ containing a value of this type.
         public static final int beginning=0x7f050011;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
-        public static final int container=0x7f05003c;
         public static final int default_activity_button=0x7f050028;
         public static final int dialog=0x7f05000e;
         public static final int disableHome=0x7f050008;
@@ -1118,6 +1117,7 @@ containing a value of this type.
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
+        public static final int pager=0x7f05003c;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
@@ -1195,8 +1195,10 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030016;
         public static final int abc_simple_decor=0x7f030017;
         public static final int activity_main=0x7f030018;
-        public static final int fragment_main=0x7f030019;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001a;
+        public static final int fragment_find_regions=0x7f030019;
+        public static final int fragment_main=0x7f03001a;
+        public static final int fragment_user_profile=0x7f03001b;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001c;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
@@ -1246,6 +1248,8 @@ containing a value of this type.
         public static final int app_name=0x7f0a000d;
         public static final int button_send=0x7f0a000f;
         public static final int edit_message=0x7f0a000e;
+        public static final int edit_search_regions_message=0x7f0a0013;
+        public static final int edit_username_message=0x7f0a0012;
         public static final int title_activity_main=0x7f0a0011;
     }
     public static final class style {

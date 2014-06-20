@@ -5,4 +5,8 @@
     <string name="button_send">Send</string>
     <string name="action_settings">Cool Settings</string>
     <string name="title_activity_main">MainActivity</string>
+    
+    <string name="edit_username_message">Enter a username</string>
+    <string name="edit_search_regions_message">Search for region</string>
+    
 </resources>
