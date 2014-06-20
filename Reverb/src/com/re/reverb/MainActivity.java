@@ -14,23 +14,12 @@ import android.view.ViewGroup;
 public class MainActivity extends FragmentActivity
 {
 	
-	 // When requested, this adapter returns a DemoObjectFragment,
-    // representing an object in the collection.
-    DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
-    ViewPager mViewPager;
-
+	 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // ViewPager and its adapters use support library
-        // fragments, so use getSupportFragmentManager.
-        mDemoCollectionPagerAdapter =
-                new DemoCollectionPagerAdapter(
-                        getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mDemoCollectionPagerAdapter);
     }
 
 	@Override
