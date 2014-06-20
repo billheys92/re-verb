@@ -252,7 +252,6 @@ int id always 0x7f05000b
 int id beginning 0x7f050011
 int id checkbox 0x7f05002d
 int id collapseActionView 0x7f05000d
-int id container 0x7f05003c
 int id default_activity_button 0x7f050028
 int id dialog 0x7f05000e
 int id disableHome 0x7f050008
@@ -273,6 +272,7 @@ int id middle 0x7f050012
 int id never 0x7f050009
 int id none 0x7f050010
 int id normal 0x7f050000
+int id pager 0x7f05003c
 int id progress_circular 0x7f050018
 int id progress_horizontal 0x7f050019
 int id radio 0x7f05002f
@@ -324,8 +324,10 @@ int layout abc_search_dropdown_item_icons_2line 0x7f030015
 int layout abc_search_view 0x7f030016
 int layout abc_simple_decor 0x7f030017
 int layout activity_main 0x7f030018
-int layout fragment_main 0x7f030019
-int layout support_simple_spinner_dropdown_item 0x7f03001a
+int layout fragment_find_regions 0x7f030019
+int layout fragment_main 0x7f03001a
+int layout fragment_user_profile 0x7f03001b
+int layout support_simple_spinner_dropdown_item 0x7f03001c
 int menu main 0x7f0c0000
 int string abc_action_bar_home_description 0x7f0a0001
 int string abc_action_bar_up_description 0x7f0a0002
@@ -344,6 +346,8 @@ int string action_settings 0x7f0a0010
 int string app_name 0x7f0a000d
 int string button_send 0x7f0a000f
 int string edit_message 0x7f0a000e
+int string edit_search_regions_message 0x7f0a0013
+int string edit_username_message 0x7f0a0012
 int string title_activity_main 0x7f0a0011
 int style AppBaseTheme 0x7f0b008b
 int style AppTheme 0x7f0b008c
