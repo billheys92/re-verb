@@ -1,4 +1,4 @@
-package com.re.reverb.UI;
+package com.re.reverb.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -66,24 +66,5 @@ public class MainActivity extends FragmentActivity
 	    System.out.println("Message Sent");
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment
-	{
-
-		public PlaceholderFragment()
-		{
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState)
-		{
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
-			return rootView;
-		}
-	}
 
 }

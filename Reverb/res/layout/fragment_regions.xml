@@ -2,25 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" 
+	android:id="@+id/fragmentRegions">
 
-    <EditText
-        android:id="@+id/editTextRegions"
-        android:layout_weight="1"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/edit_message" >
+        android:layout_weight="1" >
 
-        <requestFocus />
-    </EditText>
+        <EditText
+            android:id="@+id/editTextRegions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/edit_search_regions_message" >
 
-    <Button
-        android:id="@+id/buttonRegions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_send" 
-        android:onClick="sendMessage"/>
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/buttonRegions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="sendMessage"
+            android:text="@string/button_send" />
+
+    </LinearLayout>
         
 
 </LinearLayout>

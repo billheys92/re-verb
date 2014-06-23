@@ -1,20 +1,19 @@
-package com.re.reverb.UI;
+package com.re.reverb.ui;
+
+import com.re.reverb.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.re.reverb.R;
-
-public class MainFeedFragment extends Fragment
+public class UserProfileFragment extends Fragment
 {
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -26,9 +25,9 @@ public class MainFeedFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
 	{
-		View theView = inflater.inflate(R.layout.fragment_main_feed, container, false);
+		View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 		
-		EditText editText = (EditText) theView.findViewById(R.id.editTextMainFeed);
+		EditText editText = (EditText) view.findViewById(R.id.editTextUserProfile);
 		editText.addTextChangedListener(new TextWatcher(){
 
 			@Override
@@ -55,7 +54,7 @@ public class MainFeedFragment extends Fragment
 			
 		});
 		
-		return theView;
+		return view;
 	}
 
 }
