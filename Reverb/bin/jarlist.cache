@@ -1,5 +1,7 @@
 # cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1401979421000 648327 ded9acc6a9792b8f1afc470f0c9cd36d178914cd /Users/Bill/Software_Projects/workspace/appcompat_v7_3/libs/android-support-v4.jar
-1402677785000 648327 ded9acc6a9792b8f1afc470f0c9cd36d178914cd /Users/Bill/git/GitRepo/Reverb/libs/android-support-v4.jar
+1402684248804 343731 3d62997c154488738d1367406fb7ac6074f992e2 C:\Users\Jake\git\re-verb\Reverb\libs\android-support-v7-appcompat.jar
+1402684248804 343731 3d62997c154488738d1367406fb7ac6074f992e2 C:\Android\adt-bundle-windows-x86_64-20140321\sdk\extras\android\support\v7\appcompat\libs\android-support-v7-appcompat.jar
+1403288308038 648327 ded9acc6a9792b8f1afc470f0c9cd36d178914cd C:\Users\Jake\git\re-verb\Reverb\libs\android-support-v4.jar
+1402684247574 621451 5896b0a4e377ac4242eb2bc785220c1c4fc052f4 C:\Android\adt-bundle-windows-x86_64-20140321\sdk\extras\android\support\v7\appcompat\libs\android-support-v4.jar
