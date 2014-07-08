@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+    <string name="text_str">Test Value</string>
     <string name="app_name">Reverb</string>
-    <string name="edit_main_feed_message">Enter a message homie</string>
+    <string name="edit_main_feed_message">What\'s up?</string>
     <string name="button_send">Send</string>
     <string name="action_settings">Cool Settings</string>
     <string name="title_activity_main">MainActivity</string>

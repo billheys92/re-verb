@@ -1,33 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" 
-	android:id="@+id/fragmentMainFeed">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ExpandableListView
+        android:id="@+id/feedListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".90" >
+    </ExpandableListView>
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_weight=".10"
+        android:gravity="bottom" >
 
         <EditText
-            android:id="@+id/editTextMainFeed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/edit_main_feed_message" >
+        	android:id="@+id/editTextPost"
+        	android:layout_width="0dp"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="1"
+        	android:ems="10"
+        	android:hint="@string/edit_main_feed_message">
 
-            <requestFocus />
-        </EditText>
+        	<requestFocus />
+    	</EditText>
 
         <Button
-            android:id="@+id/buttonMainFeed"
+            android:id="@+id/buttonPost"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="sendMessage"
             android:text="@string/button_send" />
-
+        
     </LinearLayout>
+
+
 
 </LinearLayout>
