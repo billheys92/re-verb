@@ -21,7 +21,7 @@ public class TextPostContent implements PostContent
 			throw new EmptyPostException();
 		}
 		//TODO: create a textbox fragment to return
-		return null;
+		return postText;
 	}
 	
 	public void setPostData(Object o) throws InvalidPostDataTypeException{

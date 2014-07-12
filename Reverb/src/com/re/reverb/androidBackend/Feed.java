@@ -8,6 +8,7 @@ public abstract class Feed
 {
 	
 	protected static final int FEED_SIZE = 10;
+	protected int queuePosition = 0;
 
 	protected Queue<Post> postsQueue;
 	
@@ -17,8 +18,22 @@ public abstract class Feed
 	
 	public Queue<Post> getAllPosts()
 	{
-		refreshPosts();
+		if(this.postsQueue.size() < FEED_SIZE)
+		{
+			refreshPosts();
+		}
 		return postsQueue;
+	}
+	
+	public void setQueuePosition(int position)
+	{
+		this.queuePosition = position;
+		refreshPosts();
+	}
+	
+	public int getQueuePosition(int position)
+	{
+		return this.queuePosition;
 	}
 	
 	public abstract void refreshPosts();
