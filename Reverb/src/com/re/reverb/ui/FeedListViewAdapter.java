@@ -1,35 +1,37 @@
 package com.re.reverb.ui;
 
-import com.re.reverb.R;
-
 import android.app.Activity;
-import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.re.reverb.R;
+import com.re.reverb.androidBackend.Post;
+import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
+
 public class FeedListViewAdapter extends BaseExpandableListAdapter {
 
-	  private final SparseArray<Message> messages;
+	  private final SparseArray<Post> posts;
 	  public LayoutInflater inflater;
 	  public Activity activity;
 
-	  public FeedListViewAdapter(Activity act, SparseArray<Message> messages) {
+	  public FeedListViewAdapter(Activity act, SparseArray<Post> posts) {
 	    activity = act;
-	    this.messages = messages;
+	    this.posts = posts;
 	    inflater = act.getLayoutInflater();
 	  }
 
 	  @Override
 	  public Object getChild(int groupPosition, int childPosition) {
-	    return messages.get(groupPosition).children.get(childPosition);
+		  Post p = posts.get(groupPosition);
+		  String child = p.getPostPropertyAtIndex(childPosition);
+		  return child;
 	  }
 
 	  @Override
@@ -38,8 +40,7 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 	  }
 
 	  @Override
-	  public View getChildView(int groupPosition, final int childPosition,
-	      boolean isLastChild, View convertView, ViewGroup parent) {
+	  public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 	    final String children = (String) getChild(groupPosition, childPosition);
 	    TextView text = null;
 	    if (convertView == null) {
@@ -59,17 +60,17 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 
 	  @Override
 	  public int getChildrenCount(int groupPosition) {
-	    return messages.get(groupPosition).children.size();
+	    return posts.get(groupPosition).getNumProperties();
 	  }
 
 	  @Override
 	  public Object getGroup(int groupPosition) {
-	    return messages.get(groupPosition);
+	    return posts.get(groupPosition);
 	  }
 
 	  @Override
 	  public int getGroupCount() {
-	    return messages.size();
+	    return posts.size();
 	  }
 
 	  @Override
@@ -93,8 +94,16 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 	    if (convertView == null) {
 	      convertView = inflater.inflate(R.layout.listrow_group, null);
 	    }
-	    Message message = (Message) getGroup(groupPosition);
-	    ((CheckedTextView) convertView).setText(message.string);
+	    Post post = (Post) getGroup(groupPosition);
+	    String postData = "Error: Blank text";
+		try
+		{
+			postData = (String)post.getPostContent().getPostData();
+		} catch (EmptyPostException e)
+		{
+			e.printStackTrace();
+		}
+	    ((CheckedTextView) convertView).setText(postData);
 	    ((CheckedTextView) convertView).setChecked(isExpanded);
 	    return convertView;
 	  }
