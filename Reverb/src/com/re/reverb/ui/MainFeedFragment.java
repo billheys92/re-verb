@@ -1,30 +1,35 @@
 package com.re.reverb.ui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.DummyFeed;
+import com.re.reverb.androidBackend.Feed;
+import com.re.reverb.androidBackend.Post;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 
 public class MainFeedFragment extends Fragment
 {
-	SparseArray<Message> messages = new SparseArray<Message>();
+	SparseArray<Post> posts = new SparseArray<Post>();
+	Feed dataFeed = new DummyFeed();
 		
 	public MainFeedFragment(){}
 	
@@ -35,36 +40,64 @@ public class MainFeedFragment extends Fragment
 		
 		ExpandableListView elv = (ExpandableListView) theView.findViewById(R.id.feedListView);
 		
-		/*
-	    String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-	        "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-	        "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-	        "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-	        "Android", "iPhone", "WindowsMobile" };
-
-	    final ArrayList<String> list = new ArrayList<String>();
-	    
-	    for (int i = 0; i < values.length; ++i) {
-	      list.add(values[i]);
-	    }*/
-	    
-		createData();
-	    FeedListViewAdapter adapter = new FeedListViewAdapter(getActivity(), messages);
+		
+		putFeedDataInAdapter();
+	    FeedListViewAdapter adapter = new FeedListViewAdapter(getActivity(), posts);
 		//final StableArrayAdapter adapter = new StableArrayAdapter(getActivity(),
 		//		android.R.layout.simple_list_item_1, list);
 		elv.setAdapter(adapter);
+		elv.setOnScrollListener(new AbsListView.OnScrollListener()
+		{
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+			{
+				if(view.getLastVisiblePosition() == view.getAdapter().getCount()-1)
+				{
+					try
+					{
+						dataFeed.incrementFeed();
+						posts.append(posts.size(), dataFeed.getAllPosts().peek());
+						((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
+						
+					} catch (UnsuccessfulFeedIncrementException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (UnsuccessfulRefreshException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Log.d("Reverb","Scrolled to the bottom");
+				}
+				
+			}
+		});
 		
 		return theView;
 	}
 	
 	
-	  public void createData() {
-		  for (int j = 0; j < 5; j++) {
-			  Message message = new Message("Test " + j);
-			  for (int i = 0; i < 5; i++) {
-				  message.children.add("Sub Item" + i);
-			  }
-			  messages.append(j, message);
+	  public void putFeedDataInAdapter() {
+		  Stack<Post> postList = new Stack<Post>();
+		try
+		{
+			postList = (Stack<Post>) dataFeed.getAllPosts();
+		} catch (UnsuccessfulRefreshException e)
+		{
+			Toast.makeText(getActivity(), R.string.refresh_error_toast_message, Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+		}
+		  for (int j = 0; j < postList.size(); j++) {
+			  posts.append(j, postList.get(j));
 		  }
 	  }
 }
@@ -93,3 +126,4 @@ class StableArrayAdapter extends ArrayAdapter<String> {
     }
 
 }
+

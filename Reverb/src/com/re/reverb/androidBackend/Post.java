@@ -1,6 +1,8 @@
 package com.re.reverb.androidBackend;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Post
@@ -12,6 +14,7 @@ public class Post
 	private Timestamp timeCreated;
 	private Timestamp timeReceivedByServer;
 	private PostContent content;
+	private List<String> postProperties = new ArrayList<String>();	//This is just a placeholder 
 	
 	public Post(UUID userId, PostContent content){
 		this.userId = userId;
@@ -19,6 +22,11 @@ public class Post
 		this.postLacation = new Location();	//only temporary
 		this.timeCreated = new Timestamp(System.currentTimeMillis());
 		this.content = content;
+		
+		for(int i = 0; i < 4; i++)
+		{
+			postProperties.add("Post property "+i);
+		}
 	}
 	
 	public PostContent getPostContent(){
@@ -42,6 +50,16 @@ public class Post
 	public Location getPostLacation()
 	{
 		return postLacation;
+	}
+	
+	public String getPostPropertyAtIndex(int index) throws ArrayIndexOutOfBoundsException
+	{
+		return postProperties.get(index);
+	}
+	
+	public int getNumProperties()
+	{
+		return postProperties.size();
 	}
 	
 	/** 

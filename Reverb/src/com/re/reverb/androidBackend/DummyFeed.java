@@ -2,6 +2,9 @@ package com.re.reverb.androidBackend;
 
 import java.util.UUID;
 
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+
 public class DummyFeed extends Feed
 {
 	int maxIndex = FEED_SIZE + queuePosition;
@@ -9,20 +12,19 @@ public class DummyFeed extends Feed
 	PostFactory postFactory = new SimplePostFactory();
 
 	@Override
-	public void refreshPosts()
+	public void refreshPosts() throws UnsuccessfulRefreshException
 	{
-		numRefreshes++;
-		this.postsQueue.clear();
+		this.posts.clear();
 		for(int i = 0; i < FEED_SIZE; i++){
-			this.postsQueue.add(postFactory.createPost(UUID.randomUUID(),"Post #"+(queuePosition+i)));
+			this.posts.add(postFactory.createPost(UUID.randomUUID(),"Post #"+(queuePosition+i)));
 		}
+		numRefreshes++;
 	}
 
 	@Override
-	public void incrementFeed()
+	public void incrementFeed() throws UnsuccessfulFeedIncrementException
 	{
-		this.postsQueue.add(postFactory.createPost(UUID.randomUUID(), "Post #"+(maxIndex)));
-		this.postsQueue.remove();
+		this.posts.add(postFactory.createPost(UUID.randomUUID(), "Post #"+(maxIndex)));
 		queuePosition++;
 		maxIndex++;
 	}

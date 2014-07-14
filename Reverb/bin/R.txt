@@ -363,6 +363,7 @@ int string button_send 0x7f0a0010
 int string edit_main_feed_message 0x7f0a000f
 int string edit_search_regions_message 0x7f0a0014
 int string edit_username_message 0x7f0a0013
+int string refresh_error_toast_message 0x7f0a0017
 int string swipe_left 0x7f0a0016
 int string swipe_right 0x7f0a0015
 int string text_str 0x7f0a000d

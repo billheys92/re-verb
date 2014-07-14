@@ -13,5 +13,6 @@
     <string name="swipe_right">Swipe Right</string>
     <string name="swipe_left">Swipe Left</string>
     
+    <string name="refresh_error_toast_message">Can\'t refresh posts</string>
     
 </resources>
