@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 
 import com.re.reverb.R;
 
+import feed.FeedExpandListView;
+import feed.MainFeedFragment;
+
 public class MainActivity extends FragmentActivity
 {
 	
@@ -26,7 +29,7 @@ public class MainActivity extends FragmentActivity
         
         Fragment fragment = fragManager.findFragmentById(R.id.fragmentContainer);
         if(fragment == null){
-        	fragment = new MainFeedFragment();
+        	fragment = new FeedExpandListView();
         	fragManager.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
         }
 

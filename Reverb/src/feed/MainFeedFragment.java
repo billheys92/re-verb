@@ -1,4 +1,4 @@
-package com.re.reverb.ui;
+package feed;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +21,7 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.re.reverb.R;
+
 
 public class MainFeedFragment extends Fragment
 {
@@ -49,10 +50,10 @@ public class MainFeedFragment extends Fragment
 	    }*/
 	    
 		createData();
-	    FeedListViewAdapter adapter = new FeedListViewAdapter(getActivity(), messages);
+	    //FeedListViewAdapter adapter = new FeedListViewAdapter(getActivity(), messages);
 		//final StableArrayAdapter adapter = new StableArrayAdapter(getActivity(),
 		//		android.R.layout.simple_list_item_1, list);
-		elv.setAdapter(adapter);
+		//elv.setAdapter(adapter);
 		
 		return theView;
 	}
@@ -62,7 +63,8 @@ public class MainFeedFragment extends Fragment
 		  for (int j = 0; j < 5; j++) {
 			  Message message = new Message("Test " + j);
 			  for (int i = 0; i < 5; i++) {
-				  message.children.add("Sub Item" + i);
+				  MessageReply reply = new MessageReply("Sub Item" + i);
+				  message.addChild(reply);
 			  }
 			  messages.append(j, message);
 		  }

@@ -10,6 +10,9 @@ import android.view.View;
 
 import com.re.reverb.R;
 
+import feed.FeedExpandListView;
+import feed.MainFeedFragment;
+
 public class MainViewPagerActivity extends FragmentActivity
 {
 	
@@ -41,7 +44,7 @@ public class MainViewPagerActivity extends FragmentActivity
     	 public Fragment getItem(int i) {
     	     switch(i){
     	     	case 0: return new UserProfileFragment();
-    	     	case 1: return new MainFeedFragment();
+    	     	case 1: return new FeedExpandListView();
     	     	case 2: return new RegionsFragment();
     	     	default: //TODO throw an error
     	    	 	return null;
