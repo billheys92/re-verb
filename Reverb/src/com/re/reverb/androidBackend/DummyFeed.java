@@ -7,10 +7,12 @@ import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 
 public class DummyFeed extends Feed
 {
+	
+	
 	int maxIndex = FEED_SIZE + queuePosition;
 	private int numRefreshes = 0;
 	PostFactory postFactory = new SimplePostFactory();
-
+	
 	@Override
 	public void refreshPosts() throws UnsuccessfulRefreshException
 	{

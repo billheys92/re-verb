@@ -41,7 +41,7 @@ public class MainViewPagerActivity extends FragmentActivity
     	 public Fragment getItem(int i) {
     	     switch(i){
     	     	case 0: return new UserProfileFragment();
-    	     	case 1: return new MainFeedFragment();
+    	     	case 1: return new FeedFragment();
     	     	case 2: return new RegionsFragment();
     	     	default: //TODO throw an error
     	    	 	return null;

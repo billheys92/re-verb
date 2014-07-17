@@ -1,6 +1,6 @@
 package com.re.reverb.androidBackend;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Stack;
 
 import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
@@ -9,7 +9,7 @@ import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 
 public class TestMain
 {
-	static DummyFeed feed = new DummyFeed();
+	static DummyFeed feed;
 	
 
 	/**
@@ -17,10 +17,11 @@ public class TestMain
 	 */
 	public static void main(String[] args)
 	{
-		Stack<Post> posts = new Stack<Post>();
+		feed = new DummyFeed();
+		ArrayList<Post> posts = new ArrayList<Post>();
 		try
 		{
-			posts = (Stack<Post>) feed.getAllPosts();
+			posts = (ArrayList<Post>) feed.getPosts();
 		} catch (UnsuccessfulRefreshException e1)
 		{
 			// TODO Auto-generated catch block
@@ -55,10 +56,10 @@ public class TestMain
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		Stack<Post> posts = new Stack<Post>();
+		ArrayList<Post> posts = new ArrayList<Post>();
 		try
 		{
-			posts = (Stack<Post>) feed.getAllPosts();
+			posts = (ArrayList<Post>) feed.getPosts();
 		} catch (UnsuccessfulRefreshException e1)
 		{
 			// TODO Auto-generated catch block

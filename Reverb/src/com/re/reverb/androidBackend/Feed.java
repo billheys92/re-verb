@@ -1,5 +1,7 @@
 package com.re.reverb.androidBackend;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
@@ -10,13 +12,14 @@ public abstract class Feed
 	protected static final int FEED_SIZE = 10;
 	protected int queuePosition = 0;
 
-	protected Stack<Post> posts;
+	protected ArrayList<Post> posts;
 	
-	public Feed(){
-		this.posts = new Stack<Post>();
+	public Feed()
+	{
+		this.posts = new ArrayList<Post>();
 	}
 	
-	public Stack<Post> getAllPosts() throws UnsuccessfulRefreshException
+	public ArrayList<Post> getPosts() throws UnsuccessfulRefreshException
 	{
 		if(this.posts.size() == 0)
 		{

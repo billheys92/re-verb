@@ -2,17 +2,14 @@ package com.re.reverb.androidBackend;
 
 import java.util.Deque;
 
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+
 
 public class LocationFeed extends Feed
 {
 	
 	private Location location;
 	
-	public LocationFeed(Location location)
-	{
-		super();
-		this.location = location;
-	}
 
 
 	@Override
