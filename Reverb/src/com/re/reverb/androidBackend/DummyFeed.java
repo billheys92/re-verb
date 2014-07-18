@@ -18,7 +18,7 @@ public class DummyFeed extends Feed
 	{
 		this.posts.clear();
 		for(int i = 0; i < FEED_SIZE; i++){
-			this.posts.add(postFactory.createPost(UUID.randomUUID(),"Post #"+(queuePosition+i)));
+			this.posts.add(postFactory.createPost(UUID.randomUUID(),"Post #"+(queuePosition+i)+" refreshed "+numRefreshes+" times"));
 		}
 		numRefreshes++;
 	}
