@@ -1,8 +1,10 @@
 package com.re.reverb.androidBackend;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.UUID;
+import java.util.Vector;
+
+import android.widget.BaseAdapter;
 
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
@@ -11,6 +13,7 @@ public abstract class Feed
 {
 	protected static final int FEED_SIZE = 10;
 	protected int queuePosition = 0;
+	public BaseAdapter baseAdapter;
 
 	protected ArrayList<Post> posts;
 	
@@ -32,6 +35,18 @@ public abstract class Feed
 	{
 		this.queuePosition = position;
 		refreshPosts();
+	}
+	
+	public void setBaseAdapter(BaseAdapter ba){
+		baseAdapter = ba;
+	}
+	
+	public void handleResponse(Vector<String> messages){
+		for(int i = 0; i < messages.size(); i++){
+        	posts.add( (new SimplePostFactory()).createPost(UUID.randomUUID(),messages.get(i)));
+        }
+        
+        baseAdapter.notifyDataSetChanged();
 	}
 	
 	public abstract void refreshPosts() throws UnsuccessfulRefreshException;

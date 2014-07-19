@@ -17,24 +17,27 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.DummyFeed;
+import com.re.reverb.androidBackend.DummyNetworkFeed;
 import com.re.reverb.androidBackend.Feed;
 import com.re.reverb.androidBackend.Post;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.network.RequestQueueSingleton;
+
 
 public class FeedFragment extends Fragment implements OnRefreshListener
 {
 	SparseArray<Post> posts = new SparseArray<Post>();
-	Feed dataFeed = new DummyFeed();
+	Feed dataFeed = new DummyNetworkFeed();
 	SwipeRefreshLayout swipeRefreshLayout;
 	FeedListViewAdapter adapter;	
-	
+
 	public FeedFragment(){}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+			
 		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
 		swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
 		swipeRefreshLayout.setOnRefreshListener(this);
@@ -44,9 +47,14 @@ public class FeedFragment extends Fragment implements OnRefreshListener
 				R.color.reverb_blue_4);
 		ExpandableListView elv = (ExpandableListView) rootView.findViewById(R.id.feedListView);
 		
+		RequestQueueSingleton.getInstance(getActivity().getApplicationContext());
+		
+		
 	    adapter = new FeedListViewAdapter(getActivity(), dataFeed);
 		elv.setAdapter(adapter);
 		elv.setOnScrollListener(new FeedScrollListener());
+		
+		dataFeed.setBaseAdapter((BaseAdapter)(elv.getAdapter()));
 		
 		return rootView;
 	}
