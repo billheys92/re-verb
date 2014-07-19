@@ -12,21 +12,24 @@ import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
 
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.DummyFeed;
+import com.re.reverb.androidBackend.DummyNetworkFeed;
 import com.re.reverb.androidBackend.Feed;
 import com.re.reverb.androidBackend.Post;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
+import com.re.reverb.network.RequestQueueSingleton;
 
 public class FeedFragment extends Fragment
 {
 	SparseArray<Post> posts = new SparseArray<Post>();
-	Feed dataFeed = new DummyFeed();
+	Feed dataFeed = new DummyNetworkFeed();
 		
 	public FeedFragment(){}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		RequestQueueSingleton.getInstance(getActivity().getApplicationContext());
+		
 		View theView = inflater.inflate(R.layout.fragment_main_feed, container, false);
 		
 		ExpandableListView elv = (ExpandableListView) theView.findViewById(R.id.feedListView);
@@ -34,6 +37,8 @@ public class FeedFragment extends Fragment
 	    FeedListViewAdapter adapter = new FeedListViewAdapter(getActivity(), dataFeed);
 		elv.setAdapter(adapter);
 		elv.setOnScrollListener(new FeedScrollListener());
+		
+		dataFeed.setBaseAdapter((BaseAdapter)(elv.getAdapter()));
 		
 		return theView;
 	}
