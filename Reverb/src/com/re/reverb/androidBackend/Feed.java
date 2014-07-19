@@ -15,7 +15,7 @@ public abstract class Feed
 	protected int queuePosition = 0;
 	public BaseAdapter baseAdapter;
 
-	public ArrayList<Post> posts;
+	protected ArrayList<Post> posts;
 	
 	public Feed()
 	{

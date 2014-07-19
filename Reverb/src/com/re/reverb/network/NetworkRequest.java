@@ -42,7 +42,6 @@ public class NetworkRequest{
 		        //feed.messages.get(0).string = response;
 		        //feed.updatePosts(response);
 		        result = response;
-		        feed.posts.clear();
 		        
 		        Vector<String> postStrings = new Vector<String>();
 		        postStrings.addAll( Arrays.asList(response.split("\n")) );
