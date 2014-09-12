@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulWindowIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 
 public class TestMain
@@ -50,8 +51,8 @@ public class TestMain
 	private static void testIncrement(){
 		try
 		{
-			feed.incrementFeed();
-		} catch (UnsuccessfulFeedIncrementException e2)
+			feed.fetchMore();
+		} catch (UnsuccessfulFetchPostsException e2)
 		{
 			// TODO Auto-generated catch block
 			e2.printStackTrace();

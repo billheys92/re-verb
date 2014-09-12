@@ -1,15 +1,14 @@
 package com.re.reverb.androidBackend;
 
-import java.util.Deque;
-
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulWindowDecrementException;
 
 
 public class LocationFeed extends Feed
 {
 	
 	private Location location;
-	
+	private PostFactory factory = new SimplePostFactory();
 
 
 	@Override
@@ -19,11 +18,19 @@ public class LocationFeed extends Feed
 
 	}
 
+
 	@Override
-	public void incrementFeed()
+	public void fetchMore() throws UnsuccessfulFetchPostsException
 	{
 		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void decrementWindow() throws UnsuccessfulWindowDecrementException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

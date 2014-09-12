@@ -1,16 +1,18 @@
 package com.re.reverb.androidBackend;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
 
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulWindowDecrementException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulWindowIncrementException;
 
 public abstract class Feed
 {
-	protected static final int FEED_SIZE = 10;
-	protected int queuePosition = 0;
+	protected static int INIT_FEED_SIZE = 30;
+	protected int pointer = 0;
+	protected int windowSize = 15;
+	protected int updateIndex = pointer + windowSize;
 
 	protected ArrayList<Post> posts;
 	
@@ -30,11 +32,28 @@ public abstract class Feed
 	
 	public void setQueuePosition(int position) throws UnsuccessfulRefreshException
 	{
-		this.queuePosition = position;
+		this.pointer = position;
 		refreshPosts();
 	}
 	
+	public void incrementWindow() throws UnsuccessfulWindowIncrementException
+	{
+		pointer++;
+		updateIndex++;
+		if(pointer + windowSize >= updateIndex)
+		{
+			try
+			{
+				fetchMore();
+			} catch (UnsuccessfulFetchPostsException e)
+			{
+				throw new UnsuccessfulWindowIncrementException("Failed to fetch more posts");
+			}
+		}
+	}
+	
 	public abstract void refreshPosts() throws UnsuccessfulRefreshException;
-	public abstract void incrementFeed() throws UnsuccessfulFeedIncrementException;
+	public abstract void fetchMore() throws UnsuccessfulFetchPostsException;
+	public abstract void decrementWindow() throws UnsuccessfulWindowDecrementException;
 
 }

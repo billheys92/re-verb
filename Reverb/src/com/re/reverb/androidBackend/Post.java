@@ -14,6 +14,7 @@ public class Post
 	private Timestamp timeCreated;
 	private Timestamp timeReceivedByServer;
 	private PostContent content;
+	private AnonimityState anonState;
 	private List<String> postProperties = new ArrayList<String>();	//This is just a placeholder 
 	
 	public Post(UUID userId, PostContent content){
