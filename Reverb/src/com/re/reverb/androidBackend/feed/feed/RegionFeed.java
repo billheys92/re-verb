@@ -1,6 +1,6 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.feed;
 
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.androidBackend.Region;
 
 public class RegionFeed extends Feed
 {

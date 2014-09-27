@@ -1,4 +1,4 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.feed;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -6,6 +6,8 @@ import java.util.Vector;
 
 import android.widget.BaseAdapter;
 
+import com.re.reverb.androidBackend.SimplePostFactory;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 
@@ -43,7 +45,7 @@ public abstract class Feed
 	
 	public void handleResponse(Vector<String> messages){
 		for(int i = 0; i < messages.size(); i++){
-        	posts.add( (new SimplePostFactory()).createPost(UUID.randomUUID(),messages.get(i)));
+        	posts.add( (new SimplePostFactory()).createPost(1,messages.get(i)));
         }
         
         baseAdapter.notifyDataSetChanged();

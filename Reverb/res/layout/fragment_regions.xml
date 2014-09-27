@@ -10,24 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" >
 
-        <EditText
-            android:id="@+id/editTextRegions"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/edit_search_regions_message" >
-
-            <requestFocus />
-        </EditText>
-
-        <Button
-            android:id="@+id/buttonRegions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="sendMessage"
-            android:text="@string/button_send" />
-
     </LinearLayout>
         
 

@@ -1,8 +1,8 @@
 package com.re.reverb.androidBackend;
 
-public class Region
+public abstract class Region
 {
-
-	//unimplemented class
+    boolean readPermission = true;
+    boolean writePermission = false;
 
 }

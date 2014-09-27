@@ -1,19 +1,14 @@
 package com.re.reverb.network;
 
 import java.util.Arrays;
-import java.util.UUID;
 import java.util.Vector;
 
-import android.app.Activity;
-import android.widget.BaseAdapter;
-
-import com.android.volley.Request;
+/*import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.re.reverb.androidBackend.Feed;
-import com.re.reverb.androidBackend.SimplePostFactory;
+import com.android.volley.toolbox.StringRequest;*/
+import com.re.reverb.androidBackend.feed.Feed;
 
 public class NetworkRequest{
 	
@@ -21,20 +16,20 @@ public class NetworkRequest{
 	public String result;
 	public Feed feed;
 	
-	public NetworkRequest(String url, Feed f){
-		this.url = url;
-		this.feed = f;
-		
-		// Instantiate the RequestQueue.
-		//RequestQueue queue = RequestQueueSingleton.getInstance(parentActivity.getApplicationContext()).getRequestQueue();
-		RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
-		//String url ="http://www.google.com";
-		//url = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymysql.php";
+	public NetworkRequest(String url, Feed f) {
+        this.url = url;
+        this.feed = f;
 
-		// Request a string response from the provided URL.
-		StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-		            new Response.Listener<String>() {
-		    @Override
+        // Instantiate the RequestQueue.
+        //RequestQueue queue = RequestQueueSingleton.getInstance(parentActivity.getApplicationContext()).getRequestQueue();
+        //RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
+        //String url ="http://www.google.com";
+        //url = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymysql.php";
+
+        // Request a string response from the provided URL.
+        //StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        //            new Response.Listener<String>() {
+		/*    @Override
 		    public void onResponse(String response) {
 		   // public void onResponse(String response) {
 		        // Display the response string.
@@ -54,7 +49,8 @@ public class NetworkRequest{
 		    }
 		});
 		// Add the request to the RequestQueue.
-		queue.add(stringRequest);
+		queue.add(stringRequest);*/
+    }
 	}
 	
-}
+//}

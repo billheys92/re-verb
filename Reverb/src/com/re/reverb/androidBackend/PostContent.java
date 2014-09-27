@@ -10,4 +10,6 @@ public interface PostContent
 	
 	public void setPostData(Object o) throws InvalidPostDataTypeException;
 
+    public boolean isEmpty();
+
 }

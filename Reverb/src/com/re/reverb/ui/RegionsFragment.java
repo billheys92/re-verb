@@ -27,7 +27,7 @@ public class RegionsFragment extends Fragment
 	{
 		View view = inflater.inflate(R.layout.fragment_regions, container, false);
 		
-		EditText editText = (EditText) view.findViewById(R.id.editTextRegions);
+		/*EditText editText = (EditText) view.findViewById(R.id.editTextPost);
 		editText.addTextChangedListener(new TextWatcher(){
 
 			@Override
@@ -52,7 +52,7 @@ public class RegionsFragment extends Fragment
 				
 			}
 			
-		});
+		});*/
 		
 		return view;
 	}
