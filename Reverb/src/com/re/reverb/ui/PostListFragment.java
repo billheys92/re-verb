@@ -2,7 +2,6 @@ package com.re.reverb.ui;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -14,9 +13,9 @@ import android.widget.ExpandableListView;
 
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
-import com.re.reverb.androidBackend.feed.DummyNetworkFeed;
-import com.re.reverb.androidBackend.feed.Feed;
-import com.re.reverb.androidBackend.post.Post;
+import com.re.reverb.androidBackend.DummyNetworkFeed;
+import com.re.reverb.androidBackend.Feed;
+import com.re.reverb.androidBackend.Post;
 
 /**
  * Created by Bill on 2014-09-24.

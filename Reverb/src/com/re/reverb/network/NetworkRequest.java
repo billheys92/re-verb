@@ -1,14 +1,16 @@
 package com.re.reverb.network;
 
+import android.util.Log;
+
 import java.util.Arrays;
 import java.util.Vector;
 
-/*import com.android.volley.Request;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;*/
-import com.re.reverb.androidBackend.feed.Feed;
+import com.android.volley.toolbox.StringRequest;
+import com.re.reverb.androidBackend.Feed;
 
 public class NetworkRequest{
 	
@@ -20,16 +22,16 @@ public class NetworkRequest{
         this.url = url;
         this.feed = f;
 
-        // Instantiate the RequestQueue.
+        //Instantiate the RequestQueue.
         //RequestQueue queue = RequestQueueSingleton.getInstance(parentActivity.getApplicationContext()).getRequestQueue();
-        //RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
+        RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
         //String url ="http://www.google.com";
         //url = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymysql.php";
 
-        // Request a string response from the provided URL.
-        //StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-        //            new Response.Listener<String>() {
-		/*    @Override
+        //Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+		    @Override
 		    public void onResponse(String response) {
 		   // public void onResponse(String response) {
 		        // Display the response string.
@@ -49,7 +51,7 @@ public class NetworkRequest{
 		    }
 		});
 		// Add the request to the RequestQueue.
-		queue.add(stringRequest);*/
+		queue.add(stringRequest);
     }
 	}
 	

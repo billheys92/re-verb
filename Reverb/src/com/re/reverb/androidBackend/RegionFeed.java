@@ -1,6 +1,4 @@
-package com.re.reverb.androidBackend.feed;
-
-import com.re.reverb.androidBackend.Region;
+package com.re.reverb.androidBackend;
 
 public class RegionFeed extends Feed
 {

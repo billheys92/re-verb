@@ -2,7 +2,6 @@ package com.re.reverb.androidBackend;
 
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
-import com.re.reverb.androidBackend.feed.Feed;
 
 public class DummyFeed extends Feed
 {

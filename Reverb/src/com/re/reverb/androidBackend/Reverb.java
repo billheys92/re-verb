@@ -1,7 +1,6 @@
 package com.re.reverb.androidBackend;
 
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
-import com.re.reverb.androidBackend.feed.Feed;
 
 public class Reverb {
 

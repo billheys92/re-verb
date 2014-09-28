@@ -1,6 +1,4 @@
-package com.re.reverb.androidBackend.feed;
-
-import com.re.reverb.androidBackend.Location;
+package com.re.reverb.androidBackend;
 
 
 public class LocationFeed extends Feed

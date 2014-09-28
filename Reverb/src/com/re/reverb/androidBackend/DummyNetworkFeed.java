@@ -1,4 +1,4 @@
-package com.re.reverb.androidBackend.feed;
+package com.re.reverb.androidBackend;
 
 import java.util.UUID;
 

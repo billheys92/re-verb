@@ -1,13 +1,10 @@
-package com.re.reverb.androidBackend.feed;
+package com.re.reverb.androidBackend;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.Vector;
 
 import android.widget.BaseAdapter;
 
-import com.re.reverb.androidBackend.SimplePostFactory;
-import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 

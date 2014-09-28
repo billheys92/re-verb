@@ -1,11 +1,5 @@
 package com.re.reverb.androidBackend;
 
-import java.util.UUID;
-
-import com.re.reverb.androidBackend.post.Post;
-
-import com.re.reverb.androidBackend.post.Post;
-
 public class SimplePostFactory implements PostFactory
 {
 
