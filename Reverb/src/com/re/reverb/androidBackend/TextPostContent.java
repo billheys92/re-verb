@@ -20,7 +20,6 @@ public class TextPostContent implements PostContent
 		{
 			throw new EmptyPostException();
 		}
-		//TODO: create a textbox fragment to return
 		return postText;
 	}
 	
@@ -30,5 +29,14 @@ public class TextPostContent implements PostContent
 			throw new InvalidPostDataTypeException(postText.getClass().getName(), o.getClass().getName());
 		}
 	}
+
+    @Override
+    public boolean isEmpty() {
+        if(this.postText == null || this.postText.replaceAll("\\s+","").length() == 0)
+        {
+            return false;
+        }
+        return true;
+    }
 
 }

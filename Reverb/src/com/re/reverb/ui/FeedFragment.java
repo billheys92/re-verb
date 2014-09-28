@@ -1,6 +1,5 @@
 package com.re.reverb.ui;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;

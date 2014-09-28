@@ -1,7 +1,6 @@
 package com.re.reverb.androidBackend;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.Vector;
 
 import android.widget.BaseAdapter;
@@ -43,7 +42,7 @@ public abstract class Feed
 	
 	public void handleResponse(Vector<String> messages){
 		for(int i = 0; i < messages.size(); i++){
-        	posts.add( (new SimplePostFactory()).createPost(UUID.randomUUID(),messages.get(i)));
+        	posts.add( (new SimplePostFactory()).createPost(1,messages.get(i)));
         }
         
         baseAdapter.notifyDataSetChanged();

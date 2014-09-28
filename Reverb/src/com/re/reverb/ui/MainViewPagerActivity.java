@@ -1,5 +1,6 @@
 package com.re.reverb.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.EditText;
 
 import com.re.reverb.R;
 
@@ -55,8 +57,9 @@ public class MainViewPagerActivity extends FragmentActivity
 
     }
 
-    public void sendMessage(View view){
-    	System.out.println("Message Sent");
+    public void startCreatePostActivity(View view){
+        Intent intent = new Intent(this, CreatePostActivity.class);
+        startActivity(intent);
     }
     
     

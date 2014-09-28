@@ -5,7 +5,9 @@
     android:versionName="1.0" >
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="19" />
@@ -23,6 +25,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.re.reverb.ui.CreatePostActivity"
+            android:label="@string/title_activity_create_post"
+            android:parentActivityName="com.re.reverb.ui.MainViewPagerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.re.reverb.ui.MainViewPagerActivity" />
         </activity>
     </application>
 

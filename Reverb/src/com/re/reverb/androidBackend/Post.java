@@ -1,55 +1,56 @@
 package com.re.reverb.androidBackend;
 
+import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.PostContent;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 public class Post
 {
-	
-	private UUID userId;
-	private UUID postId;
-	private Location postLacation;
+
+	private int userId;
+	private int postId = -1;
+	private Location postLocation;
 	private Timestamp timeCreated;
 	private Timestamp timeReceivedByServer;
 	private PostContent content;
-	private List<String> postProperties = new ArrayList<String>();	//This is just a placeholder 
-	
-	public Post(UUID userId, PostContent content){
+	private List<String> postProperties = new ArrayList<String>();
+    private boolean anonymous;
+
+	public Post(int userId){
 		this.userId = userId;
-		this.postId = UUID.randomUUID();
-		this.postLacation = new Location();	//only temporary
-		this.timeCreated = new Timestamp(System.currentTimeMillis());
-		this.content = content;
-		
+        this.anonymous = true;
+
 		for(int i = 0; i < 4; i++)
 		{
 			postProperties.add("Post property "+i);
 		}
 	}
-	
+
 	public PostContent getPostContent(){
 		return content;
 	}
-	
+
 	public void setPostContent(PostContent content){
 		this.content = content;
 	}
 
-	public UUID getUserId()
+	public int getUserId()
 	{
 		return userId;
 	}
 
-	public UUID getPostId()
+	public int getPostId()
 	{
 		return postId;
 	}
 
-	public Location getPostLacation()
+	public Location getPostLocation()
 	{
-		return postLacation;
+		return postLocation;
 	}
 	
 	public String getPostPropertyAtIndex(int index) throws ArrayIndexOutOfBoundsException
@@ -80,7 +81,29 @@ public class Post
 			return timeReceivedByServer;
 		}
 	}
-	
-	
 
+    public boolean isComplete() {
+        if(this.getPostContent() == null || this.getPostContent().isEmpty())
+        {
+            return false;
+        }
+        else if(this.getPostId() == -1)
+        {
+            return false;
+        }
+        else if(this.getPostLocation() == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public Collection<String> getIncompleteFieldList() {
+        Collection<String> fields = new ArrayList<String>();
+        if(this.getPostId() == -1) fields.add("Id");
+        if(this.getPostContent() == null || this.getPostContent().isEmpty()) fields.add("Content");
+        if(this.getPostLocation() == null) fields.add("Location");
+
+        return fields;
+    }
 }
