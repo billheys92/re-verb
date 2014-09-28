@@ -5,11 +5,15 @@ import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +26,18 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class UserProfileFragment extends Fragment
 {
 
+    private static final int SELECT_PHOTO = 100;
+
     UserProfile profile;
     private ImageView backgroundMapImageView;
+    ImageButton profilePic;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -62,11 +70,46 @@ public class UserProfileFragment extends Fragment
         descriptionText.setText(profile.getDescription());
         TextView emailText = (TextView) view.findViewById(R.id.emailTextView);
         emailText.setText(profile.getEmail());
+        profilePic = (ImageButton) view.findViewById(R.id.profilePicture);
+        profilePic.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Log.d("Reverb","profile picture clicked");
+                choosePictureFromGallery();
+            }
+
+        });
         backgroundMapImageView = (ImageView) view.findViewById(R.id.userinfo);
         new SendTask().execute();
 
         return view;
 	}
+
+    private void choosePictureFromGallery() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch(requestCode) {
+            case SELECT_PHOTO:
+                if(resultCode == Activity.RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    profilePic.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                }
+        }
+    }
 
     private class SendTask extends AsyncTask<Bitmap, String, Bitmap> {
 
@@ -77,7 +120,6 @@ public class UserProfileFragment extends Fragment
 
         @Override
         protected Bitmap doInBackground(Bitmap... params) {
-            // TODO Auto-generated method stub
             Bitmap bm = getGoogleMapThumbnail(47.5641001,-52.7015303);
             return bm;
 

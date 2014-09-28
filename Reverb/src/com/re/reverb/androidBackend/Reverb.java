@@ -2,8 +2,6 @@ package com.re.reverb.androidBackend;
 
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.feed.Feed;
-import com.re.reverb.androidBackend.post.LazyPostBuilder;
-
 
 public class Reverb {
 
@@ -15,10 +13,9 @@ public class Reverb {
 
 
     //private UserProfile currentUser;
-    private UserProfile currentUser = new UserProfile("username@domain.com","Name","nickname","default description",0);
+    private UserProfile currentUser = new UserProfile("username@domain.com","Bill Heys","@billheys","re:verb developer",0);
     private Region currentRegion;
     private Feed postFeed;
-    private LazyPostBuilder postBuilder;
     private Settings settings = Settings.getInstance();
 
     public Reverb(){
@@ -28,17 +25,17 @@ public class Reverb {
     public void signInUser(UserProfile user)
     {
         this.currentUser = user;
-        try {
+        /*try {
             this.postBuilder = new LazyPostBuilder(this);
         } catch (NotSignedInException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public boolean submitPost() throws NotSignedInException{
-        if(postBuilder == null){
+        /*if(postBuilder == null){
             throw new NotSignedInException("Submit post");
-        }
+        }*/
 
         return false;
     }

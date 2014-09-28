@@ -13,8 +13,8 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="@dimen/user_profile_header_height"
-            android:scaleType="centerCrop"
-            android:id="@+id/userinfo" />
+            android:id="@+id/userinfo"
+            android:scaleType="centerCrop"/>
 
         <ImageButton
             android:layout_width="@dimen/user_display_pic_side"
@@ -24,7 +24,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="@dimen/user_display_pic_margin"
-            android:layout_marginTop="@dimen/user_display_pic_margin" />
+            android:layout_marginTop="@dimen/user_display_pic_margin"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:layout_width="fill_parent"
@@ -39,6 +40,7 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
+            style="@style/userProfileNameFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -47,7 +49,7 @@
             android:layout_toEndOf="@+id/profilePicture"
             android:layout_alignTop="@+id/profilePicture"
             android:layout_centerHorizontal="true"
-            android:textIsSelectable="true" />
+            android:textIsSelectable="true"/>
 
         <TextView
             android:layout_width="wrap_content"

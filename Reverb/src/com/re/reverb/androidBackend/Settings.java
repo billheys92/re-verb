@@ -13,7 +13,10 @@ public class Settings {
 
     private static Settings ourInstance = new Settings();
 
-    private String mapType = "satellite";
+    private String mapType = "roadmap";
+//    private String mapType = "sattelite";
+//    private String mapType = "hybrid";
+//    private String mapType = "terrain";
 
     public String getMapType() {
         return mapType;
