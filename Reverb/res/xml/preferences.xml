@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceScreen
+        android:key="button_voicemail_category_key"
+        android:title="@string/settings_title_appearances"
+        android:persistent="false">
+        <ListPreference
+            android:key="pref_map_type"
+            android:title="@string/settings_title_map_type"
+            android:dialogTitle="@string/settings_title_map_type"
+            android:entries="@array/map_type_titles_array"
+            android:entryValues="@array/map_type_array"
+            android:defaultValue="@string/settings_map_type_default_value"/>
+
+    </PreferenceScreen>
+</PreferenceScreen>

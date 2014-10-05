@@ -2,6 +2,7 @@ package com.re.reverb.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,9 @@ public class MainViewPagerActivity extends FragmentActivity
         mViewPager = (ViewPager) findViewById(R.id.mainViewPager);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(currentPage);
+
+        //set default preferences
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
     
     public class MainViewPagerAdapter extends FragmentPagerAdapter {
@@ -54,11 +58,16 @@ public class MainViewPagerActivity extends FragmentActivity
     	 public int getCount() {
     	     return NUM_PAGES;
     	 }
-
     }
 
     public void startCreatePostActivity(View view){
         Intent intent = new Intent(this, CreatePostActivity.class);
+        startActivity(intent);
+    }
+
+    public void openSettings(View view)
+    {
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
     

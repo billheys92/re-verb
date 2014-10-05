@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array
+        name="map_type_array">
+        <item>roadmap</item>
+        <item>satellite</item>
+        <item>hybrid</item>
+        <item>terrain</item>
+    </array>
+
+    <array
+        name="map_type_titles_array">
+        <item>Road Map</item>
+        <item>Satellite</item>
+        <item>Hybrid</item>
+        <item>Terrain</item>
+    </array>
+</resources>
