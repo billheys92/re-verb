@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
 
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.DummyNetworkFeed;
 import com.re.reverb.androidBackend.Feed;
@@ -20,7 +21,7 @@ import com.re.reverb.androidBackend.Post;
 /**
  * Created by Bill on 2014-09-24.
  */
-public class PostListFragment extends Fragment {
+public class PostListFragment extends Fragment implements OnFeedDataChangedListener {
 
     SparseArray<Post> posts = new SparseArray<Post>();
     Feed dataFeed = new DummyNetworkFeed();
@@ -36,9 +37,13 @@ public class PostListFragment extends Fragment {
         elv.setAdapter(adapter);
         elv.setOnScrollListener(new FeedScrollListener());
 
-        dataFeed.setBaseAdapter((BaseAdapter)(elv.getAdapter()));
-
+        dataFeed.setOnDataChangedListener(this);
         return rootView;
+    }
+
+    @Override
+    public void onDataChanged() {
+        adapter.notifyDataSetChanged();
     }
 
     private class FeedScrollListener implements AbsListView.OnScrollListener
@@ -57,8 +62,9 @@ public class PostListFragment extends Fragment {
             {
                 try
                 {
-                    dataFeed.incrementFeed();
-                    ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
+                    if(dataFeed.fetchMore()){
+                        ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
+                    }
 
                 } catch (UnsuccessfulFeedIncrementException e)
                 {

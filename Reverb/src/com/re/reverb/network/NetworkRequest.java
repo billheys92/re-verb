@@ -54,5 +54,7 @@ public class NetworkRequest{
 		queue.add(stringRequest);
     }
 	}
+
+
 	
 //}

@@ -15,19 +15,19 @@ public class Post
 	private int postId = -1;
 	private Location postLocation;
 	private Timestamp timeCreated;
-	private Timestamp timeReceivedByServer;
 	private PostContent content;
-	private List<String> postProperties = new ArrayList<String>();
+	private List<String> postProperties = new ArrayList<String>();  //only temporary until we get a better post view otg
     private boolean anonymous;
 
-	public Post(int userId){
-		this.userId = userId;
+	public Post(){
+		this.userId = -1;
         this.anonymous = true;
 
-		for(int i = 0; i < 4; i++)
-		{
-			postProperties.add("Post property "+i);
-		}
+
+		postProperties.add("Anonymous = "+anonymous);
+        postProperties.add("User id = "+userId);
+        postProperties.add("Time created = not implemented yet");
+        postProperties.add("Location = not implemented yet");
 	}
 
 	public PostContent getPostContent(){
@@ -62,48 +62,18 @@ public class Post
 	{
 		return postProperties.size();
 	}
-	
-	/** 
-	 * 
-	 * @return the "best" timestamp. 
-	 * timeReceivedByServer is set with the server's time, whereas
-	 * timeCreated is set by the local system time. In order to
-	 * synchronize across multiple devices, we should use the server time,
-	 * but in case that hasn't been set, this will return the timeCreated.
-	 */
+
 	public Timestamp getTimestamp(){
-		if(timeReceivedByServer == null)
-		{
-			return timeCreated;
-		}
-		else
-		{
-			return timeReceivedByServer;
-		}
+		return timeCreated;
 	}
 
-    public boolean isComplete() {
-        if(this.getPostContent() == null || this.getPostContent().isEmpty())
-        {
-            return false;
-        }
-        else if(this.getPostId() == -1)
-        {
-            return false;
-        }
-        else if(this.getPostLocation() == null)
-        {
-            return false;
-        }
-        return true;
+    public void setUserId(int userId) {
+        this.postProperties.set(1,""+userId);
+        this.userId = userId;
     }
 
-    public Collection<String> getIncompleteFieldList() {
-        Collection<String> fields = new ArrayList<String>();
-        if(this.getPostId() == -1) fields.add("Id");
-        if(this.getPostContent() == null || this.getPostContent().isEmpty()) fields.add("Content");
-        if(this.getPostLocation() == null) fields.add("Location");
-
-        return fields;
+    public void setAnonymous(boolean anonymous) {
+        this.postProperties.set(0,(anonymous ? "true" : "false"));
+        this.anonymous = anonymous;
     }
 }

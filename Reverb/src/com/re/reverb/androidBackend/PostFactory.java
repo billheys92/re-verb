@@ -1,12 +1,23 @@
 package com.re.reverb.androidBackend;
 
-public interface PostFactory
+import com.re.reverb.androidBackend.errorHandling.IncompletePostException;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+
+public class PostFactory
 {
-	
-	public Post createPost(int userId, String text);
-	//public Post createPost(Image image);
-	//public Post createPost(Video video);	
-	//public Post createPost(Audio audio);
+
+    public static Post createPost(String text, boolean anonymous) throws NotSignedInException{
+        TextPostContent content = new TextPostContent(text);
+        Post post = new Post();
+        post.setPostContent(content);
+        UserProfile user = Reverb.getInstance().getCurrentUser();
+        if(user == null) throw new NotSignedInException();
+        post.setUserId(user.getUserId());
+        post.setAnonymous(anonymous);
+
+
+        return post;
+    };
 	
 
 }

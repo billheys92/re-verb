@@ -1,6 +1,7 @@
 package com.re.reverb.androidBackend;
 
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 
 public class Reverb {
 
@@ -16,26 +17,27 @@ public class Reverb {
     private Region currentRegion;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
+    private Post incompletePost;
 
     public Reverb(){
+
         currentRegion = new CommonsRegion();
+
     }
 
     public void signInUser(UserProfile user)
     {
         this.currentUser = user;
-        /*try {
-            this.postBuilder = new LazyPostBuilder(this);
-        } catch (NotSignedInException e) {
-            e.printStackTrace();
-        }*/
     }
 
-    public boolean submitPost() throws NotSignedInException{
-        /*if(postBuilder == null){
-            throw new NotSignedInException("Submit post");
-        }*/
-
+    public boolean submitPost(Post post)
+    {
+        //send post to PersistenceManager
+        try {
+            postFeed.getPosts().add(0,post);
+        } catch (UnsuccessfulRefreshException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
