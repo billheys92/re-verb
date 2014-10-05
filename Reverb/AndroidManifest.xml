@@ -35,6 +35,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.re.reverb.ui.MainViewPagerActivity" />
         </activity>
+        <activity
+            android:name="com.re.reverb.ui.SettingsActivity"
+            android:label="@string/title_settings_activity"
+            android:parentActivityName="com.re.reverb.ui.MainViewPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.re.reverb.ui.MainViewPagerActivity" />
+        </activity>
     </application>
 
 </manifest>

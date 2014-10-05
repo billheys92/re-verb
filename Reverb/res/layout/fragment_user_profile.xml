@@ -85,4 +85,13 @@
 
     </RelativeLayout>
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:id="@+id/settingsButton"
+        android:layout_gravity="right|top"
+        android:onClick="openSettings" />
+
 </FrameLayout>
