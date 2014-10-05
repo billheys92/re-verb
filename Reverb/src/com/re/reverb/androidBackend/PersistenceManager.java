@@ -8,6 +8,7 @@ import java.util.Collection;
 public interface PersistenceManager {
 
     public Collection<Post> getPosts(float latitude, float longitude);
+    public Collection<Post> getPosts();
     public Collection<Post> getPosts(Region region);
     public boolean submitPostToRegion(Post post, Region region);
     public UserProfile getUserProfileFromLogin(String email, String password);

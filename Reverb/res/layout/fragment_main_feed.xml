@@ -25,11 +25,11 @@
 
         <Button
             android:id="@+id/buttonPost"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="@string/button_create_post"
-            android:onClick="startCreatePostActivity"/>
+            android:onClick="startCreatePostActivity"
+            android:background="@color/reverb_blue_1" />
         
     </LinearLayout>
 

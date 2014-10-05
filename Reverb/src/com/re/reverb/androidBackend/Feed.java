@@ -1,10 +1,10 @@
 package com.re.reverb.androidBackend;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
-import android.widget.BaseAdapter;
-
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 
@@ -12,14 +12,8 @@ public abstract class Feed
 {
 	protected static final int FEED_SIZE = 10;
 	protected int queuePosition = 0;
-	public BaseAdapter baseAdapter;
-
-	protected ArrayList<Post> posts;
-	
-	public Feed()
-	{
-		this.posts = new ArrayList<Post>();
-	}
+    private List<OnFeedDataChangedListener> onDataChangedListeners = new ArrayList<OnFeedDataChangedListener>();
+	protected ArrayList<Post> posts = new ArrayList<Post>();;
 	
 	public ArrayList<Post> getPosts() throws UnsuccessfulRefreshException
 	{
@@ -29,26 +23,41 @@ public abstract class Feed
 		}
 		return posts;
 	}
-	
-	public void setQueuePosition(int position) throws UnsuccessfulRefreshException
-	{
-		this.queuePosition = position;
-		refreshPosts();
-	}
-	
-	public void setBaseAdapter(BaseAdapter ba){
-		baseAdapter = ba;
-	}
-	
+
 	public void handleResponse(Vector<String> messages){
 		for(int i = 0; i < messages.size(); i++){
-        	posts.add( (new SimplePostFactory()).createPost(1,messages.get(i)));
+            try {
+                posts.add( (new PostFactory()).createPost(messages.get(i),false));
+            } catch (NotSignedInException e) {
+                e.printStackTrace();
+            }
         }
         
-        baseAdapter.notifyDataSetChanged();
+        notifyListenersOfDataChange();
 	}
-	
+
+    protected void notifyListenersOfDataChange() {
+        for(OnFeedDataChangedListener l : onDataChangedListeners) {
+            l.onDataChanged();
+        }
+    }
+
+    public void setOnDataChangedListener(OnFeedDataChangedListener listener) {
+        this.onDataChangedListeners.add(listener);
+    }
+
+    /**
+     * Clears the post list and re-populates it.
+     * @throws UnsuccessfulRefreshException
+     */
 	public abstract void refreshPosts() throws UnsuccessfulRefreshException;
 	public abstract void incrementFeed() throws UnsuccessfulFeedIncrementException;
+
+    /**
+     *
+     * @return true if more posts were fetched, false if no more were available
+     * @throws UnsuccessfulFeedIncrementException
+     **/
+	public abstract boolean fetchMore() throws UnsuccessfulFeedIncrementException;
 
 }

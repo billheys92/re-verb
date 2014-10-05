@@ -1,57 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    android:orientation="vertical"
+<RelativeLayout
+    android:id="@+id/rootRelativeLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:weightSum="1">
+    android:background="@drawable/background_gradient"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include layout="@layout/edit_post_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/floatingMenu" />
+
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="66dp">
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:stretchColumns="*"
+        android:background="@color/reverb_blue_1"
+        android:id="@+id/floatingMenu"
+        android:visibility="visible">
 
-        <TextView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView2" />
+            android:text="Camera"
+            android:id="@+id/postAttachImageButton"
+            android:onClick="includePhoto"/>
 
-        <TextView
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal" />
+            android:text="Anonymous"
+            android:id="@+id/anonymousCheckbox"
+            android:checked="true"
+            android:onClick="toggleAnonymity"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post"
+            android:id="@+id/postSubmitButton"
+            android:onClick="submitPost" />
 
     </LinearLayout>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.53" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New CheckBox"
-        android:id="@+id/checkBox" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Camera"
-        android:id="@+id/postCameraButton"
-        android:layout_gravity="right"
-        android:onClick="includePhoto" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/postAttachedImage" />
-
-</LinearLayout>
+</RelativeLayout>

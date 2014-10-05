@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/post_padding"
+    android:background="@color/white">
+
+    <ImageView
+        android:layout_width="@dimen/post_display_pic_thumbnail_side"
+        android:layout_height="@dimen/post_display_pic_thumbnail_side"
+        android:id="@+id/editPostProfilePicThumbnail"/>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView2" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Name"
+                android:id="@+id/editPostNameTextView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="handle"
+                android:id="@+id/editPostHandleTextView"
+                android:layout_alignBottom="@+id/editPostNameTextView"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentTop="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_toRightOf="@+id/editPostNameTextView"
+                android:layout_marginLeft="10dp" />
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editPostTextContentView"
+                android:layout_below="@+id/editPostNameTextView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:inputType="textCapSentences|textMultiLine"
+                android:scrollHorizontally="false"
+                android:nextFocusUp="@id/editPostTextContentView"
+                android:nextFocusLeft="@id/editPostTextContentView"
+                android:hint="Edit Post Content" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editPostIncludedImageView"
+                android:layout_below="@+id/editPostTextContentView"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>
