@@ -7,11 +7,13 @@ import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,7 +40,7 @@ public class UserProfileFragment extends Fragment
     UserProfile profile;
     private ImageView backgroundMapImageView;
     ImageButton profilePic;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -127,9 +129,11 @@ public class UserProfileFragment extends Fragment
 
     };
 
-    public static Bitmap getGoogleMapThumbnail(double latitude, double longitude){
+    public Bitmap getGoogleMapThumbnail(double latitude, double longitude){
 
-        String mapType = Reverb.getInstance().getSettings().getMapType();
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String mapType = sharedPrefs.getString("pref_map_type","roadmap");
+        Log.d("Reverb", mapType);
         String URL = "http://maps.google.com/maps/api/staticmap?center=" +latitude + "," + longitude + "&zoom=12&size=600x600&sensor=false&maptype="+mapType;
 
         Bitmap bmp = null;

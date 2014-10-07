@@ -2,7 +2,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:key="button_voicemail_category_key"
         android:title="@string/settings_title_appearances"
         android:persistent="false">
@@ -14,5 +14,5 @@
             android:entryValues="@array/map_type_array"
             android:defaultValue="@string/settings_map_type_default_value"/>
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 </PreferenceScreen>
