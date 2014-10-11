@@ -17,6 +17,8 @@
 
     <string name="title_activity_create_post">Create New Post</string>
 
+    <string name="no_network_toast">Sorry, you must be connected to the internet to use re:verb!</string>
+
 
     <!--Setting strings-->
     <string name="settings_title_appearances">Appearance</string>

@@ -9,4 +9,16 @@
         <!-- API 14 theme customizations can go here. -->
     </style>
 
+    <style name="Theme.CustomActionBar" parent="@style/Theme.AppCompat.Light">
+        <!-- Setting values in the android namespace affects API levels 14+ -->
+        <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+
+    </style>
+
+    <style name="Widget.Styled.ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <!-- Setting values in the android namespace affects API levels 14+ -->
+        <item name="android:background">@color/reverb_blue_1</item>
+
+    </style>
+
 </resources>
