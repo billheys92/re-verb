@@ -70,6 +70,11 @@ public class MainViewPagerActivity extends FragmentActivity
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        mViewPager.setCurrentItem(currentPage);
+    }
     
     
 }
