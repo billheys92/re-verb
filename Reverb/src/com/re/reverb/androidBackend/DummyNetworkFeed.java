@@ -1,13 +1,8 @@
 package com.re.reverb.androidBackend;
 
-import java.util.UUID;
-
-import com.re.reverb.androidBackend.PostFactory;
-import com.re.reverb.androidBackend.errorHandling.IncompletePostException;
-import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
-import com.re.reverb.network.NetworkRequest;
+import com.re.reverb.network.AWSPersistenceManager;
 
 public class DummyNetworkFeed extends Feed
 {
@@ -25,12 +20,8 @@ public class DummyNetworkFeed extends Feed
 //		numRefreshes++;
 
 		this.posts.clear();
-		NetworkRequest nr = new NetworkRequest("http://ec2-54-209-100-107.compute-1.amazonaws.com/querymessagemysql.php", (Feed)this );
-        try {
-            this.posts.add(postFactory.createPost("Loading New Posts!",false));
-        } catch (NotSignedInException e) {
-            e.printStackTrace();
-        }
+		AWSPersistenceManager perMan = new AWSPersistenceManager(this);
+        perMan.getPosts();
 	}
 
 	@Override

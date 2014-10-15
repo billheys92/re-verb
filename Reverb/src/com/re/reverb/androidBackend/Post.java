@@ -1,11 +1,7 @@
 package com.re.reverb.androidBackend;
 
-import com.re.reverb.androidBackend.Location;
-import com.re.reverb.androidBackend.PostContent;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Post
@@ -75,5 +71,9 @@ public class Post
     public void setAnonymous(boolean anonymous) {
         this.postProperties.set(0,(anonymous ? "true" : "false"));
         this.anonymous = anonymous;
+    }
+
+    public boolean getAnonymous(){
+        return anonymous;
     }
 }

@@ -1,7 +1,7 @@
 package com.re.reverb.androidBackend;
 
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.network.AWSPersistenceManager;
 
 public class Reverb {
 
@@ -33,12 +33,15 @@ public class Reverb {
     public boolean submitPost(Post post)
     {
         //send post to PersistenceManager
-        try {
-            postFeed.getPosts().add(0,post);
-        } catch (UnsuccessfulRefreshException e) {
-            e.printStackTrace();
-        }
-        return false;
+        AWSPersistenceManager testPer = new AWSPersistenceManager();
+        return testPer.submitPost(null);
+//This should be commented back in but isn't working yet
+//        try {
+//            postFeed.getPosts().add(0,post);
+//        } catch (UnsuccessfulRefreshException e) {
+//            e.printStackTrace();
+//        }
+        //return false;
     }
 
 
