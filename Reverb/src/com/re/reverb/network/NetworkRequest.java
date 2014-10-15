@@ -1,16 +1,14 @@
 package com.re.reverb.network;
 
-import android.util.Log;
-
-import java.util.Arrays;
-import java.util.Vector;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.re.reverb.androidBackend.Feed;
+
+import java.util.Arrays;
+import java.util.Vector;
 
 public class NetworkRequest{
 	
@@ -21,6 +19,8 @@ public class NetworkRequest{
 	public NetworkRequest(String url, Feed f) {
         this.url = url;
         this.feed = f;
+
+
 
         //Instantiate the RequestQueue.
         //RequestQueue queue = RequestQueueSingleton.getInstance(parentActivity.getApplicationContext()).getRequestQueue();

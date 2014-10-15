@@ -10,13 +10,10 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Post;
 import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.UserProfile;
-import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 
 /**
  * Created by Bill on 2014-09-27.
@@ -59,6 +56,7 @@ public class CreatePostActivity extends Activity {
         fillInAutomaticFields();
         if(validatePost())
         {
+            Reverb.getInstance().submitPost(null);
             postSubmitted = true;
         }
         else{

@@ -10,6 +10,7 @@ public interface PersistenceManager {
     public Collection<Post> getPosts(float latitude, float longitude);
     public Collection<Post> getPosts();
     public Collection<Post> getPosts(Region region);
+    public boolean submitPost(Post post);
     public boolean submitPostToRegion(Post post, Region region);
     public UserProfile getUserProfileFromLogin(String email, String password);
 
