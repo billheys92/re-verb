@@ -34,7 +34,7 @@ public class Reverb {
     {
         //send post to PersistenceManager
         AWSPersistenceManager testPer = new AWSPersistenceManager();
-        return testPer.submitPost(null);
+        return testPer.submitPost(post);
 //This should be commented back in but isn't working yet
 //        try {
 //            postFeed.getPosts().add(0,post);

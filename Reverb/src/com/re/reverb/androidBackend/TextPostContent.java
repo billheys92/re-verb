@@ -39,4 +39,14 @@ public class TextPostContent implements PostContent
         return true;
     }
 
+    @Override
+    public String getMessageString() {
+        try {
+            return (String)getPostData();
+        } catch (EmptyPostException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

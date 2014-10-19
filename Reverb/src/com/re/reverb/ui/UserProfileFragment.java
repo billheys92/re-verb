@@ -133,7 +133,6 @@ public class UserProfileFragment extends Fragment
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String mapType = sharedPrefs.getString("pref_map_type","roadmap");
-        Log.d("Reverb", mapType);
         String URL = "http://maps.google.com/maps/api/staticmap?center=" +latitude + "," + longitude + "&zoom=12&size=600x600&sensor=false&maptype="+mapType;
 
         Bitmap bmp = null;

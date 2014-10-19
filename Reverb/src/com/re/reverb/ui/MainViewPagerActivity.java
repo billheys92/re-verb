@@ -9,18 +9,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.EditText;
 
 import com.re.reverb.R;
 
 public class MainViewPagerActivity extends FragmentActivity
 {
-	
+
+    static final int CREATE_POST_REQUEST = 1;  // The request code for creating a post activity
+
 	static final int NUM_PAGES = 3;
-	private int currentPage = 1;
+	private int defaultPage = 1;
 	
 	MainViewPagerAdapter mPagerAdapter;
     ViewPager mViewPager;
+
+    FeedFragment feedFragment = new FeedFragment();
+    UserProfileFragment userProfileFragment = new UserProfileFragment();
+    RegionsFragment regionsFragment = new RegionsFragment();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +36,7 @@ public class MainViewPagerActivity extends FragmentActivity
         mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.mainViewPager);
         mViewPager.setAdapter(mPagerAdapter);
-        mViewPager.setCurrentItem(currentPage);
+        mViewPager.setCurrentItem(defaultPage);
 
         //set default preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -46,9 +51,9 @@ public class MainViewPagerActivity extends FragmentActivity
     	 @Override
     	 public Fragment getItem(int i) {
     	     switch(i){
-    	     	case 0: return new UserProfileFragment();
-    	     	case 1: return new FeedFragment();
-    	     	case 2: return new RegionsFragment();
+    	     	case 0: return userProfileFragment;
+    	     	case 1: return feedFragment;
+    	     	case 2: return regionsFragment;
     	     	default: //TODO throw an error
     	    	 	return null;
     	     }
@@ -62,7 +67,7 @@ public class MainViewPagerActivity extends FragmentActivity
 
     public void startCreatePostActivity(View view){
         Intent intent = new Intent(this, CreatePostActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, CREATE_POST_REQUEST);
     }
 
     public void openSettings(View view)
@@ -72,8 +77,25 @@ public class MainViewPagerActivity extends FragmentActivity
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == CREATE_POST_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                feedFragment.onRefresh();
+            }
+        }
+    }
+
+    @Override
     public void onBackPressed() {
-        mViewPager.setCurrentItem(currentPage);
+        if(mViewPager.getCurrentItem() == defaultPage) {
+            super.onBackPressed();
+        }
+        else {
+            mViewPager.setCurrentItem(defaultPage);
+        }
+
     }
     
     
