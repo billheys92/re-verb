@@ -13,6 +13,7 @@ import com.re.reverb.androidBackend.PersistenceManager;
 import com.re.reverb.androidBackend.Post;
 import com.re.reverb.androidBackend.Region;
 import com.re.reverb.androidBackend.UserProfile;
+import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,9 +48,7 @@ public class AWSPersistenceManager implements PersistenceManager{
     public Collection<Post> getPosts() {
         RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
-        JsonArrayRequest jsonRequest = new JsonArrayRequest
-                (Request.Method.GET, getPostsURL, new Response.Listener<JSONArray>() {
-
+        JsonArrayRequest jsonRequest = new JsonArrayRequest(getPostsURL, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         System.out.println("Response is: "+ response);
@@ -85,7 +84,9 @@ public class AWSPersistenceManager implements PersistenceManager{
     public boolean submitPost(Post post) {
         Time time = new Time();
         time.setToNow();
-        GsonPost gsonPost = new GsonPost(2, "Test message " + time.format("%Y-%m-%d %H:%M:%S"), 0, 10.0f, -20.0f,
+        String message = post.getPostContent().getMessageString();
+
+        GsonPost gsonPost = new GsonPost(2, message, 0, 10.0f, -20.0f,
                 time.format("%Y-%m-%d %H:%M:%S"), "NULL",0,0,"NULL","NULL");
         Gson gson = new Gson();
         String jsonPost = gson.toJson(gsonPost);
@@ -105,8 +106,7 @@ public class AWSPersistenceManager implements PersistenceManager{
         //url = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymysql.php";
 
         //Request a string response from the provided URL.
-        JsonArrayRequest jsonRequest = new JsonArrayRequest
-                (Request.Method.GET, url, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
 
                     @Override
                     public void onResponse(JSONArray response) {
@@ -118,6 +118,7 @@ public class AWSPersistenceManager implements PersistenceManager{
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
                         System.out.println("Error Sending Message");
                     }
                 });

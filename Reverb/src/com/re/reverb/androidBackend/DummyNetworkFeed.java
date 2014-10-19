@@ -4,6 +4,8 @@ import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementExcep
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.network.AWSPersistenceManager;
 
+import java.util.Collections;
+
 public class DummyNetworkFeed extends Feed
 {
 
@@ -22,6 +24,7 @@ public class DummyNetworkFeed extends Feed
 		this.posts.clear();
 		AWSPersistenceManager perMan = new AWSPersistenceManager(this);
         perMan.getPosts();
+        notifyListenersOfDataChange();
 	}
 
 	@Override

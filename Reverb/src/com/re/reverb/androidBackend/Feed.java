@@ -1,6 +1,7 @@
 package com.re.reverb.androidBackend;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -32,7 +33,8 @@ public abstract class Feed
                 e.printStackTrace();
             }
         }
-        
+
+        Collections.reverse(posts);
         notifyListenersOfDataChange();
 	}
 

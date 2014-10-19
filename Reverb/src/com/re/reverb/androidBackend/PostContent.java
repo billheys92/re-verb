@@ -12,4 +12,6 @@ public interface PostContent
 
     public boolean isEmpty();
 
+    public String getMessageString();
+
 }

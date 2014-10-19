@@ -13,10 +13,13 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Post;
+import com.re.reverb.androidBackend.PostFactory;
 import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 
 /**
  * Created by Bill on 2014-09-27.
@@ -29,6 +32,7 @@ public class CreatePostActivity extends Activity {
     //UserProfile user;
 
     Post post;
+    private boolean anonymous = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,15 +41,6 @@ public class CreatePostActivity extends Activity {
         setContentView(R.layout.activity_create_post);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         attachedPhoto = (ImageView) findViewById(R.id.editPostIncludedImageView);
-
-        SharedPreferences sharedPrefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        StringBuilder builder = new StringBuilder();
-
-        builder.append("\n Map type: "
-                + sharedPrefs.getString("pref_map_type", "NULL"));
-Log.d("Reverb", builder.toString());
 
     }
 
@@ -67,8 +62,10 @@ Log.d("Reverb", builder.toString());
         fillInAutomaticFields();
         if(validatePost())
         {
-            Reverb.getInstance().submitPost(null);
+            Post post = buildPost();
+            Reverb.getInstance().submitPost(post);
             postSubmitted = true;
+            finishActivity();
         }
         else{
             postSubmitted = false;
@@ -77,6 +74,20 @@ Log.d("Reverb", builder.toString());
 
     private void fillInAutomaticFields() {
 
+    }
+
+    private Post buildPost() {
+        Post post;
+        TextView contentText = (TextView)findViewById(R.id.editPostTextContentView);
+        String text = contentText.getText().toString();
+
+        try {
+            post = PostFactory.createPost(text,anonymous);
+        } catch (NotSignedInException e) {
+            Toast.makeText(this,"Could not create post",Toast.LENGTH_SHORT);
+            return null;
+        }
+        return post;
     }
 
     private boolean validatePost() {
@@ -92,7 +103,7 @@ Log.d("Reverb", builder.toString());
     public void toggleAnonymity(View view)
     {
         CheckBox anonymousCheckbox = (CheckBox)findViewById(R.id.anonymousCheckbox);
-        boolean anonymous = anonymousCheckbox.isChecked();
+        anonymous = anonymousCheckbox.isChecked();
     }
 
     public void includePhoto(View view)
@@ -110,5 +121,12 @@ Log.d("Reverb", builder.toString());
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             attachedPhoto.setImageBitmap(imageBitmap);
         }
+    }
+
+    private void finishActivity(){
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("postSubmitted", postSubmitted);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 }
