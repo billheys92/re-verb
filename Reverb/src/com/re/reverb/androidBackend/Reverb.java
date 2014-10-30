@@ -18,9 +18,11 @@ public class Reverb {
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
     private Post incompletePost;
+    public LocationManager locationManager;
 
-    public Reverb(){
+    private Reverb(){
 
+        locationManager = LocationManager.getInstance();
         currentRegion = new CommonsRegion();
 
     }

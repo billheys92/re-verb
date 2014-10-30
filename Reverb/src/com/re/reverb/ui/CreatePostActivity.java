@@ -79,7 +79,7 @@ public class CreatePostActivity extends Activity {
     private Post buildPost() {
         Post post;
         TextView contentText = (TextView)findViewById(R.id.editPostTextContentView);
-        String text = contentText.getText().toString();
+        String text = contentText.getText().toString() + " lat("+Reverb.getInstance().locationManager.getLatitude()+") long("+Reverb.getInstance().locationManager.getLongitude()+")";
 
         try {
             post = PostFactory.createPost(text,anonymous);
