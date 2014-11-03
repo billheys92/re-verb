@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class UserProfileFragment extends Fragment
 {
 
     private static final int SELECT_PHOTO = 100;
+    private static View view;
 
     UserProfile profile;
     private ImageView backgroundMapImageView;
@@ -58,8 +60,16 @@ public class UserProfileFragment extends Fragment
             e.printStackTrace();
         }
 
-        View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
-
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        } catch (InflateException e) {
+            /* fragment is already there, just return view as it is */
+        }
         /*Fragment postListFragment = new PostListFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.userProfilePostListFragment, postListFragment).commit();
