@@ -1,44 +1,115 @@
 package com.re.reverb.network;
 
+import com.re.reverb.androidBackend.Post;
+
+import java.text.SimpleDateFormat;
+
 /**
  * Created by Colin on 10/7/2014.
  */
 public class GsonPost {
 
-    int poster_id;
-    String message;
-    int anon;
-    float lat;
-    float longi;
-    String time;
-    String region;
-    int spam;
-    int vote;
-    String repost;
-    String reply;
+    int Message_id;
+    int Poster_id;
+    String Message_body;
+    int Anon_flag;
+    float Location_lat;
+    float Location_long;
+    String Time_stamp;
+    String Region_id;
+    int Spam;
+    int Up_down_vote;
+    String Repost_link;
+    String Reply_link;
 
-    GsonPost(int poster_id,
-            String message,
-            int anon,
-            float lat,
-            float longi,
-            String time,
-            String region,
+    GsonPost(int Message_id,
+             int Poster_id,
+            String Message_body,
+            int Anon_flag,
+            float Location_lat,
+            float Location_long,
+            String Time_stamp,
+            String Region_id,
             int spam,
-            int vote,
-            String repost,
-            String reply)
+            int Up_down_vote,
+            String Repost_link,
+            String Reply_link)
     {
-        this.poster_id = poster_id;
-        this.message = message;
-        this.anon = anon;
-        this.lat = lat;
-        this.longi = longi;
-        this.time = time;
-        this.region = region;
-        this.spam = spam;
-        this.vote = vote;
-        this.repost = repost;
-        this.reply = reply;
+        this.Message_id = Message_id;
+        this.Poster_id = Poster_id;
+        this.Message_body = Message_body;
+        this.Anon_flag = Anon_flag;
+        this.Location_lat = Location_lat;
+        this.Location_long = Location_long;
+        this.Time_stamp = Time_stamp;
+        this.Region_id = Region_id;
+        this.Spam = spam;
+        this.Up_down_vote = Up_down_vote;
+        this.Repost_link = Repost_link;
+        this.Reply_link = Reply_link;
+    }
+
+    public GsonPost(Post post) {
+        this.Message_id = post.getPostId();
+        this.Poster_id = post.getUserId();
+        this.Message_body = post.getContent().getMessageString();
+        this.Anon_flag = post.getAnonymous() ? 1 : 0;
+        this.Location_lat = post.getPostLocation().getLatitude();
+        this.Location_long = post.getPostLocation().getLongitude();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        this.Time_stamp = sdf.format(post.getTimeCreated());
+        this.Region_id = "No Region_id";
+        this.Spam = 0;
+        this.Up_down_vote = 0;
+        this.Repost_link = "What?";
+        this.Reply_link = "What?";
+    }
+
+    public int getMessage_id() {
+        return Message_id;
+    }
+
+    public int getPoster_id() {
+        return Poster_id;
+    }
+
+    public String getMessage_body() {
+        return Message_body;
+    }
+
+    public int getAnon_flag() {
+        return Anon_flag;
+    }
+
+    public float getLocation_lat() {
+        return Location_lat;
+    }
+
+    public float getLocation_long() {
+        return Location_long;
+    }
+
+    public String getTime_stamp() {
+        return Time_stamp;
+    }
+
+    public String getRegion_id() {
+        return Region_id;
+    }
+
+    public int getSpam() {
+        return Spam;
+    }
+
+    public int getUp_down_vote() {
+        return Up_down_vote;
+    }
+
+    public String getRepost_link() {
+        return Repost_link;
+    }
+
+    public String getReply_link() {
+        return Reply_link;
     }
 }

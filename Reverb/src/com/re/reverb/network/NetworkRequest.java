@@ -42,7 +42,7 @@ public class NetworkRequest{
 		        
 		        Vector<String> postStrings = new Vector<String>();
 		        postStrings.addAll( Arrays.asList(response.split("\n")) );
-		        feed.handleResponse(postStrings);
+		        //feed.setPosts(postStrings);
 		    }
 		}, new Response.ErrorListener() {
 		    @Override

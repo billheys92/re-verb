@@ -109,7 +109,7 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 		String postData = "Error: Blank text";
 		try
 		{
-			postData = (String)post.getPostContent().getPostData();
+			postData = (String)post.getContent().getPostData();
 		} catch (EmptyPostException e)
 		{
 			e.printStackTrace();

@@ -17,13 +17,6 @@ public class LocationFeed extends Feed
 
 	}
 
-	@Override
-	public void incrementFeed()
-	{
-		// TODO Auto-generated method stub
-
-	}
-
     @Override
     public boolean fetchMore() throws UnsuccessfulFeedIncrementException {
         return false;

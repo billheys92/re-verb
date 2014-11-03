@@ -1,6 +1,6 @@
 package com.re.reverb.androidBackend;
 
-import com.re.reverb.androidBackend.errorHandling.IncompletePostException;
+import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
@@ -18,24 +18,13 @@ public class DummyFeed extends Feed
 		for(int i = 0; i < FEED_SIZE; i++){
             try {
                 this.posts.add(postFactory.createPost("Post #"+(queuePosition+i)+" refreshed "+numRefreshes+" times",false));
-            } catch (NotSignedInException e) {
+            } catch (InvalidPostException e) {
                 e.printStackTrace();
             }
         }
 		numRefreshes++;
 	}
 
-	@Override
-	public void incrementFeed() throws UnsuccessfulFeedIncrementException
-	{
-        try {
-            this.posts.add(postFactory.createPost("Post #"+(maxIndex),false));
-        } catch (NotSignedInException e) {
-            e.printStackTrace();
-        }
-        queuePosition++;
-		maxIndex++;
-	}
 
     @Override
     public boolean fetchMore() throws UnsuccessfulFeedIncrementException {

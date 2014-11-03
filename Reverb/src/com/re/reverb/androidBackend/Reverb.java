@@ -17,12 +17,11 @@ public class Reverb {
     private Region currentRegion;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
-    private Post incompletePost;
     public LocationManager locationManager;
 
     private Reverb(){
 
-        locationManager = LocationManager.getInstance();
+        locationManager = new LocationManager();
         currentRegion = new CommonsRegion();
 
     }
@@ -59,6 +58,14 @@ public class Reverb {
             throw new NotSignedInException("Get User ID");
         }
         return currentUser;
+    }
+
+    public Location getCurrentLocation() {
+        return this.locationManager.getCurrentLocation();
+    }
+
+    public void setCurrentLocation(float lat, float longi) {
+        this.locationManager.setCurrentLocation(lat, longi);
     }
 
     public Settings getSettings() {

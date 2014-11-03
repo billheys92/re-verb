@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
@@ -25,17 +26,18 @@ public abstract class Feed
 		return posts;
 	}
 
-	public void handleResponse(Vector<String> messages){
-		for(int i = 0; i < messages.size(); i++){
-            try {
-                posts.add( (new PostFactory()).createPost(messages.get(i),false));
-            } catch (NotSignedInException e) {
-                e.printStackTrace();
-            }
+	public boolean setPosts(ArrayList<Post> posts){
+
+        if(posts != null && posts.size() != 0) {
+            this.posts = posts;
+            Collections.reverse(posts);
+            notifyListenersOfDataChange();
+            return true;
+        }
+        else {
+            return false;
         }
 
-        Collections.reverse(posts);
-        notifyListenersOfDataChange();
 	}
 
     protected void notifyListenersOfDataChange() {
@@ -49,11 +51,10 @@ public abstract class Feed
     }
 
     /**
-     * Clears the post list and re-populates it.
+     * Clears the post list and re-populates it. When posts are re-set, setPosts must be called
      * @throws UnsuccessfulRefreshException
      */
 	public abstract void refreshPosts() throws UnsuccessfulRefreshException;
-	public abstract void incrementFeed() throws UnsuccessfulFeedIncrementException;
 
     /**
      *

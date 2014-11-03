@@ -5,31 +5,29 @@ package com.re.reverb.androidBackend;
  */
 public class LocationManager {
 
-    float lat;
-    float longi;
+    float currentLat;
+    float currentLongi;
 
-    private static LocationManager ourInstance = new LocationManager();
-
-    public static LocationManager getInstance() {
-        return ourInstance;
-    }
-
-    private LocationManager() {
-        lat = 0.0f;
-        longi = 0.0f;
+    public LocationManager() {
+        currentLat = 0.0f;
+        currentLongi = 0.0f;
     };
 
-    public void setLocation(float lat, float longi){
-        this.lat = lat;
-        this.longi = longi;
+    public void setCurrentLocation(float lat, float longi){
+        this.currentLat = lat;
+        this.currentLongi = longi;
     }
-    public float getLatitude()
-    {
-        return lat;
+
+    public Location getCurrentLocation() {
+        return new Location(currentLat, currentLongi);
     }
-    public float getLongitude()
+    public float getCurrentLatitude()
     {
-        return longi;
+        return currentLat;
+    }
+    public float getCurrentLongitude()
+    {
+        return currentLongi;
     }
 
 }
