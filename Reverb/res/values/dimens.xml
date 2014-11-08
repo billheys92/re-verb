@@ -11,6 +11,7 @@
     <dimen name="post_display_pic_thumbnail_side">80dp</dimen>
     <dimen name="post_padding_sides">10dp</dimen>
     <dimen name="post_padding_top_and_bottom">30dp</dimen>
+    <dimen name="bottom_toolbar_height">60dp</dimen>
 
 
 </resources>

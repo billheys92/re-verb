@@ -132,7 +132,7 @@ public class UserProfileFragment extends Fragment
 
         @Override
         protected Bitmap doInBackground(Bitmap... params) {
-            Bitmap bm = getGoogleMapThumbnail(47.5641001,-52.7015303);
+            Bitmap bm = getGoogleMapThumbnail(Reverb.getInstance().locationManager.getLatitude(),Reverb.getInstance().locationManager.getLongitude());
             return bm;
 
         }
@@ -143,7 +143,7 @@ public class UserProfileFragment extends Fragment
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String mapType = sharedPrefs.getString("pref_map_type","roadmap");
-        String URL = "http://maps.google.com/maps/api/staticmap?center=" +latitude + "," + longitude + "&zoom=12&size=600x600&sensor=false&maptype="+mapType;
+        String URL = "http://maps.google.com/maps/api/staticmap?center=" +latitude + "," + longitude + "&zoom=13&size=600x600&sensor=false&maptype="+mapType;
 
         Bitmap bmp = null;
         HttpClient httpclient = new DefaultHttpClient();
