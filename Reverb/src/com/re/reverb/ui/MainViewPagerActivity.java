@@ -114,6 +114,11 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
         startActivityForResult(intent, CREATE_POST_REQUEST);
     }
 
+    public void startCreateRegionActivity(View view) {
+        Intent intent = new Intent(this, CreateRegionActivity.class);
+        startActivity(intent);
+    }
+
     public void openSettings(View view)
     {
         Intent intent = new Intent(this, SettingsActivity.class);

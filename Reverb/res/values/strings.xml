@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="text_str">Test Value</string>
     <string name="app_name">Reverb</string>
     <string name="edit_main_feed_message">What\'s up?</string>
     <string name="button_create_post">Post</string>
     <string name="action_settings">Cool Settings</string>
     <string name="title_activity_main">MainActivity</string>
-    
     <string name="edit_username_message">Enter a username</string>
     <string name="edit_search_regions_message">Search for region</string>
-    
     <string name="swipe_right">Swipe Right</string>
     <string name="swipe_left">Swipe Left</string>
-    
     <string name="refresh_error_toast_message">Can\'t refresh posts</string>
-
     <string name="title_activity_create_post">Create New Post</string>
-
     <string name="no_network_toast">Sorry, you must be connected to the internet to use re:verb!</string>
+    <string name="create_region_button_label">Create New Region</string>
 
-
-    <!--Setting strings-->
+    <!-- Setting strings -->
     <string name="settings_title_appearances">Appearance</string>
     <string name="settings_title_map_type">Map Type</string>
     <string name="settings_map_type_default_value">roadmap</string>
     <string name="title_settings_activity">Settings</string>
-
+    <string name="title_activity_create_region">Create Region</string>
 
 </resources>
