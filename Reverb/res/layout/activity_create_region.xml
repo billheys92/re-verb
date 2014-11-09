@@ -51,5 +51,18 @@
             android:text="Save"
             android:id="@+id/editRegionSave"
             android:onClick="onSaveRegionClick" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:id="@+id/clearRegionButton"
+            android:layout_below="@+id/map"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="onClearRegionClick" />
+
     </LinearLayout>
+
 </RelativeLayout>

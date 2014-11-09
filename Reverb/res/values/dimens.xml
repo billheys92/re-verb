@@ -13,5 +13,7 @@
     <dimen name="post_padding_top_and_bottom">30dp</dimen>
     <dimen name="bottom_toolbar_height">60dp</dimen>
 
+    <dimen name="region_list_row_height">100dp</dimen>
+
 
 </resources>

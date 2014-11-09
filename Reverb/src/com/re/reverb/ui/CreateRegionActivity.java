@@ -5,6 +5,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
@@ -20,13 +22,23 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class CreateRegionActivity extends FragmentActivity implements GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
 
+    private enum ShapeType{
+        Circle,
+        Rectangle,
+        Polygon
+    }
+
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private int numMarkers = 0;
     private ArrayList<LatLng> polyPoints = new ArrayList<LatLng>();
+    private ArrayList<LatLng> rectPoints = new ArrayList<LatLng>();
+    private ShapeType shapeType = ShapeType.Polygon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,24 +106,43 @@ public class CreateRegionActivity extends FragmentActivity implements GoogleMap.
 
     @Override
     public void onMapClick(LatLng latLng) {
-        mMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title("point #"+(++numMarkers)));
-        polyPoints.add(latLng);
+        Log.d("Reverb","Map touched at ["+latLng.latitude+","+latLng.longitude+"]");
+        switch(shapeType) {
+            case Polygon:
+                polyPoints.add(latLng);
+                drawPolygon();
+                break;
+            case Rectangle:
+                rectPoints.add(latLng);
+                drawRectangle();
+                break;
+            case Circle:
+                break;
+
+
+        }
     }
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        PolygonOptions options = new PolygonOptions();
-        for(LatLng coord: polyPoints) {
-            options.add(coord);
-        }
-        options.strokeColor(R.color.reverb_blue_1);
-        options.fillColor(R.color.reverb_blue_1);
-        Polygon polygon = mMap.addPolygon(options);
     }
 
     public void onSaveRegionClick(View view) {
+        drawPolygon();
+    }
+
+    public void onClearRegionClick(View view){
+        mMap.clear();
+        polyPoints.clear();
+    }
+
+    private boolean drawPolygon() {
+        sortPointsClockwise();
+        mMap.clear();
+        for(LatLng point: polyPoints) {
+            mMap.addMarker(new MarkerOptions()
+                    .position(point));
+        }
         if(polyPoints.size() > 2) {
             PolygonOptions options = new PolygonOptions();
             for (LatLng coord : polyPoints) {
@@ -120,19 +151,93 @@ public class CreateRegionActivity extends FragmentActivity implements GoogleMap.
             options.strokeColor(R.color.reverb_blue_1);
             options.fillColor(R.color.reverb_blue_1);
             Polygon polygon = mMap.addPolygon(options);
-        } else {
-            Toast.makeText(this, "Sorry, you need to put in at least 3 points!", Toast.LENGTH_SHORT);
+            return true;
         }
+        else {
+            return false;
+        }
+    }
+
+
+    private boolean drawRectangle() {
+        for(int i = 0; i < rectPoints.size(); i+=2){
+            if(i+1 < rectPoints.size()) {
+                LatLng firstPoint = rectPoints.get(i);
+                LatLng secondPoint = rectPoints.get(i+1);
+                LatLng thirdPoint = new LatLng(firstPoint.latitude, secondPoint.longitude);
+                LatLng fourthPoint = new LatLng(secondPoint.latitude, firstPoint.longitude);
+                PolygonOptions options = new PolygonOptions();
+                options.add(firstPoint);
+                options.add(secondPoint);
+                options.add(thirdPoint);
+                options.add(fourthPoint);
+                options.strokeColor(R.color.reverb_blue_1);
+                options.fillColor(R.color.reverb_blue_1);
+                Polygon polygon = mMap.addPolygon(options);
+            }
+        }
+        return true;
     }
 
     public void onSelectCircle(View view) {
         mMap.getUiSettings().setScrollGesturesEnabled(false);
+        shapeType = ShapeType.Circle;
     }
     public void onSelectRectangle(View view) {
         mMap.getUiSettings().setScrollGesturesEnabled(false);
+        shapeType = ShapeType.Rectangle;
     }
     public void onSelectPolygon(View view) {
         mMap.getUiSettings().setScrollGesturesEnabled(true);
+        shapeType = ShapeType.Polygon;
 
+    }
+
+    private void sortPointsClockwise() {
+        if(polyPoints.size() > 1) {
+            double latMean = 0;
+            double longMean = 0;
+            for (LatLng point : polyPoints) {
+                latMean += point.latitude;
+                longMean += point.longitude;
+            }
+            latMean /= polyPoints.size();
+            longMean /= polyPoints.size();
+            ArrayList<RegionPoint> regionPoints = new ArrayList<RegionPoint>(polyPoints.size());
+            for (int i = 0; i < polyPoints.size(); i++) {
+                LatLng latLng = polyPoints.get(i);
+                regionPoints.add(i, new RegionPoint(latLng, new LatLng(latMean, longMean)));
+            }
+            Collections.sort(regionPoints);
+            polyPoints.clear();
+            for (RegionPoint p : regionPoints) {
+                polyPoints.add(p.getLatLng());
+            }
+        }
+    }
+
+    private class RegionPoint implements Comparable<RegionPoint>{
+        private Double angleFromMiddle;
+        private LatLng latLng;
+        public RegionPoint(LatLng latLng, LatLng meanLatLng) {
+            this.latLng = latLng;
+            angleFromMiddle = new Double(Math.atan2(latLng.latitude - meanLatLng.latitude,latLng.longitude - meanLatLng.longitude));
+        }
+
+        public Double getAngleFromMiddle() {
+            return angleFromMiddle;
+        }
+
+        public LatLng getLatLng() {
+
+            return latLng;
+        }
+
+        @Override
+        public int compareTo(RegionPoint another) {
+            if(another.getAngleFromMiddle() > this.getAngleFromMiddle()) return -1;
+            else if(another.getAngleFromMiddle() < this.getAngleFromMiddle()) return 1;
+            else return 0;
+        }
     }
 }
