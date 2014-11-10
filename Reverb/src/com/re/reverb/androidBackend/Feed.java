@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
@@ -14,28 +15,30 @@ public abstract class Feed
 	protected static final int FEED_SIZE = 10;
 	protected int queuePosition = 0;
     private List<OnFeedDataChangedListener> onDataChangedListeners = new ArrayList<OnFeedDataChangedListener>();
-	protected ArrayList<Post> posts = new ArrayList<Post>();;
+	protected ArrayList<Post> posts = new ArrayList<Post>();
+
+    public void init() throws UnsuccessfulRefreshException{
+        if(this.posts.size() == 0)
+        {
+            refreshPosts();
+        }
+    }
 	
-	public ArrayList<Post> getPosts() throws UnsuccessfulRefreshException
+	public ArrayList<Post> getPosts()
 	{
-		if(this.posts.size() == 0)
-		{
-			refreshPosts();
-		}
 		return posts;
 	}
 
-	public void handleResponse(Vector<String> messages){
-		for(int i = 0; i < messages.size(); i++){
-            try {
-                posts.add( (new PostFactory()).createPost(messages.get(i),false));
-            } catch (NotSignedInException e) {
-                e.printStackTrace();
-            }
+	public boolean setPosts(ArrayList<Post> posts){
+        if(posts != null && posts.size() != 0) {
+            this.posts = posts;
+            Collections.reverse(posts);
+            notifyListenersOfDataChange();
+            return true;
         }
-
-        Collections.reverse(posts);
-        notifyListenersOfDataChange();
+        else {
+            return false;
+        }
 	}
 
     protected void notifyListenersOfDataChange() {
@@ -49,11 +52,10 @@ public abstract class Feed
     }
 
     /**
-     * Clears the post list and re-populates it.
+     * Clears the post list and re-populates it. When posts are re-set, setPosts must be called
      * @throws UnsuccessfulRefreshException
      */
 	public abstract void refreshPosts() throws UnsuccessfulRefreshException;
-	public abstract void incrementFeed() throws UnsuccessfulFeedIncrementException;
 
     /**
      *

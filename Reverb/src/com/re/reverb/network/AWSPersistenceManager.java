@@ -1,28 +1,28 @@
 package com.re.reverb.network;
 
-import android.text.format.Time;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.Feed;
 import com.re.reverb.androidBackend.PersistenceManager;
 import com.re.reverb.androidBackend.Post;
+import com.re.reverb.androidBackend.PostFactory;
 import com.re.reverb.androidBackend.Region;
 import com.re.reverb.androidBackend.UserProfile;
-import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
+import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Bill on 2014-10-05.
@@ -54,15 +54,20 @@ public class AWSPersistenceManager implements PersistenceManager{
                         System.out.println("Response is: "+ response);
 
 
-                        Vector<String> postStrings = new Vector<String>();
+                        ArrayList<Post> returnedPosts = new ArrayList<Post>();
                         for(int i = 0; i < response.length(); i++){
                             try {
-                                postStrings.add((new JSONObject(response.get(i).toString())).getString("Message_body"));
+                                Gson gson = new Gson();
+                                GsonPost gsonPost = gson.fromJson(response.get(i).toString(), GsonPost.class);
+                                Post p = PostFactory.createPost(gsonPost);
+                                returnedPosts.add(p);
                             } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (InvalidPostException e) {
                                 e.printStackTrace();
                             }
                         }
-                        feed.handleResponse(postStrings);
+                        feed.setPosts(returnedPosts);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -70,7 +75,6 @@ public class AWSPersistenceManager implements PersistenceManager{
                         System.out.println("Network Error");
                     }
                 });
-        // Add the request to the RequestQueue.
         queue.add(jsonRequest);
         return null;
     }
@@ -82,22 +86,19 @@ public class AWSPersistenceManager implements PersistenceManager{
 
     @Override
     public boolean submitPost(Post post) {
-        Time time = new Time();
-        time.setToNow();
-        String message = post.getPostContent().getMessageString();
 
-        GsonPost gsonPost = new GsonPost(2, message, 0, 10.0f, -20.0f,
-                time.format("%Y-%m-%d %H:%M:%S"), "NULL",0,0,"NULL","NULL");
+        GsonPost gsonPost = new GsonPost(post);
         Gson gson = new Gson();
         String jsonPost = gson.toJson(gsonPost);
         System.out.println(jsonPost);
 
         String url = null;
-        try {
-            url = sendPostsURL + "?json_message=" + URLEncoder.encode(jsonPost, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            url = sendPostsURL + "?json_message=" + URLEncoder.encode(jsonPost, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+        url = sendPostsURL;
         System.out.println(url);
 
 
@@ -106,10 +107,16 @@ public class AWSPersistenceManager implements PersistenceManager{
         //url = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymysql.php";
 
         //Request a string response from the provided URL.
-        JsonArrayRequest jsonRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+        JSONObject postJsonObject = null;
+        try {
+            postJsonObject = new JSONObject(jsonPost);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.PUT, url, postJsonObject, new Response.Listener<JSONObject>() {
 
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         // public void onResponse(String response) {
                         // Display the response string.
                         System.out.println("Response is: "+ response);
@@ -122,6 +129,7 @@ public class AWSPersistenceManager implements PersistenceManager{
                         System.out.println("Error Sending Message");
                     }
                 });
+
         // Add the request to the RequestQueue.
         queue.add(jsonRequest);
         return true;

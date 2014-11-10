@@ -207,7 +207,7 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
         // Display the connection status
         //Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
         //mCurrentLocation = mLocationClient.getLastLocation();
-        //Toast.makeText(this,"Current location = lat("+mCurrentLocation.getLatitude()+") long("+mCurrentLocation.getLongitude()+")",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"Current location = lat("+mCurrentLocation.getCurrentLatitude()+") long("+mCurrentLocation.getCurrentLongitude()+")",Toast.LENGTH_SHORT).show();
         // If already requested, start periodic updates
         if (mUpdatesRequested) {
             mLocationClient.requestLocationUpdates(mLocationRequest, this);
@@ -271,7 +271,7 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        Reverb.getInstance().locationManager.setLocation((float)location.getLatitude(),(float)location.getLongitude());
+        Reverb.getInstance().setCurrentLocation((float) location.getLatitude(), (float) location.getLongitude());
     }
 
     /*

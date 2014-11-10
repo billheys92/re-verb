@@ -2,12 +2,9 @@ package com.re.reverb.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -19,6 +16,7 @@ import com.re.reverb.R;
 import com.re.reverb.androidBackend.Post;
 import com.re.reverb.androidBackend.PostFactory;
 import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 
 /**
@@ -58,8 +56,6 @@ public class CreatePostActivity extends Activity {
     }
 
     public void submitPost(View view) {
-        //user = Reverb.getInstance().getCurrentUser();
-        fillInAutomaticFields();
         if(validatePost())
         {
             Post post = buildPost();
@@ -72,19 +68,15 @@ public class CreatePostActivity extends Activity {
         }
     }
 
-    private void fillInAutomaticFields() {
-
-    }
-
     private Post buildPost() {
         Post post;
         TextView contentText = (TextView)findViewById(R.id.editPostTextContentView);
-        String text = contentText.getText().toString() + " lat("+Reverb.getInstance().locationManager.getLatitude()+") long("+Reverb.getInstance().locationManager.getLongitude()+")";
+        String text = contentText.getText().toString() + " lat("+Reverb.getInstance().locationManager.getCurrentLatitude()+") long("+Reverb.getInstance().locationManager.getCurrentLongitude()+")";
 
         try {
             post = PostFactory.createPost(text,anonymous);
-        } catch (NotSignedInException e) {
-            Toast.makeText(this,"Could not create post",Toast.LENGTH_SHORT);
+        } catch (InvalidPostException e) {
+            Toast.makeText(this,"Could not create post because "+e.getMessage(),Toast.LENGTH_SHORT);
             return null;
         }
         return post;
