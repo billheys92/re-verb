@@ -16,11 +16,12 @@ public class GsonPost {
     float Location_lat;
     float Location_long;
     String Time_stamp;
-    String Region_id;
+    int Region_id;
     int Spam;
-    int Up_down_vote;
-    String Repost_link;
-    String Reply_link;
+    int Up_vote;
+    int Down_vote;
+    int Repost_link;
+    int Reply_link;
 
     GsonPost(int Message_id,
              int Poster_id,
@@ -29,11 +30,12 @@ public class GsonPost {
             float Location_lat,
             float Location_long,
             String Time_stamp,
-            String Region_id,
+            int Region_id,
             int spam,
-            int Up_down_vote,
-            String Repost_link,
-            String Reply_link)
+            int Up_vote,
+            int Down_vote,
+            int Repost_link,
+            int Reply_link)
     {
         this.Message_id = Message_id;
         this.Poster_id = Poster_id;
@@ -44,7 +46,8 @@ public class GsonPost {
         this.Time_stamp = Time_stamp;
         this.Region_id = Region_id;
         this.Spam = spam;
-        this.Up_down_vote = Up_down_vote;
+        this.Up_vote = Up_vote;
+        this.Down_vote = Down_vote;
         this.Repost_link = Repost_link;
         this.Reply_link = Reply_link;
     }
@@ -58,11 +61,12 @@ public class GsonPost {
         this.Location_long = post.getPostLocation().getLongitude();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         this.Time_stamp = sdf.format(post.getTimeCreated());
-        this.Region_id = "No Region_id";
+        this.Region_id = 0;
         this.Spam = 0;
-        this.Up_down_vote = 0;
-        this.Repost_link = "What?";
-        this.Reply_link = "What?";
+        this.Up_vote = 0;
+        this.Down_vote = 0;
+        this.Repost_link = 0;
+        this.Reply_link = 0;
     }
 
     public int getMessage_id() {
@@ -93,7 +97,7 @@ public class GsonPost {
         return Time_stamp;
     }
 
-    public String getRegion_id() {
+    public int getRegion_id() {
         return Region_id;
     }
 
@@ -101,15 +105,19 @@ public class GsonPost {
         return Spam;
     }
 
-    public int getUp_down_vote() {
-        return Up_down_vote;
+    public int getUp_vote() {
+        return Up_vote;
     }
 
-    public String getRepost_link() {
+    public int getDown_vote() {
+        return Down_vote;
+    }
+
+    public int getRepost_link() {
         return Repost_link;
     }
 
-    public String getReply_link() {
+    public int getReply_link() {
         return Reply_link;
     }
 }

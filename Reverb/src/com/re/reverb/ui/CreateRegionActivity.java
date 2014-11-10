@@ -89,8 +89,8 @@ public class CreateRegionActivity extends FragmentActivity implements GoogleMap.
      */
     private void setUpMap() {
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        double lat = Reverb.getInstance().locationManager.getLatitude();
-        double longi = Reverb.getInstance().locationManager.getLongitude();
+        double lat = Reverb.getInstance().locationManager.getCurrentLatitude();
+        double longi = Reverb.getInstance().locationManager.getCurrentLongitude();
         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(lat, longi), 16.0f);
         mMap.moveCamera(update);
         mMap.setOnMapClickListener(this);

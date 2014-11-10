@@ -132,7 +132,7 @@ public class UserProfileFragment extends Fragment
 
         @Override
         protected Bitmap doInBackground(Bitmap... params) {
-            Bitmap bm = getGoogleMapThumbnail(Reverb.getInstance().locationManager.getLatitude(),Reverb.getInstance().locationManager.getLongitude());
+            Bitmap bm = getGoogleMapThumbnail(Reverb.getInstance().locationManager.getCurrentLatitude(),Reverb.getInstance().locationManager.getCurrentLongitude());
             return bm;
 
         }

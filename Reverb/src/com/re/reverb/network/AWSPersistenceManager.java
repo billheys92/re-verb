@@ -1,5 +1,6 @@
 package com.re.reverb.network;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Bill on 2014-10-05.
@@ -72,7 +75,6 @@ public class AWSPersistenceManager implements PersistenceManager{
                         System.out.println("Network Error");
                     }
                 });
-        // Add the request to the RequestQueue.
         queue.add(jsonRequest);
         return null;
     }
@@ -111,7 +113,7 @@ public class AWSPersistenceManager implements PersistenceManager{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(url, postJsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.PUT, url, postJsonObject, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -127,6 +129,7 @@ public class AWSPersistenceManager implements PersistenceManager{
                         System.out.println("Error Sending Message");
                     }
                 });
+
         // Add the request to the RequestQueue.
         queue.add(jsonRequest);
         return true;

@@ -15,19 +15,21 @@ public abstract class Feed
 	protected static final int FEED_SIZE = 10;
 	protected int queuePosition = 0;
     private List<OnFeedDataChangedListener> onDataChangedListeners = new ArrayList<OnFeedDataChangedListener>();
-	protected ArrayList<Post> posts = new ArrayList<Post>();;
+	protected ArrayList<Post> posts = new ArrayList<Post>();
+
+    public void init() throws UnsuccessfulRefreshException{
+        if(this.posts.size() == 0)
+        {
+            refreshPosts();
+        }
+    }
 	
-	public ArrayList<Post> getPosts() throws UnsuccessfulRefreshException
+	public ArrayList<Post> getPosts()
 	{
-		if(this.posts.size() == 0)
-		{
-			refreshPosts();
-		}
 		return posts;
 	}
 
 	public boolean setPosts(ArrayList<Post> posts){
-
         if(posts != null && posts.size() != 0) {
             this.posts = posts;
             Collections.reverse(posts);
@@ -37,7 +39,6 @@ public abstract class Feed
         else {
             return false;
         }
-
 	}
 
     protected void notifyListenersOfDataChange() {
