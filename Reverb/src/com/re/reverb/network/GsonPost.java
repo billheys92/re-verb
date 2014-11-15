@@ -13,8 +13,8 @@ public class GsonPost {
     int Poster_id;
     String Message_body;
     int Anon_flag;
-    float Location_lat;
-    float Location_long;
+    double Location_lat;
+    double Location_long;
     String Time_stamp;
     int Region_id;
     int Spam;
@@ -85,11 +85,11 @@ public class GsonPost {
         return Anon_flag;
     }
 
-    public float getLocation_lat() {
+    public double getLocation_lat() {
         return Location_lat;
     }
 
-    public float getLocation_long() {
+    public double getLocation_long() {
         return Location_long;
     }
 

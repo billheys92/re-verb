@@ -1,5 +1,7 @@
 package com.re.reverb.androidBackend;
 
+import com.re.reverb.androidBackend.regions.Region;
+
 import java.util.Collection;
 
 /**
