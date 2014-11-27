@@ -1,7 +1,12 @@
 package com.re.reverb.androidBackend;
 
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.regions.CommonsRegion;
+import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.network.AWSPersistenceManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Reverb {
 
@@ -15,6 +20,7 @@ public class Reverb {
     //private UserProfile currentUser;
     private UserProfile currentUser = new UserProfile("username@domain.com","Bill Heys","@billheys","re:verb developer",0);
     private Region currentRegion;
+    private List<Region> availableRegions;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
     public LocationManager locationManager;
@@ -22,7 +28,9 @@ public class Reverb {
     private Reverb(){
 
         locationManager = new LocationManager();
-        currentRegion = new CommonsRegion();
+        availableRegions = new ArrayList<Region>();
+        availableRegions.add(new CommonsRegion(locationManager.getCurrentLocation()));
+        currentRegion = availableRegions.get(0);
 
     }
 
@@ -66,6 +74,7 @@ public class Reverb {
 
     public void setCurrentLocation(float lat, float longi) {
         this.locationManager.setCurrentLocation(lat, longi);
+        currentRegion.update();
     }
 
     public Settings getSettings() {

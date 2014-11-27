@@ -11,7 +11,7 @@ import com.re.reverb.androidBackend.Feed;
 import com.re.reverb.androidBackend.PersistenceManager;
 import com.re.reverb.androidBackend.Post;
 import com.re.reverb.androidBackend.PostFactory;
-import com.re.reverb.androidBackend.Region;
+import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 
@@ -21,8 +21,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Bill on 2014-10-05.

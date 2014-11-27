@@ -1,12 +1,16 @@
 package com.re.reverb.ui;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -30,6 +34,7 @@ import java.util.Collections;
 public class CreateRegionActivity extends FragmentActivity implements GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
 
     private enum ShapeType{
+        None,
         Circle,
         Rectangle,
         Polygon
@@ -38,7 +43,7 @@ public class CreateRegionActivity extends FragmentActivity implements GoogleMap.
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private ArrayList<LatLng> polyPoints = new ArrayList<LatLng>();
     private ArrayList<LatLng> rectPoints = new ArrayList<LatLng>();
-    private ShapeType shapeType = ShapeType.Polygon;
+    private ShapeType selectedShapeType = ShapeType.None;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,20 +112,20 @@ public class CreateRegionActivity extends FragmentActivity implements GoogleMap.
     @Override
     public void onMapClick(LatLng latLng) {
         Log.d("Reverb","Map touched at ["+latLng.latitude+","+latLng.longitude+"]");
-        switch(shapeType) {
-            case Polygon:
-                polyPoints.add(latLng);
-                drawPolygon();
-                break;
-            case Rectangle:
-                rectPoints.add(latLng);
-                drawRectangle();
-                break;
-            case Circle:
-                break;
-
-
-        }
+//        switch(selectedShapeType) {
+//            case Polygon:
+//                polyPoints.add(latLng);
+//                drawPolygon();
+//                break;
+//            case Rectangle:
+//                rectPoints.add(latLng);
+//                drawRectangle();
+//                break;
+//            case Circle:
+//                break;
+//
+//
+//        }
     }
 
     @Override
@@ -180,17 +185,56 @@ public class CreateRegionActivity extends FragmentActivity implements GoogleMap.
     }
 
     public void onSelectCircle(View view) {
-        mMap.getUiSettings().setScrollGesturesEnabled(false);
-        shapeType = ShapeType.Circle;
+        removeOverlays();
+        if(selectedShapeType != ShapeType.Circle) {
+            View circleButton = findViewById(R.id.editRegionCircle);
+            circleButton.setBackgroundColor(getResources().getColor(R.color.reverb_blue_4));
+            selectedShapeType = ShapeType.Circle;
+            mMap.getUiSettings().setZoomControlsEnabled(false);
+            FrameLayout drawCircleLayout = (FrameLayout) findViewById(R.id.drawCircleLayout);
+            if (drawCircleLayout == null) {
+                FrameLayout myLayout = (FrameLayout) findViewById(R.id.overlayContainerLayout);
+                View drawCircleView = getLayoutInflater().inflate(R.layout.draw_circle_layout, myLayout, false);
+                myLayout.addView(drawCircleView);
+            }
+        } else {
+            selectedShapeType = ShapeType.None;
+        }
     }
     public void onSelectRectangle(View view) {
-        mMap.getUiSettings().setScrollGesturesEnabled(false);
-        shapeType = ShapeType.Rectangle;
+        removeOverlays();
+        if(selectedShapeType != ShapeType.Rectangle) {
+            View rectButton = findViewById(R.id.editRegionSquare);
+            rectButton.setBackgroundColor(getResources().getColor(R.color.reverb_blue_4));
+            mMap.getUiSettings().setZoomControlsEnabled(false);
+            selectedShapeType = ShapeType.Rectangle;
+            FrameLayout drawRectLayout = (FrameLayout) findViewById(R.id.drawRectLayout);
+            if (drawRectLayout == null) {
+                FrameLayout myLayout = (FrameLayout) findViewById(R.id.overlayContainerLayout);
+                View drawRectView = getLayoutInflater().inflate(R.layout.draw_rect_layout, myLayout, false);
+                myLayout.addView(drawRectView);
+            }
+        } else {
+            selectedShapeType = ShapeType.None;
+        }
     }
-    public void onSelectPolygon(View view) {
-        mMap.getUiSettings().setScrollGesturesEnabled(true);
-        shapeType = ShapeType.Polygon;
 
+    private void removeOverlays(){
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        View view = findViewById(R.id.drawCircleLayout);
+        if(view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            parent.removeView(view);
+        }
+        view = findViewById(R.id.drawRectLayout);
+        if(view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            parent.removeView(view);
+        }
+        View circleButton = findViewById(R.id.editRegionCircle);
+        circleButton.setBackgroundColor(Color.TRANSPARENT);
+        View rectButton = findViewById(R.id.editRegionSquare);
+        rectButton.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private void sortPointsClockwise() {

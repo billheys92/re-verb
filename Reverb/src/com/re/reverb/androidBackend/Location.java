@@ -2,17 +2,17 @@ package com.re.reverb.androidBackend;
 
 public class Location
 {
-    float lat;
-    float longi;
-    Location( float lat, float longi ){
+    double lat;
+    double longi;
+    public Location( double lat, double longi ){
         this.lat = lat;
         this.longi = longi;
     }
-	public float getLatitude()
+	public double getLatitude()
     {
         return lat;
     }
-    public float getLongitude()
+    public double getLongitude()
     {
         return longi;
     }
