@@ -15,8 +15,8 @@ public class CommonsRegion extends Region{
 
     private double regionRadius = 3;    //3km
 
-    public CommonsRegion() {
-        super.addShape(new CircleRegionShape(Reverb.getInstance().getCurrentLocation(), regionRadius));
+    public CommonsRegion(Location location) {
+        super.addShape(new CircleRegionShape(location, regionRadius));
         this.writePermission = true;
         this.readPermission = true;
     }

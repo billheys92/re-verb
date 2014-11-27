@@ -5,6 +5,9 @@ import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.network.AWSPersistenceManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Reverb {
 
     private static Reverb ourInstance = new Reverb();
@@ -17,6 +20,7 @@ public class Reverb {
     //private UserProfile currentUser;
     private UserProfile currentUser = new UserProfile("username@domain.com","Bill Heys","@billheys","re:verb developer",0);
     private Region currentRegion;
+    private List<Region> availableRegions;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
     public LocationManager locationManager;
@@ -24,6 +28,9 @@ public class Reverb {
     private Reverb(){
 
         locationManager = new LocationManager();
+        availableRegions = new ArrayList<Region>();
+        availableRegions.add(new CommonsRegion(locationManager.getCurrentLocation()));
+        currentRegion = availableRegions.get(0);
 
     }
 
@@ -67,10 +74,6 @@ public class Reverb {
 
     public void setCurrentLocation(float lat, float longi) {
         this.locationManager.setCurrentLocation(lat, longi);
-
-        if (currentRegion == null) {
-            currentRegion = new CommonsRegion();
-        }
         currentRegion.update();
     }
 
