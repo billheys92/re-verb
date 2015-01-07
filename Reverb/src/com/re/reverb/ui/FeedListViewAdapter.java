@@ -41,7 +41,7 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
         try {
-            Post p = feed.getPosts().get(groupPosition);
+            Post p = (Post) feed.getPosts().get(groupPosition);
             String child = p.getPostPropertyAtIndex(childPosition);
             return child;
         } catch (NullPointerException e) {
@@ -76,7 +76,7 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
         try {
-            return feed.getPosts().get(groupPosition).getNumProperties();
+            return ((Post) feed.getPosts().get(groupPosition)).getNumProperties();
         } catch (NullPointerException e) {
             return 0;
         }

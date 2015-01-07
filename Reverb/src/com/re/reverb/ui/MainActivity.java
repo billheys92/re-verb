@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity
         
         Fragment fragment = fragManager.findFragmentById(R.id.fragmentContainer);
         if(fragment == null){
-        	fragment = new FeedFragment();
+        	fragment = new NewFeedFragment();
         	fragManager.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
         }
 

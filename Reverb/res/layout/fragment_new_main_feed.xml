@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                  android:id="@+id/swipeContainer"
+                                                  android:layout_width="match_parent"
+                                                  android:layout_height="wrap_content"
+                                                  android:layout_weight=".90" >
+
+        <ExpandableListView
+            android:id="@+id/newFeedListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:childDivider="@color/light_grey"
+            android:divider="@color/dark_grey"
+            android:dividerHeight="1sp">
+        </ExpandableListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".10"
+        android:gravity="bottom" >
+
+        <Button
+            android:id="@+id/buttonPost"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_toolbar_height"
+            android:text="@string/button_create_post"
+            android:onClick="startCreatePostActivity"
+            android:background="@color/reverb_blue_1" />
+
+    </LinearLayout>
+
+</LinearLayout>

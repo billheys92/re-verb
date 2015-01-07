@@ -16,9 +16,8 @@ public class PostFactory
 {
     private static Reverb reverb = Reverb.getInstance();
 
-    public static Post createPost(String text, boolean anonymous) throws InvalidPostException{
-        Post post = new Post();
-
+    public static Post createPost(String text, boolean anonymous) throws InvalidPostException
+    {
         int posterId;
         try {
             posterId = reverb.getCurrentUserId();
@@ -30,32 +29,17 @@ public class PostFactory
         Date now = Calendar.getInstance().getTime();
         TextPostContent content = new TextPostContent(text);
 
-        post.setUserId(posterId);
-        post.setPostLocation(location);
-        post.setTimeCreated(now);
-        post.setContent(content);
-        post.setAnonymous(anonymous);
+        return new Post(posterId, 1, reverb.getCurrentLocation(), new Date(), new TextPostContent(text), anonymous);
+    }
 
-        return post;
-    };
-
-    public static Post createPost(GsonPost gsonPost) throws InvalidPostException{
-        Post post = new Post();
-
-        post.setUserId(gsonPost.getPoster_id());
-        post.setPostId(gsonPost.getMessage_id());
-        post.setPostLocation(new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()));
+    public static Post createPost(GsonPost gsonPost) throws InvalidPostException
+    {
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getTime_stamp());
-            post.setTimeCreated(date);
+            return new Post(gsonPost.getPoster_id(), gsonPost.getMessage_id(), new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()), date, new TextPostContent(gsonPost.getMessage_body()), gsonPost.getAnon_flag() == 1);
         } catch (ParseException e) {
             throw new InvalidPostException("Could not parse a time stamp from post");
         }
-        TextPostContent content = new TextPostContent(gsonPost.getMessage_body());
-        post.setContent(content);
-        post.setAnonymous(gsonPost.getAnon_flag() == 1);
-
-        return post;
     }
 	
 
