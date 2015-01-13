@@ -26,4 +26,12 @@ public class CircleRegionShape extends RegionShape {
         double distanceFromCentre = GeographyUtils.distanceBetween(point,centrePoint);
         return distanceFromCentre < radius;
     }
+
+    public double getRadius(){
+        return radius;
+    }
+
+    public Location getCentrePoint(){
+        return centrePoint;
+    }
 }

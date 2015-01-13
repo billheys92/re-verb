@@ -1,6 +1,7 @@
 package com.re.reverb.androidBackend.regions;
 
 import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.utils.SuccessStatus;
 
 import java.util.ArrayList;
@@ -65,7 +66,6 @@ public class Region
     }
 
     public void update() {
-
     }
 
     public Collection<RegionShape> getShapes() {

@@ -6,6 +6,7 @@ import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.network.AWSPersistenceManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Reverb {
@@ -16,21 +17,22 @@ public class Reverb {
         return ourInstance;
     }
 
+    //listeners
+    private static Collection<LocationUpdateListener> locationUpdateListeners;
 
     //private UserProfile currentUser;
     private UserProfile currentUser = new UserProfile("username@domain.com","Bill Heys","@billheys","re:verb developer",0);
-    private Region currentRegion;
-    private List<Region> availableRegions;
+    private RegionManager regionManager;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
     public LocationManager locationManager;
 
     private Reverb(){
 
+        locationUpdateListeners = new ArrayList<LocationUpdateListener>();
         locationManager = new LocationManager();
-        availableRegions = new ArrayList<Region>();
-        availableRegions.add(new CommonsRegion(locationManager.getCurrentLocation()));
-        currentRegion = availableRegions.get(0);
+        this.regionManager = new RegionManagerImpl();
+
 
     }
 
@@ -68,17 +70,27 @@ public class Reverb {
         return currentUser;
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
     public Location getCurrentLocation() {
         return this.locationManager.getCurrentLocation();
     }
 
     public void setCurrentLocation(float lat, float longi) {
         this.locationManager.setCurrentLocation(lat, longi);
-        currentRegion.update();
+        notifyLocationListeners();
     }
 
-    public Settings getSettings() {
-        return settings;
+    public static void attachLocationListener(LocationUpdateListener listener) {
+        locationUpdateListeners.add(listener);
+    }
+
+    private void notifyLocationListeners(){
+        for(LocationUpdateListener l: this.locationUpdateListeners){
+            l.onLocationChanged(this.locationManager.getCurrentLocation());
+        }
     }
 
 }
