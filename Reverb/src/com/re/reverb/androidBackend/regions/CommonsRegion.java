@@ -15,10 +15,11 @@ public class CommonsRegion extends Region{
 
     private double regionRadius = 3;    //3km
 
-    public CommonsRegion(Location location) {
-        super.addShape(new CircleRegionShape(location, regionRadius));
+    public CommonsRegion(Location centre) {
+        super.addShape(new CircleRegionShape(centre, regionRadius));
         this.writePermission = true;
         this.readPermission = true;
+        this.setName("Commons");
     }
 
     @Override

@@ -7,10 +7,12 @@ import com.re.reverb.androidBackend.Location;
  */
 public class GeographyUtils {
 
+    //return the distance between two points in metres
     public static double distanceBetween(Location loc1, Location loc2) {
         return distFrom(loc1.getLatitude(), loc1.getLongitude(), loc2.getLatitude(), loc2.getLongitude());
     }
 
+    //return the distance between two points in metres
     private static double distFrom(double lat1, double lng1, double lat2, double lng2) {
         double earthRadius = 6371;  //in km
         double dLat = Math.toRadians(lat2 - lat1);
@@ -22,6 +24,6 @@ public class GeographyUtils {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double dist = earthRadius * c;
 
-        return dist;
+        return dist*1000;
     }
 }

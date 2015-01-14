@@ -10,14 +10,16 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.re.reverb.R;
+import com.re.reverb.ui.shapeWrappers.CircleShape;
+import com.re.reverb.ui.shapeWrappers.Shape;
 
 import java.util.List;
 import java.util.Stack;
 
 public class DrawMapCircleOverlayView extends View {
 
-    ShapeDrawable currentCircleDrawable;
-    Stack<ShapeDrawable> circlesStack = new Stack<ShapeDrawable>();
+    Shape currentCircleDrawable;
+    Stack<Shape> circlesStack = new Stack<Shape>();
 
     float touchDownPointX = 0.0f;
     float touchDownPointY = 0.0f;
@@ -26,8 +28,8 @@ public class DrawMapCircleOverlayView extends View {
 
     public DrawMapCircleOverlayView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        currentCircleDrawable = new ShapeDrawable(new OvalShape());
-        currentCircleDrawable.getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+        currentCircleDrawable = new CircleShape();
+        currentCircleDrawable.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
     }
 
     public DrawMapCircleOverlayView(Context context, AttributeSet attrs) {
@@ -46,7 +48,7 @@ public class DrawMapCircleOverlayView extends View {
                 touchDownPointX = event.getX();
                 touchDownPointY = event.getY();
                 Log.d("Reverb","DOWN -- "+touchDownPointX+", "+touchDownPointY);
-                currentCircleDrawable.setBounds(0, 0, 0, 0);
+                currentCircleDrawable.getShapeDrawable().setBounds(0, 0, 0, 0);
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -58,8 +60,8 @@ public class DrawMapCircleOverlayView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 circlesStack.add(currentCircleDrawable);
-                currentCircleDrawable = new ShapeDrawable(new OvalShape());
-                currentCircleDrawable.getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+                currentCircleDrawable = new CircleShape();
+                currentCircleDrawable.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
                 break;
             default:
                 super.onTouchEvent(event);
@@ -75,16 +77,16 @@ public class DrawMapCircleOverlayView extends View {
         int x2 =  (int)(touchDownPointX + sideLengthOver2);
         int y1 =  (int)(touchDownPointY - sideLengthOver2);
         int y2 =  (int)(touchDownPointY + sideLengthOver2);
-        currentCircleDrawable.setBounds(x1, y1, x2, y2);
+        currentCircleDrawable.getShapeDrawable().setBounds(x1, y1, x2, y2);
 
         invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        for(ShapeDrawable circle: circlesStack) {
-            circle.draw(canvas);
+        for(Shape circle: circlesStack) {
+            circle.getShapeDrawable().draw(canvas);
         }
-        currentCircleDrawable.draw(canvas);
+        currentCircleDrawable.getShapeDrawable().draw(canvas);
     }
 }

@@ -10,13 +10,15 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.re.reverb.R;
+import com.re.reverb.ui.shapeWrappers.RectangleShape;
+import com.re.reverb.ui.shapeWrappers.Shape;
 
 import java.util.Stack;
 
 public class DrawMapRectOverlayView extends View {
 
-    ShapeDrawable currentRectDrawable;
-    Stack<ShapeDrawable> rectStack = new Stack<ShapeDrawable>();
+    Shape currentRectDrawable;
+    Stack<Shape> rectStack = new Stack<Shape>();
 
     float touchDownPointX = 0.0f;
     float touchDownPointY = 0.0f;
@@ -25,8 +27,8 @@ public class DrawMapRectOverlayView extends View {
 
     public DrawMapRectOverlayView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        currentRectDrawable = new ShapeDrawable(new RectShape());
-        currentRectDrawable.getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+        currentRectDrawable = new RectangleShape();
+        currentRectDrawable.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
     }
 
     public DrawMapRectOverlayView(Context context, AttributeSet attrs) {
@@ -45,7 +47,7 @@ public class DrawMapRectOverlayView extends View {
                 touchDownPointX = event.getX();
                 touchDownPointY = event.getY();
                 Log.d("Reverb","DOWN -- "+touchDownPointX+", "+touchDownPointY);
-                currentRectDrawable.setBounds(0, 0, 0, 0);
+                currentRectDrawable.getShapeDrawable().setBounds(0, 0, 0, 0);
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -57,8 +59,8 @@ public class DrawMapRectOverlayView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 rectStack.add(currentRectDrawable);
-                currentRectDrawable = new ShapeDrawable(new RectShape());
-                currentRectDrawable.getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+                currentRectDrawable = new RectangleShape();
+                currentRectDrawable.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
                 break;
             default:
                 super.onTouchEvent(event);
@@ -73,16 +75,16 @@ public class DrawMapRectOverlayView extends View {
         int x2 =  (int)Math.max(touchDownPointX, latestTouchPointX);
         int y1 =  (int)Math.min(touchDownPointY, latestTouchPointY);
         int y2 =  (int)Math.max(touchDownPointY, latestTouchPointY);
-        currentRectDrawable.setBounds(x1, y1, x2, y2);
+        currentRectDrawable.getShapeDrawable().setBounds(x1, y1, x2, y2);
 
         invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        for(ShapeDrawable rect: rectStack) {
-            rect.draw(canvas);
+        for(Shape rect: rectStack) {
+            rect.getShapeDrawable().draw(canvas);
         }
-        currentRectDrawable.draw(canvas);
+        currentRectDrawable.getShapeDrawable().draw(canvas);
     }
 }
