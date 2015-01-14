@@ -21,7 +21,6 @@ import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 public class FeedListViewAdapter extends BaseExpandableListAdapter {
 
 	private Feed feed;
-	private ArrayList<Post> posts = new ArrayList<Post>();
 	public LayoutInflater inflater;
 	public Activity activity;
 
@@ -29,7 +28,8 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 		activity = act;
 		try
 		{
-			this.posts = feed.getPosts();
+            this.feed = feed;
+            this.feed.init();
 		} catch (UnsuccessfulRefreshException e)
 		{
 			Toast.makeText(activity, R.string.refresh_error_toast_message, Toast.LENGTH_SHORT).show();
@@ -40,9 +40,13 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		Post p = posts.get(groupPosition);
-		String child = p.getPostPropertyAtIndex(childPosition);
-		return child;
+        try {
+            Post p = feed.getPosts().get(groupPosition);
+            String child = p.getPostPropertyAtIndex(childPosition);
+            return child;
+        } catch (NullPointerException e) {
+            return null;
+        }
 	}
 
 	@Override
@@ -71,17 +75,30 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		return posts.get(groupPosition).getNumProperties();
+        try {
+            return feed.getPosts().get(groupPosition).getNumProperties();
+        } catch (NullPointerException e) {
+            return 0;
+        }
 	}
 
 	@Override
 	public Object getGroup(int groupPosition) {
-		return posts.get(groupPosition);
+        try {
+            return feed.getPosts().get(groupPosition);
+        } catch (NullPointerException e) {
+            return null;
+        }
 	}
 
 	@Override
 	public int getGroupCount() {
-		return posts.size();
+        try {
+            return feed.getPosts().size();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+
 	}
 
 	@Override
@@ -109,7 +126,7 @@ public class FeedListViewAdapter extends BaseExpandableListAdapter {
 		String postData = "Error: Blank text";
 		try
 		{
-			postData = (String)post.getPostContent().getPostData();
+			postData = (String)post.getContent().getPostData();
 		} catch (EmptyPostException e)
 		{
 			e.printStackTrace();

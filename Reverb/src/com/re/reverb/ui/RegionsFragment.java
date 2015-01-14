@@ -1,12 +1,15 @@
 package com.re.reverb.ui;
 
 import android.support.v4.app.Fragment;
+import android.view.InflateException;
 
 import com.re.reverb.R;
 
 public class RegionsFragment extends Fragment
 {
-	
+
+    private static View view;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -18,36 +21,18 @@ public class RegionsFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.fragment_regions, container, false);
-		
-		EditText editText = (EditText) view.findViewById(R.id.editTextRegions);
-		editText.addTextChangedListener(new TextWatcher(){
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.fragment_regions, container, false);
+        } catch (InflateException e) {
+            /* fragment is already there, just return view as it is */
+        }
 
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after)
-			{
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count)
-			{
-				System.out.println(s.toString());
-			}
-
-			@Override
-			public void afterTextChanged(Editable s)
-			{
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
-		
-		return view;
+        return view;
 	}
 
 }

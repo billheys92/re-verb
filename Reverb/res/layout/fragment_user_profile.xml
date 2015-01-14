@@ -1,34 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-	android:id="@+id/fragmentUserProfile">
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/relativeLayout"
+        android:layout_gravity="center_horizontal|bottom">
 
-        <EditText
-            android:id="@+id/editTextUserProfile"
-            android:layout_width="0dp"
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/user_profile_header_height"
+            android:id="@+id/userinfo"
+            android:scaleType="centerCrop"/>
+
+        <ImageButton
+            android:layout_width="@dimen/user_display_pic_side"
+            android:layout_height="@dimen/user_display_pic_side"
+            android:id="@+id/profilePicture"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/user_display_pic_margin"
+            android:layout_marginTop="@dimen/user_display_pic_margin"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/edit_username_message" >
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Description"
+            android:id="@+id/userDescription"
+            android:layout_toEndOf="@+id/profilePicture"
+            android:textIsSelectable="true"
+            android:layout_below="@+id/handleTextView"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-            <requestFocus />
-        </EditText>
-
-        <Button
-            android:id="@+id/buttonUserProfile"
+        <TextView
+            style="@style/userProfileNameFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="sendMessage"
-            android:text="@string/button_send" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Name"
+            android:id="@+id/nameTextView"
+            android:layout_toEndOf="@+id/profilePicture"
+            android:layout_alignTop="@+id/profilePicture"
+            android:layout_centerHorizontal="true"
+            android:textIsSelectable="true"/>
 
-    </LinearLayout>
-        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="handle"
+            android:id="@+id/handleTextView"
+            android:layout_below="@+id/nameTextView"
+            android:layout_toRightOf="@+id/profilePicture"
+            android:layout_toEndOf="@+id/profilePicture"
+            android:textSize="18dp"
+            android:textIsSelectable="true" />
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="email@email.email"
+            android:id="@+id/emailTextView"
+            android:layout_alignRight="@+id/userinfo"
+            android:layout_alignEnd="@+id/userDescription"
+            android:layout_alignBottom="@+id/userinfo"
+            android:layout_marginRight="@dimen/email_text_margin" />
+
+        <fragment
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:name="com.re.reverb.ui.PostListFragment"
+            android:id="@+id/userProfilePostListFragment"
+            android:layout_below="@+id/userinfo"
+            android:layout_centerHorizontal="true"
+            tools:layout="@layout/post_list_fragment" />
+
+    </RelativeLayout>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:id="@+id/settingsButton"
+        android:layout_gravity="right|top"
+        android:onClick="openSettings" />
+
+</FrameLayout>

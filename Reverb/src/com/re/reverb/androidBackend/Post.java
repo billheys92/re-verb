@@ -1,87 +1,97 @@
 package com.re.reverb.androidBackend;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class Post
 {
-	
-	private UUID userId;
-	private UUID postId;
-	private Location postLacation;
-	private Timestamp timeCreated;
-	private Timestamp timeReceivedByServer;
-	private PostContent content;
-	private AnonimityState anonState;
-	private List<String> postProperties = new ArrayList<String>();	//This is just a placeholder 
-	
-	public Post(UUID userId, PostContent content){
-		this.userId = userId;
-		this.postId = UUID.randomUUID();
-		this.postLacation = new Location();	//only temporary
-		this.timeCreated = new Timestamp(System.currentTimeMillis());
-		this.content = content;
-		
-		for(int i = 0; i < 4; i++)
-		{
-			postProperties.add("Post property "+i);
-		}
-	}
-	
-	public PostContent getPostContent(){
-		return content;
-	}
-	
-	public void setPostContent(PostContent content){
-		this.content = content;
-	}
 
-	public UUID getUserId()
+	private int userId;
+	private int postId = -1;
+	private Location postLocation;
+	private Date timeCreated;
+	private PostContent content;
+    private boolean anonymous;
+
+    public void setPostLocation(Location postLocation) {
+        this.postLocation = postLocation;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
+
+    public void setTimeCreated(Date timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
+    public PostContent getContent() {
+        return content;
+    }
+
+    public void setContent(PostContent content) {
+        this.content = content;
+    }
+
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+
+	public int getUserId()
 	{
 		return userId;
 	}
 
-	public UUID getPostId()
+	public int getPostId()
 	{
 		return postId;
 	}
 
-	public Location getPostLacation()
+	public Location getPostLocation()
 	{
-		return postLacation;
+		return postLocation;
 	}
-	
-	public String getPostPropertyAtIndex(int index) throws ArrayIndexOutOfBoundsException
-	{
-		return postProperties.get(index);
-	}
-	
-	public int getNumProperties()
-	{
-		return postProperties.size();
-	}
-	
-	/** 
-	 * 
-	 * @return the "best" timestamp. 
-	 * timeReceivedByServer is set with the server's time, whereas
-	 * timeCreated is set by the local system time. In order to
-	 * synchronize across multiple devices, we should use the server time,
-	 * but in case that hasn't been set, this will return the timeCreated.
-	 */
-	public Timestamp getTimestamp(){
-		if(timeReceivedByServer == null)
-		{
-			return timeCreated;
-		}
-		else
-		{
-			return timeReceivedByServer;
-		}
-	}
-	
-	
 
+	public Date getTimeCreated(){
+		return timeCreated;
+	}
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
+    }
+
+    public boolean getAnonymous(){
+        return anonymous;
+    }
+
+    public int getNumProperties() {
+        return 6;
+    }
+
+    public String getPostPropertyAtIndex(int index) {
+        switch(index) {
+            case 0:
+                return "User ID = "+userId;
+            case 1:
+                return "Post ID = "+postId;
+            case 2:
+                return "Latitude = "+postLocation.getLatitude();
+            case 3:
+                return "Longitude = "+postLocation.getLongitude();
+            case 4:
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.hhmmss");
+                return "Time = "+sdf.format(timeCreated);
+            case 5:
+                return "Anonymous = "+anonymous;
+            default:
+                return "invalid post property index";
+        }
+    }
 }

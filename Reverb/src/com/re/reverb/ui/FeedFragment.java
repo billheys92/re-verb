@@ -17,25 +17,28 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.DummyFeed;
+import com.re.reverb.androidBackend.DummyNetworkFeed;
 import com.re.reverb.androidBackend.Feed;
+import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.Post;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulWindowIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.network.RequestQueueSingleton;
 
-public class FeedFragment extends Fragment implements OnRefreshListener
+
+public class FeedFragment extends Fragment implements OnRefreshListener, OnFeedDataChangedListener
 {
 	SparseArray<Post> posts = new SparseArray<Post>();
-	Feed dataFeed = new DummyFeed();
+	Feed dataFeed = new DummyNetworkFeed();
 	SwipeRefreshLayout swipeRefreshLayout;
 	FeedListViewAdapter adapter;	
-	
+
 	public FeedFragment(){}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+			
 		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
 		swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
 		swipeRefreshLayout.setOnRefreshListener(this);
@@ -45,10 +48,15 @@ public class FeedFragment extends Fragment implements OnRefreshListener
 				R.color.reverb_blue_4);
 		ExpandableListView elv = (ExpandableListView) rootView.findViewById(R.id.feedListView);
 		
+		RequestQueueSingleton.getInstance(getActivity().getApplicationContext());
+		
+		
 	    adapter = new FeedListViewAdapter(getActivity(), dataFeed);
 		elv.setAdapter(adapter);
 		elv.setOnScrollListener(new FeedScrollListener());
-		
+
+        dataFeed.setOnDataChangedListener(this);
+
 		return rootView;
 	}
 	
@@ -71,8 +79,13 @@ public class FeedFragment extends Fragment implements OnRefreshListener
                 }
             }, 3000);
 	}
-	
-	private class FeedScrollListener implements AbsListView.OnScrollListener
+
+    @Override
+    public void onDataChanged() {
+        adapter.notifyDataSetChanged();
+    }
+
+    private class FeedScrollListener implements AbsListView.OnScrollListener
 	{
 		
 		@Override
@@ -89,9 +102,11 @@ public class FeedFragment extends Fragment implements OnRefreshListener
 			{
 				try
 				{
-					dataFeed.fetchMore();
-					((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
-				} catch (UnsuccessfulFetchPostsException e)
+					if(dataFeed.fetchMore()){
+                        ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
+                    }
+
+				} catch (UnsuccessfulFeedIncrementException e)
 				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
