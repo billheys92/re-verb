@@ -106,7 +106,7 @@ public class FeedFragment extends Fragment implements OnRefreshListener, OnFeedD
                         ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
                     }
 
-				} catch (UnsuccessfulFeedIncrementException e)
+				} catch (Exception e)
 				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();

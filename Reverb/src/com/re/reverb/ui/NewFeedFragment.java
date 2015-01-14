@@ -16,7 +16,6 @@ import com.re.reverb.R;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.post.ParentPost;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.network.RequestQueueSingleton;
 
 import java.util.ArrayList;
@@ -89,7 +88,7 @@ public class NewFeedFragment extends Fragment implements OnRefreshListener, OnFe
                         ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
                     }
 
-                } catch (UnsuccessfulFeedIncrementException e)
+                } catch (Exception e)
                 {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

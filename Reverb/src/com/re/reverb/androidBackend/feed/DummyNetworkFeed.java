@@ -1,7 +1,6 @@
 package com.re.reverb.androidBackend.feed;
 
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.network.AWSPersistenceManager;
@@ -69,7 +68,7 @@ public class DummyNetworkFeed implements Feed
 	}
 
     @Override
-    public boolean fetchMore() throws UnsuccessfulFeedIncrementException {
+    public boolean fetchMore() throws Exception {
         return false;
     }
 }

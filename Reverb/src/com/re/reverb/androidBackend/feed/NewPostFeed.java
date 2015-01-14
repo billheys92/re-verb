@@ -3,7 +3,6 @@ package com.re.reverb.androidBackend.feed;
 import android.content.Context;
 
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.post.NewPostFactory;
 import com.re.reverb.androidBackend.post.ParentPost;
@@ -88,7 +87,8 @@ public class NewPostFeed implements Feed<ParentPost>
     }
 
     @Override
-    public boolean fetchMore() throws UnsuccessfulFeedIncrementException {
+    public boolean fetchMore() throws Exception
+    {
         return false;
     }
 }

@@ -3,7 +3,6 @@ package com.re.reverb.androidBackend.feed;
 import java.util.ArrayList;
 
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.post.Post;
 
@@ -27,8 +26,8 @@ public interface Feed<T extends Post>
     /**
      *
      * @return true if more posts were fetched, false if no more were available
-     * @throws UnsuccessfulFeedIncrementException
+     * @throws java.lang.Exception
      **/
-	public boolean fetchMore() throws UnsuccessfulFeedIncrementException;
+	public boolean fetchMore() throws Exception;
 
 }
