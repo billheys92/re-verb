@@ -23,3 +23,4 @@ public class CreatePostDto
         this.content = content;
     }
 }
+
