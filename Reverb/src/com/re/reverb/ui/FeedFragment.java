@@ -1,5 +1,6 @@
 package com.re.reverb.ui;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,7 @@ import com.re.reverb.androidBackend.feed.DummyNetworkFeed;
 import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.post.Post;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.network.RequestQueueSingleton;
 
