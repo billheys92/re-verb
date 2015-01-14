@@ -1,29 +1,19 @@
 package com.re.reverb.ui;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.ChildPost;
-import com.re.reverb.androidBackend.Feed;
-import com.re.reverb.androidBackend.NewPostFeed;
-import com.re.reverb.androidBackend.ParentPost;
-import com.re.reverb.androidBackend.Post;
-import com.re.reverb.androidBackend.StandardPostContent;
-import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
+import com.re.reverb.androidBackend.post.ChildPost;
+import com.re.reverb.androidBackend.feed.NewPostFeed;
+import com.re.reverb.androidBackend.post.ParentPost;
+import com.re.reverb.androidBackend.post.content.StandardPostContent;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 
 public class NewFeedListViewAdapter extends BaseExpandableListAdapter

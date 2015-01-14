@@ -11,14 +11,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
-import android.widget.TableLayout;
 
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.DummyNetworkFeed;
-import com.re.reverb.androidBackend.Feed;
-import com.re.reverb.androidBackend.NewPostFeed;
+import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
-import com.re.reverb.androidBackend.ParentPost;
+import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.network.RequestQueueSingleton;
 

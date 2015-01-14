@@ -1,10 +1,10 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.post;
 
-import java.sql.Timestamp;
+import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.post.content.PostContent;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Post
 {

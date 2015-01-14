@@ -13,15 +13,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.Post;
-import com.re.reverb.androidBackend.PostFactory;
+import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.post.Post;
+import com.re.reverb.androidBackend.post.PostFactory;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
-import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.post.content.dto.StandardPostContentDto;
+import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 
-/**
- * Created by Bill on 2014-09-27.
- */
+import java.util.Calendar;
+
 public class CreatePostActivity extends Activity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -58,8 +60,8 @@ public class CreatePostActivity extends Activity {
     public void submitPost(View view) {
         if(validatePost())
         {
-            Post post = buildPost();
-            Reverb.getInstance().submitPost(post);
+            CreatePostDto postDto = buildPost();
+            Reverb.getInstance().submitPost(postDto);
             postSubmitted = true;
             finishActivity();
         }
@@ -68,22 +70,31 @@ public class CreatePostActivity extends Activity {
         }
     }
 
-    private Post buildPost() {
-        Post post;
+    private CreatePostDto buildPost() {
         TextView contentText = (TextView)findViewById(R.id.editPostTextContentView);
         String text = contentText.getText().toString() + " lat("+Reverb.getInstance().locationManager.getCurrentLatitude()+") long("+Reverb.getInstance().locationManager.getCurrentLongitude()+")";
+        Location location = Reverb.getInstance().getCurrentLocation();
 
-        try {
-            post = PostFactory.createPost(text,anonymous);
-        } catch (InvalidPostException e) {
-            Toast.makeText(this,"Could not create post because "+e.getMessage(),Toast.LENGTH_SHORT);
+        CreatePostDto postDto;
+
+        try
+        {
+            postDto = new CreatePostDto(Reverb.getInstance().getCurrentUserId(),
+                    anonymous,
+                    location.getLatitude(),
+                    location.getLongitude(),
+                    new StandardPostContentDto(text));
+        } catch (NotSignedInException e)
+        {
+            Toast.makeText(this, "Could not create post because " + e.getMessage(), Toast.LENGTH_SHORT).show();
             return null;
         }
-        return post;
+
+        return postDto;
     }
 
-    private boolean validatePost() {
-        boolean postValid = false;
+    private boolean validatePost()
+    {
         TextView contentText = (TextView)findViewById(R.id.editPostTextContentView);
         String text = contentText.getText().toString();
         if(text == null || text.replaceAll("\\s+","").length() == 0) {
@@ -96,6 +107,16 @@ public class CreatePostActivity extends Activity {
     {
         CheckBox anonymousCheckbox = (CheckBox)findViewById(R.id.anonymousCheckbox);
         anonymous = anonymousCheckbox.isChecked();
+
+        if(anonymous)
+        {
+            ((ImageView) findViewById(R.id.editPostProfilePicThumbnail)).setImageResource(R.drawable.anonymous_pp);
+        }
+        else
+        {
+            //TODO: Get profile picture from current user
+            ((ImageView) findViewById(R.id.editPostProfilePicThumbnail)).setImageResource(R.drawable.chris_pp);
+        }
     }
 
     public void includePhoto(View view)

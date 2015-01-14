@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:childDivider="@color/light_grey"
-            android:divider="@color/dark_grey"
+            android:divider="@color/light_grey"
             android:dividerHeight="1sp">
         </ExpandableListView>
 

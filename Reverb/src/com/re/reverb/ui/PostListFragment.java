@@ -14,9 +14,9 @@ import android.widget.ExpandableListView;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
-import com.re.reverb.androidBackend.DummyNetworkFeed;
-import com.re.reverb.androidBackend.Feed;
-import com.re.reverb.androidBackend.Post;
+import com.re.reverb.androidBackend.feed.DummyNetworkFeed;
+import com.re.reverb.androidBackend.feed.Feed;
+import com.re.reverb.androidBackend.post.Post;
 
 /**
  * Created by Bill on 2014-09-24.

@@ -1,4 +1,4 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.post.content;
 
 import android.graphics.Bitmap;
 

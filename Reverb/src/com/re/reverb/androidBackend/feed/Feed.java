@@ -1,14 +1,11 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.feed;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
 
-import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
-import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.androidBackend.post.Post;
 
 public interface Feed<T extends Post>
 {

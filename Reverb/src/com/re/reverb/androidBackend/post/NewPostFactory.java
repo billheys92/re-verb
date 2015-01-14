@@ -1,10 +1,13 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.post;
 
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.post.content.StandardPostContent;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -130,6 +133,27 @@ public class NewPostFactory
     {
         this.context = context;
     }
+
+/*    public static ParentPost createPost(String text, boolean anonymous) throws InvalidPostException
+    {
+        UserProfile userProfile;
+        try
+        {
+            userProfile = reverb.getCurrentUser();
+        }
+        catch (NotSignedInException e)
+        {
+            throw new InvalidPostException("No user is signed in.");
+        }
+
+        Location location = reverb.getCurrentLocation();
+        Date now = Calendar.getInstance().getTime();
+
+        Bitmap profilePicture = null;
+        PostContent content = StandardPostContent(userProfile.getUsername(), userProfile.getHandle(), text, profilePicture);
+
+
+    }*/
 
     public ParentPost createPost()
     {

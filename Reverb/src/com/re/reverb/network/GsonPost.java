@@ -1,6 +1,6 @@
 package com.re.reverb.network;
 
-import com.re.reverb.androidBackend.Post;
+import com.re.reverb.androidBackend.post.Post;
 
 import java.text.SimpleDateFormat;
 

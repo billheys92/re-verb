@@ -1,13 +1,14 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.post;
 
+import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.post.content.TextPostContent;
 import com.re.reverb.network.GsonPost;
 
-import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;

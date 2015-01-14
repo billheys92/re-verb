@@ -16,10 +16,10 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.DummyNetworkFeed;
-import com.re.reverb.androidBackend.Feed;
+import com.re.reverb.androidBackend.feed.DummyNetworkFeed;
+import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
-import com.re.reverb.androidBackend.Post;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFeedIncrementException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.network.RequestQueueSingleton;

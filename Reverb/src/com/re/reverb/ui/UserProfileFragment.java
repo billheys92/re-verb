@@ -2,7 +2,7 @@ package com.re.reverb.ui;
 
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.UserProfile;
+import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 
 import android.app.Activity;
@@ -75,9 +75,9 @@ public class UserProfileFragment extends Fragment
         transaction.replace(R.id.userProfilePostListFragment, postListFragment).commit();
 */
 		TextView nameText = (TextView) view.findViewById(R.id.nameTextView);
-        nameText.setText(profile.getName());
+        nameText.setText(profile.getUsername());
 		TextView handleText = (TextView) view.findViewById(R.id.handleTextView);
-        handleText.setText(profile.getNickname());
+        handleText.setText(profile.getHandle());
         TextView descriptionText = (TextView) view.findViewById(R.id.userDescription);
         descriptionText.setText(profile.getDescription());
         TextView emailText = (TextView) view.findViewById(R.id.emailTextView);

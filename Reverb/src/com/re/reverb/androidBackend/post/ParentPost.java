@@ -1,4 +1,7 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.post;
+
+import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.post.content.PostContent;
 
 import java.util.ArrayList;
 import java.util.Date;

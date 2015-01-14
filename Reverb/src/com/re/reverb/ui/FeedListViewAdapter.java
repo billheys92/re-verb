@@ -1,7 +1,5 @@
 package com.re.reverb.ui;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.Feed;
-import com.re.reverb.androidBackend.Post;
+import com.re.reverb.androidBackend.feed.Feed;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 
