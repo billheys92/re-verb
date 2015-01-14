@@ -2,6 +2,7 @@ package com.re.reverb.androidBackend;
 
 import com.re.reverb.androidBackend.regions.Region;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,5 +20,9 @@ public interface RegionManager
     public List<Region> getSubscribedRegions();
 
     public void updateRegionLists();
+
+    public ArrayList<String> getNearbyRegionNames();
+
+    public ArrayList<String> getSubscribedRegionNames();
 
 }

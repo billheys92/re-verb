@@ -2,6 +2,7 @@ package com.re.reverb.androidBackend;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.Projection;
 import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.Region;
 
@@ -22,8 +23,6 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
         this.subscribedRegions = new ArrayList<Region>();
 
         Reverb.attachLocationListener(this);
-
-        //TODO: fetch nearby and subscribed regions
     }
 
     @Override
@@ -54,6 +53,26 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     }
 
     @Override
+    public ArrayList<String> getNearbyRegionNames()
+    {
+        ArrayList<String> names = new ArrayList<String>();
+        for(Region r: this.getNearbyRegions()) {
+            names.add(r.getName());
+        }
+        return names;
+    }
+
+    @Override
+    public ArrayList<String> getSubscribedRegionNames()
+    {
+        ArrayList<String> names = new ArrayList<String>();
+        for(Region r: this.getSubscribedRegions()) {
+            names.add(r.getName());
+        }
+        return names;
+    }
+
+    @Override
     public void updateRegionLists()
     {
         //TODO: re-fetch nearby and subscribed
@@ -75,6 +94,7 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
             this.currentRegion.setReadPermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()) || this.subscribedRegions.contains(this.currentRegion));
             this.currentRegion.setWritePermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()));
         }
+        Reverb.notifyAvailableRegionsUpdateListeners();
 //        Log.d("Reverb", "Current region is at location"+newLocation.getLatitude()+", "+newLocation.getLongitude());
     }
 }

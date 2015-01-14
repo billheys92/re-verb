@@ -17,6 +17,7 @@ public class Region
     protected final double MAX_AREA = 10;    //10 km max area maybe?
 
     private Collection<RegionShape> shapes = new ArrayList<RegionShape>();
+    private String name;
 
     /**
      *
@@ -98,6 +99,16 @@ public class Region
 
     public void setWritePermission(boolean writePermission) {
         this.writePermission = writePermission;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
 }

@@ -19,6 +19,7 @@ public class Reverb {
 
     //listeners
     private static Collection<LocationUpdateListener> locationUpdateListeners;
+    private static Collection<AvailableRegionsUpdateRegion> availableRegionsUpdateListeners;
 
     //private UserProfile currentUser;
     private UserProfile currentUser = new UserProfile("username@domain.com","Bill Heys","@billheys","re:verb developer",0);
@@ -30,6 +31,7 @@ public class Reverb {
     private Reverb(){
 
         locationUpdateListeners = new ArrayList<LocationUpdateListener>();
+        availableRegionsUpdateListeners = new ArrayList<AvailableRegionsUpdateRegion>();
         locationManager = new LocationManager();
         this.regionManager = new RegionManagerImpl();
 
@@ -55,6 +57,10 @@ public class Reverb {
         //return false;
     }
 
+    public RegionManager getRegionManager()
+    {
+        return regionManager;
+    }
 
     public int getCurrentUserId() throws NotSignedInException{
         if(currentUser == null){
@@ -92,6 +98,17 @@ public class Reverb {
             l.onLocationChanged(this.locationManager.getCurrentLocation());
         }
     }
+    public static void attachAvailableRegionsUpdateListener(AvailableRegionsUpdateRegion listener) {
+        availableRegionsUpdateListeners.add(listener);
+    }
+
+    public static void notifyAvailableRegionsUpdateListeners(){
+        for(AvailableRegionsUpdateRegion l: availableRegionsUpdateListeners){
+            l.onAvailableRegionsUpdated();
+        }
+    }
+
+
 
 }
 

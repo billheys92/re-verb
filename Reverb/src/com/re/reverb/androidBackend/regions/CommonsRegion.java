@@ -19,6 +19,7 @@ public class CommonsRegion extends Region{
         super.addShape(new CircleRegionShape(centre, regionRadius));
         this.writePermission = true;
         this.readPermission = true;
+        this.setName("Commons");
     }
 
     @Override
