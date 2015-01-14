@@ -1,4 +1,4 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.post.content;
 
 import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostDataTypeException;

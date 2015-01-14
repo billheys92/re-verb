@@ -1,6 +1,7 @@
 package com.re.reverb.androidBackend.regions;
 
 import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.utils.SuccessStatus;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Region
     protected final double MAX_AREA = 10;    //10 km max area maybe?
 
     private Collection<RegionShape> shapes = new ArrayList<RegionShape>();
+    private String name;
 
     /**
      *
@@ -65,7 +67,6 @@ public class Region
     }
 
     public void update() {
-
     }
 
     public Collection<RegionShape> getShapes() {
@@ -98,6 +99,16 @@ public class Region
 
     public void setWritePermission(boolean writePermission) {
         this.writePermission = writePermission;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
 }

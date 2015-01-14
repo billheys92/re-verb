@@ -54,7 +54,8 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
     SharedPreferences mPrefs;
     SharedPreferences.Editor mEditor;
 
-    FeedFragment feedFragment = new FeedFragment();
+    //FeedFragment feedFragment = new FeedFragment();
+    NewFeedFragment newFeedFragment = new NewFeedFragment();
     UserProfileFragment userProfileFragment = new UserProfileFragment();
     RegionsFragment regionsFragment = new RegionsFragment();
 
@@ -96,7 +97,7 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
     	 public Fragment getItem(int i) {
     	     switch(i){
     	     	case 0: return userProfileFragment;
-    	     	case 1: return feedFragment;
+    	     	case 1: return newFeedFragment;
     	     	case 2: return regionsFragment;
     	     	default: //TODO throw an error
     	    	 	return null;
@@ -140,7 +141,7 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
             case CREATE_POST_REQUEST :
                 switch (resultCode) {
                     case Activity.RESULT_OK :
-                        feedFragment.onRefresh();
+                        newFeedFragment.onRefresh();
 
                 }
 

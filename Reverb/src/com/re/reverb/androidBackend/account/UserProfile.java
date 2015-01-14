@@ -1,22 +1,17 @@
-package com.re.reverb.androidBackend;
+package com.re.reverb.androidBackend.account;
 
-import java.util.UUID;
-
-/**
- * Created by Bill on 2014-09-12.
- */
 public class UserProfile {
 
     private String email;
-    private String name;
-    private String nickname;
+    private String username;
+    private String handle;
     private String description;
     private int id;
 
-    public UserProfile(String email, String name, String nickname, String description, int id) {
+    public UserProfile(String email, String username, String handle, String description, int id) {
         this.email = email;
-        this.name = name;
-        this.nickname = nickname;
+        this.username = username;
+        this.handle = handle;
         this.description = description;
         this.id = id;
     }
@@ -29,20 +24,20 @@ public class UserProfile {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getHandle() {
+        return handle;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setHandle(String handle) {
+        this.handle = handle;
     }
 
     public String getDescription() {

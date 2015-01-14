@@ -1,11 +1,16 @@
 package com.re.reverb.androidBackend;
 
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.feed.Feed;
+import com.re.reverb.androidBackend.post.Post;
+import com.re.reverb.androidBackend.account.UserProfile;
+import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.network.AWSPersistenceManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Reverb {
@@ -16,21 +21,24 @@ public class Reverb {
         return ourInstance;
     }
 
+    //listeners
+    private static Collection<LocationUpdateListener> locationUpdateListeners;
+    private static Collection<AvailableRegionsUpdateRegion> availableRegionsUpdateListeners;
 
     //private UserProfile currentUser;
-    private UserProfile currentUser = new UserProfile("username@domain.com","Bill Heys","@billheys","re:verb developer",0);
-    private Region currentRegion;
-    private List<Region> availableRegions;
+    private UserProfile currentUser;
+    private RegionManager regionManager;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
+    private final AWSPersistenceManager persistenceManager = new AWSPersistenceManager();
     public LocationManager locationManager;
 
-    private Reverb(){
-
+    private Reverb()
+    {
+        locationUpdateListeners = new ArrayList<LocationUpdateListener>();
+        availableRegionsUpdateListeners = new ArrayList<AvailableRegionsUpdateRegion>();
         locationManager = new LocationManager();
-        availableRegions = new ArrayList<Region>();
-        availableRegions.add(new CommonsRegion(locationManager.getCurrentLocation()));
-        currentRegion = availableRegions.get(0);
+        this.regionManager = new RegionManagerImpl();
 
     }
 
@@ -39,11 +47,13 @@ public class Reverb {
         this.currentUser = user;
     }
 
-    public boolean submitPost(Post post)
+    public boolean submitPost(CreatePostDto postDto)
     {
+        return persistenceManager.getPostManager().submitPost(postDto);
+
         //send post to PersistenceManager
-        AWSPersistenceManager testPer = new AWSPersistenceManager();
-        return testPer.submitPost(post);
+        //AWSPersistenceManager testPer = new AWSPersistenceManager();
+        //return testPer.submitPost(postDto);
 //This should be commented back in but isn't working yet
 //        try {
 //            postFeed.getPosts().add(0,post);
@@ -53,6 +63,10 @@ public class Reverb {
         //return false;
     }
 
+    public RegionManager getRegionManager()
+    {
+        return regionManager;
+    }
 
     public int getCurrentUserId() throws NotSignedInException{
         if(currentUser == null){
@@ -68,18 +82,39 @@ public class Reverb {
         return currentUser;
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
     public Location getCurrentLocation() {
         return this.locationManager.getCurrentLocation();
     }
 
     public void setCurrentLocation(float lat, float longi) {
         this.locationManager.setCurrentLocation(lat, longi);
-        currentRegion.update();
+        notifyLocationListeners();
     }
 
-    public Settings getSettings() {
-        return settings;
+    public static void attachLocationListener(LocationUpdateListener listener) {
+        locationUpdateListeners.add(listener);
     }
+
+    private void notifyLocationListeners(){
+        for(LocationUpdateListener l: this.locationUpdateListeners){
+            l.onLocationChanged(this.locationManager.getCurrentLocation());
+        }
+    }
+    public static void attachAvailableRegionsUpdateListener(AvailableRegionsUpdateRegion listener) {
+        availableRegionsUpdateListeners.add(listener);
+    }
+
+    public static void notifyAvailableRegionsUpdateListeners(){
+        for(AvailableRegionsUpdateRegion l: availableRegionsUpdateListeners){
+            l.onAvailableRegionsUpdated();
+        }
+    }
+
+
 
 }
 

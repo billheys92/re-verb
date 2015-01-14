@@ -7,12 +7,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
-import com.re.reverb.androidBackend.Feed;
-import com.re.reverb.androidBackend.PersistenceManager;
-import com.re.reverb.androidBackend.Post;
-import com.re.reverb.androidBackend.PostFactory;
+import com.re.reverb.androidBackend.feed.Feed;
+import com.re.reverb.androidBackend.post.Post;
+import com.re.reverb.androidBackend.post.PostFactory;
+import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.regions.Region;
-import com.re.reverb.androidBackend.UserProfile;
+import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 
 import org.json.JSONArray;
@@ -25,24 +25,30 @@ import java.util.Collection;
 /**
  * Created by Bill on 2014-10-05.
  */
-public class AWSPersistenceManager implements PersistenceManager{
-
+public class AWSPersistenceManager
+{
     private static final String getPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymessagemysqljson.php";
     private static final String sendPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/messagemysqljson.php";
+
+    private PostManager postManager;
 
     private Feed feed;
 
     public AWSPersistenceManager(){}
     public AWSPersistenceManager(Feed feed){
         this.feed = feed;
+        this.postManager = new PostManager(feed);
     }
 
-    @Override
+    public PostManager getPostManager()
+    {
+        return postManager;
+    }
+
     public Collection<Post> getPosts(float latitude, float longitude) {
         return null;
     }
 
-    @Override
     public Collection<Post> getPosts() {
         RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
@@ -77,12 +83,10 @@ public class AWSPersistenceManager implements PersistenceManager{
         return null;
     }
 
-    @Override
     public Collection<Post> getPosts(Region region) {
         return null;
     }
 
-    @Override
     public boolean submitPost(Post post) {
 
         GsonPost gsonPost = new GsonPost(post);
@@ -132,22 +136,19 @@ public class AWSPersistenceManager implements PersistenceManager{
         queue.add(jsonRequest);
         return true;
     }
-    @Override
+
     public boolean submitPostToRegion(Post post, Region region) {
         return false;
     }
 
-    @Override
     public UserProfile getUserProfileFromLogin(String email, String password) {
         return null;
     }
 
-    @Override
     public void saveUserProfile(UserProfile user) {
 
     }
 
-    @Override
     public boolean addNewUserProfile(UserProfile user) {
         return false;
     }

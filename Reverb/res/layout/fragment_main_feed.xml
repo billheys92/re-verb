@@ -8,11 +8,7 @@
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content" 
        	android:layout_weight=".90" >
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> b5eb1ce039e262a15af9e5a6bf75db5c9fd2b823
     	<ExpandableListView
         	android:id="@+id/feedListView"
         	android:layout_width="match_parent"

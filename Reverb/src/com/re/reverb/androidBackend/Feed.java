@@ -2,13 +2,10 @@ package com.re.reverb.androidBackend;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Vector;
+import java.util.List;
 
-import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
-import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulWindowDecrementException;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulWindowIncrementException;
+import com.re.reverb.androidBackend.post.Post;
 
 public abstract class Feed
 {
@@ -56,12 +53,4 @@ public abstract class Feed
      * @throws UnsuccessfulRefreshException
      */
 	public abstract void refreshPosts() throws UnsuccessfulRefreshException;
-
-    /**
-     *
-     * @return true if more posts were fetched, false if no more were available
-     * @throws UnsuccessfulFeedIncrementException
-     **/
-	public abstract boolean fetchMore() throws UnsuccessfulFeedIncrementException;
-
 }
