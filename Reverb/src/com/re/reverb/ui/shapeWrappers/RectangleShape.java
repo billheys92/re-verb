@@ -29,6 +29,10 @@ public class RectangleShape extends Shape
         this.shape = new ShapeDrawable(new android.graphics.drawable.shapes.RectShape());
     }
 
+    public ShapeDrawable getShapeDrawable(){
+        return this.shape;
+    }
+
     @Override
     public RegionShape getReverbRegionShape(GoogleMap map)
     {

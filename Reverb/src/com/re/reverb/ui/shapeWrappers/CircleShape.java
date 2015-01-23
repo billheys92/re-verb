@@ -24,6 +24,10 @@ public class CircleShape extends Shape
         this.shape = new ShapeDrawable(new android.graphics.drawable.shapes.OvalShape());
     }
 
+    public ShapeDrawable getShapeDrawable(){
+        return this.shape;
+    }
+
     @Override
     public RegionShape getReverbRegionShape(GoogleMap map)
     {

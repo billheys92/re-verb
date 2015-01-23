@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class CommonsRegion extends Region{
 
-    private double regionRadius = 3;    //3km
+    private double regionRadius = 500; //in m
 
     public CommonsRegion(Location centre) {
         super.addShape(new CircleRegionShape(centre, regionRadius));

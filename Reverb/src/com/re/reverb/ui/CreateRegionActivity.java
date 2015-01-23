@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +21,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.regions.CircleRegionShape;
+import com.re.reverb.androidBackend.regions.RectangleRegionShape;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionShape;
 import com.re.reverb.ui.shapeWrappers.Shape;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class CreateRegionActivity extends FragmentActivity{
@@ -40,7 +47,8 @@ public class CreateRegionActivity extends FragmentActivity{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private ShapeType selectedShapeType = ShapeType.None;
-    private Stack<Shape> regionShapes = new Stack<Shape>();
+    private Stack<Shape> shapeStack = new Stack<Shape>();
+    private Stack<RegionShape> regionShapes = new Stack<RegionShape>();
     private View currentOverlay = null;
     private Region region;
 
@@ -48,14 +56,15 @@ public class CreateRegionActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_region);
+        setUpMapIfNeeded();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.getInt("SELECTED_REGION_ID") > -1) {
             this.region = Reverb.getInstance().getRegionManager().getNearbyRegions().get(extras.getInt("SELECTED_REGION_ID"));
             for(RegionShape shape: this.region.getShapes()) {
-//                regionShapes.add(new Shape(shape));
+                regionShapes.add(shape);
             }
-//            drawMapShapes();
+            drawMapShapes();
             Toast.makeText(this, "Opened region: "+this.region.getName(), Toast.LENGTH_SHORT).show();
         }
         else
@@ -64,7 +73,6 @@ public class CreateRegionActivity extends FragmentActivity{
             Toast.makeText(this, "Creating new region", Toast.LENGTH_SHORT).show();
         }
 
-        setUpMapIfNeeded();
 
     }
 
@@ -230,14 +238,45 @@ public class CreateRegionActivity extends FragmentActivity{
     }
 
     public void addRegionShape(Shape shape){
-        this.regionShapes.push(shape);
-        shape.drawOnMap(mMap);
+        RegionShape regionShape = shape.getReverbRegionShape(mMap);
+        this.shapeStack.push(shape);
+        this.regionShapes.push(regionShape);
+        addRegionShapeToMap(regionShape);
     }
 
     private void drawMapShapes(){
         mMap.clear();
-        for(Shape s: regionShapes) {
-            s.drawOnMap(mMap);
+        for(RegionShape s: regionShapes) {
+            addRegionShapeToMap(s);
+        }
+    }
+
+    public void addRegionShapeToMap(RegionShape regionShape) {
+
+        CircleRegionShape circleShape = ((CircleRegionShape)regionShape);
+        Log.d("Reverb", "shape has a radius of "+circleShape.getRadius());
+        if(regionShape instanceof CircleRegionShape) {
+            CircleRegionShape circleRegionShape = (CircleRegionShape) regionShape;
+
+            LatLng centre = new LatLng(circleRegionShape.getCentrePoint().getLatitude(),circleRegionShape.getCentrePoint().getLongitude());
+            Circle circle = mMap.addCircle(new CircleOptions()
+                    .center(centre)
+                    .radius(circleRegionShape.getRadius())
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.BLUE));
+        }
+        else if (regionShape instanceof RectangleRegionShape) {
+            RectangleRegionShape rectRegionShape = (RectangleRegionShape) regionShape;
+
+            List<Location> rectPoints = rectRegionShape.getPoints();
+            List<LatLng> rectPointsLatLng = new ArrayList<LatLng>();
+            for(Location l: rectPoints) {
+                rectPointsLatLng.add(new LatLng(l.getLatitude(), l.getLongitude()));
+            }
+            Polygon rect = mMap.addPolygon(new PolygonOptions()
+                    .addAll(rectPointsLatLng)
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.BLUE));
         }
     }
 }
