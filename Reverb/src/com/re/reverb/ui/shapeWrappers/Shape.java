@@ -15,5 +15,6 @@ public abstract class Shape
     public ShapeDrawable getShapeDrawable(){
         return shape;
     }
-    public abstract RegionShape getReverbRegionShape(GoogleMap map);
+    protected abstract RegionShape getReverbRegionShape(GoogleMap map);
+    public abstract void drawOnMap(GoogleMap map);
 }

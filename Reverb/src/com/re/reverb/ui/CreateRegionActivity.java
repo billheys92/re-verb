@@ -1,45 +1,32 @@
 package com.re.reverb.ui;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.graphics.drawable.shapes.RectShape;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.regions.CircleRegionShape;
+import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionShape;
-import com.re.reverb.ui.shapeWrappers.CircleShape;
-import com.re.reverb.ui.shapeWrappers.RectangleShape;
 import com.re.reverb.ui.shapeWrappers.Shape;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Stack;
 
 public class CreateRegionActivity extends FragmentActivity{
@@ -54,12 +41,31 @@ public class CreateRegionActivity extends FragmentActivity{
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private ShapeType selectedShapeType = ShapeType.None;
     private Stack<Shape> regionShapes = new Stack<Shape>();
+    private View currentOverlay = null;
+    private Region region;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_region);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.getInt("SELECTED_REGION_ID") > -1) {
+            this.region = Reverb.getInstance().getRegionManager().getNearbyRegions().get(extras.getInt("SELECTED_REGION_ID"));
+            for(RegionShape shape: this.region.getShapes()) {
+//                regionShapes.add(new Shape(shape));
+            }
+//            drawMapShapes();
+            Toast.makeText(this, "Opened region: "+this.region.getName(), Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            showEditRegionDetailsOverlay();
+            Toast.makeText(this, "Creating new region", Toast.LENGTH_SHORT).show();
+        }
+
         setUpMapIfNeeded();
+
     }
 
     @Override
@@ -97,8 +103,7 @@ public class CreateRegionActivity extends FragmentActivity{
     }
 
     /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * <p>
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
@@ -126,149 +131,113 @@ public class CreateRegionActivity extends FragmentActivity{
     }
 
     public void onSelectCircle(View view) {
-        if(selectedShapeType != ShapeType.Circle) {
-            removeOverlays();
-            View circleButton = findViewById(R.id.editRegionCircle);
-            circleButton.setBackgroundColor(getResources().getColor(R.color.reverb_blue_4));
-            selectedShapeType = ShapeType.Circle;
-            mMap.getUiSettings().setZoomControlsEnabled(false);
-            FrameLayout drawCircleLayout = (FrameLayout) findViewById(R.id.drawCircleLayout);
-            if (drawCircleLayout == null) {
-                FrameLayout myLayout = (FrameLayout) findViewById(R.id.overlayContainerLayout);
-                View drawCircleView = getLayoutInflater().inflate(R.layout.draw_circle_layout, myLayout, false);
-                myLayout.addView(drawCircleView);
-            }
-        } else {
-            selectedShapeType = ShapeType.None;
-            DrawMapCircleOverlayView circleOverlayView = (DrawMapCircleOverlayView)findViewById(R.id.drawCircleView);
-            for(Shape shape: circleOverlayView.circlesStack){
-                addRegionShape(shape);
-            }
-            removeOverlays();
-        }
+        selectShapeToDraw(ShapeType.Circle, R.id.editRegionCircle, R.id.drawCircleLayout, R.layout.draw_circle_layout, R.id.drawCircleView);
     }
     public void onSelectRectangle(View view) {
-        removeOverlays();
-        if(selectedShapeType != ShapeType.Rectangle) {
-            View rectButton = findViewById(R.id.editRegionSquare);
-            rectButton.setBackgroundColor(getResources().getColor(R.color.reverb_blue_4));
+        selectShapeToDraw(ShapeType.Rectangle, R.id.editRegionSquare, R.id.drawRectLayout, R.layout.draw_rect_layout, R.id.drawRectView);
+    }
+
+    private void selectShapeToDraw(ShapeType shapeType, int selectButtonId, int layoutId, int layoutResource, int viewId){
+        if(selectedShapeType != shapeType) {
+            removeOverlays();
+            setSelectShapeButtonColourSelected(selectButtonId);
+            selectedShapeType = shapeType;
             mMap.getUiSettings().setZoomControlsEnabled(false);
-            selectedShapeType = ShapeType.Rectangle;
-            FrameLayout drawRectLayout = (FrameLayout) findViewById(R.id.drawRectLayout);
-            if (drawRectLayout == null) {
-                FrameLayout myLayout = (FrameLayout) findViewById(R.id.overlayContainerLayout);
-                View drawRectView = getLayoutInflater().inflate(R.layout.draw_rect_layout, myLayout, false);
-                myLayout.addView(drawRectView);
+            View drawCircleLayout = findViewById(layoutId);
+            if (drawCircleLayout == null) {
+                displayOverlay(layoutResource);
             }
         } else {
             selectedShapeType = ShapeType.None;
-            DrawMapRectOverlayView rectOverlayView = (DrawMapRectOverlayView)findViewById(R.id.drawRectView);
-            for(Shape shape: rectOverlayView.rectStack){
+            setSelectShapeButtonColourDeselected(selectButtonId);
+            DrawMapShapeOverlayView overlayView = (DrawMapShapeOverlayView)findViewById(viewId);
+            for(Shape shape: overlayView.shapeStack){
                 addRegionShape(shape);
             }
             removeOverlays();
         }
     }
 
+    private void setSelectShapeButtonColourSelected(int buttonId){
+        View button = findViewById(buttonId);
+        button.setBackgroundColor(getResources().getColor(R.color.white));
+    }
+
+    private void setSelectShapeButtonColourDeselected(int buttonId){
+        View button = findViewById(buttonId);
+        button.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    private void showEditRegionDetailsOverlay(){
+        displayOverlay(R.layout.region_details_overlay_layout);
+        Button b = (Button)findViewById(R.id.saveRegionDetailsButton);
+        b.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v)
+            {
+                removeOverlays();
+            }
+        });
+    }
+
+    private void showRegionDetailsOverlay(){
+
+    }
+
+    private void displayOverlay(int resource) {
+
+        removeOverlays();
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = vi.inflate(resource, null);
+        this.currentOverlay = v;
+
+        // insert into main view
+        FrameLayout myLayout = (FrameLayout) findViewById(R.id.overlayContainerLayout);
+        myLayout.addView(v);
+
+    }
+
     private void removeOverlays(){
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        View view = findViewById(R.id.drawCircleLayout);
-        if(view != null) {
-            ViewGroup parent = (ViewGroup) view.getParent();
-            parent.removeView(view);
+        if(mMap != null)
+        {
+            mMap.getUiSettings().setZoomControlsEnabled(true);
         }
-        view = findViewById(R.id.drawRectLayout);
-        if(view != null) {
-            ViewGroup parent = (ViewGroup) view.getParent();
-            parent.removeView(view);
+        if(this.currentOverlay != null) {
+            ViewGroup parent = (ViewGroup) this.currentOverlay.getParent();
+            parent.removeView(this.currentOverlay);
+            this.currentOverlay = null;
         }
-        View circleButton = findViewById(R.id.editRegionCircle);
-        circleButton.setBackgroundColor(Color.TRANSPARENT);
-        View rectButton = findViewById(R.id.editRegionSquare);
-        rectButton.setBackgroundColor(Color.TRANSPARENT);
+//        View view = findViewById(R.id.drawCircleLayout);
+//        if(view != null) {
+//            ViewGroup parent = (ViewGroup) view.getParent();
+//            parent.removeView(view);
+//        }
+//        view = findViewById(R.id.drawRectLayout);
+//        if(view != null) {
+//            ViewGroup parent = (ViewGroup) view.getParent();
+//            parent.removeView(view);
+//        }
+//        view = findViewById(R.id.regionOverlayLayout);
+//        if(view != null) {
+//            ViewGroup parent = (ViewGroup) view.getParent();
+//            parent.removeView(view);
+//        }
+//        View circleButton = findViewById(R.id.editRegionCircle);
+//        circleButton.setBackgroundColor(Color.TRANSPARENT);
+//        View rectButton = findViewById(R.id.editRegionSquare);
+//        rectButton.setBackgroundColor(Color.TRANSPARENT);
     }
 
     public void addRegionShape(Shape shape){
         this.regionShapes.push(shape);
-        drawMapShape(shape);
-    }
-
-    private void drawMapShape(Shape s){
-        RegionShape regionShape = s.getReverbRegionShape(mMap);
-        if(regionShape instanceof CircleRegionShape)
-        {
-            CircleRegionShape circleRegionShape = (CircleRegionShape)regionShape;
-            LatLng centre = new LatLng(circleRegionShape.getCentrePoint().getLatitude(),circleRegionShape.getCentrePoint().getLongitude());
-            Circle circle = mMap.addCircle(new CircleOptions()
-                    .center(centre)
-                    .radius(circleRegionShape.getRadius())
-                    .strokeColor(Color.RED)
-                    .fillColor(Color.BLUE));
-        }
+        shape.drawOnMap(mMap);
     }
 
     private void drawMapShapes(){
         mMap.clear();
         for(Shape s: regionShapes) {
-            drawMapShape(s);
+            s.drawOnMap(mMap);
         }
-//        if(polyPoints.size() > 2) {
-//            PolygonOptions options = new PolygonOptions();
-//            for (LatLng coord : polyPoints) {
-//                options.add(coord);
-//            }
-//            options.strokeColor(R.color.reverb_blue_1);
-//            options.fillColor(R.color.reverb_blue_1);
-//            Polygon polygon = mMap.addPolygon(options);
-//            return true;
-//        }
     }
-
-//    private void sortPointsClockwise() {
-//        if(polyPoints.size() > 1) {
-//            double latMean = 0;
-//            double longMean = 0;
-//            for (LatLng point : polyPoints) {
-//                latMean += point.latitude;
-//                longMean += point.longitude;
-//            }
-//            latMean /= polyPoints.size();
-//            longMean /= polyPoints.size();
-//            ArrayList<RegionPoint> regionPoints = new ArrayList<RegionPoint>(polyPoints.size());
-//            for (int i = 0; i < polyPoints.size(); i++) {
-//                LatLng latLng = polyPoints.get(i);
-//                regionPoints.add(i, new RegionPoint(latLng, new LatLng(latMean, longMean)));
-//            }
-//            Collections.sort(regionPoints);
-//            polyPoints.clear();
-//            for (RegionPoint p : regionPoints) {
-//                polyPoints.add(p.getLatLng());
-//            }
-//        }
-//    }
-//
-//    private class RegionPoint implements Comparable<RegionPoint>{
-//        private Double angleFromMiddle;
-//        private LatLng latLng;
-//        public RegionPoint(LatLng latLng, LatLng meanLatLng) {
-//            this.latLng = latLng;
-//            angleFromMiddle = new Double(Math.atan2(latLng.latitude - meanLatLng.latitude,latLng.longitude - meanLatLng.longitude));
-//        }
-//
-//        public Double getAngleFromMiddle() {
-//            return angleFromMiddle;
-//        }
-//
-//        public LatLng getLatLng() {
-//
-//            return latLng;
-//        }
-//
-//        @Override
-//        public int compareTo(RegionPoint another) {
-//            if(another.getAngleFromMiddle() > this.getAngleFromMiddle()) return -1;
-//            else if(another.getAngleFromMiddle() < this.getAngleFromMiddle()) return 1;
-//            else return 0;
-//        }
-//    }
 }

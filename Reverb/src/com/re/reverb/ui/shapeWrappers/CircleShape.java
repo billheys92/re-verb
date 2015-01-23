@@ -1,10 +1,13 @@
 package com.re.reverb.ui.shapeWrappers;
 
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.regions.CircleRegionShape;
@@ -37,5 +40,19 @@ public class CircleShape extends Shape
         double radius = GeographyUtils.distanceBetween(centreLocation,rightLocation);
 
         return new CircleRegionShape(centreLocation, radius);
+    }
+
+    @Override
+    public void drawOnMap(GoogleMap map)
+    {
+        CircleRegionShape regionShape = (CircleRegionShape) getReverbRegionShape(map);
+
+        LatLng centre = new LatLng(regionShape.getCentrePoint().getLatitude(),regionShape.getCentrePoint().getLongitude());
+        Circle circle = map.addCircle(new CircleOptions()
+                .center(centre)
+                .radius(regionShape.getRadius())
+                .strokeColor(Color.RED)
+                .fillColor(Color.BLUE));
+
     }
 }
