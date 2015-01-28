@@ -73,6 +73,17 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     }
 
     @Override
+    public void addRegion(Region region)
+    {
+        //TODO: check if the region is already in the list before adding to list, if it is just update it
+        // TODO: persist the region on server
+
+        this.nearbyRegions.add(region);
+        this.subscribedRegions.add(region);
+        Reverb.notifyAvailableRegionsUpdateListeners();
+    }
+
+    @Override
     public void updateRegionLists()
     {
         //TODO: re-fetch nearby and subscribed
