@@ -117,6 +117,7 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
 
     public void startCreateRegionActivity(View view) {
         Intent intent = new Intent(this, CreateRegionActivity.class);
+        intent.putExtra("SELECTED_REGION_ID", -1);
         startActivity(intent);
     }
 
@@ -338,6 +339,12 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
         }
         mUpdatesRequested = true;
 
+    }
+
+
+
+    public void onDoneEditingClick(View view){
+        int i  = 0;
     }
 
 

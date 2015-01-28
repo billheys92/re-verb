@@ -16,4 +16,5 @@ public abstract class Shape
         return shape;
     }
     public abstract RegionShape getReverbRegionShape(GoogleMap map);
+    public abstract void drawOnMap(GoogleMap map);
 }

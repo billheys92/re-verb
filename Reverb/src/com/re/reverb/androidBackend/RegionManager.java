@@ -25,4 +25,6 @@ public interface RegionManager
 
     public ArrayList<String> getSubscribedRegionNames();
 
+    public void addRegion(Region region);
+
 }
