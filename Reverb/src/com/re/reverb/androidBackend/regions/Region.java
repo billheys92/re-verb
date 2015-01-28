@@ -135,9 +135,16 @@ public class Region
         SuccessStatus canEdit = canEdit();
         if(canEdit.success())
         {
-            this.editing = true;
-            this.regionCopy = new Region(this);
-            return new SuccessStatus(true, "Began editing region");
+            if(!editing)
+            {
+                this.editing = true;
+                this.regionCopy = new Region(this);
+                return new SuccessStatus(true, "Began editing region");
+            }
+            else
+            {
+                return new SuccessStatus(true, "Already editing region");
+            }
         }
         else
         {
@@ -183,7 +190,7 @@ public class Region
         if(missingFields.size() > 0) {
             String message = "Some problems have to be fixed before you can save the region.\n";
             for(String s: missingFields){
-                message += s + "\n";
+                message += " - " + s + "\n";
             }
             return new SuccessStatus(false,message);
         }

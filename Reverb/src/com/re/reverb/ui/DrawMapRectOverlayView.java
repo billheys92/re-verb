@@ -53,8 +53,15 @@ public class DrawMapRectOverlayView extends DrawMapShapeOverlayView
     protected void onTouchUp()
     {
         shapeStack.add(currentShape);
-        currentShape = new RectangleShape();
+        this.shapeAddedListener.shapeAdded(currentShape);
+        resetCurrentShape();
+    }
+
+    private void resetCurrentShape(){
+        currentShape = new CircleShape();
         currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+        this.touchDownPointX = 0;
+        this.touchDownPointY = 0;
     }
 
     private void prepareRectDrawing() {

@@ -9,7 +9,7 @@
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/linearLayout">
+        android:layout_above="@+id/editingToolsLayout">
 
         <fragment
             android:layout_width="match_parent"
@@ -23,11 +23,39 @@
             android:layout_centerHorizontal="true"
             tools:layout="@layout/splash_screen_layout"/>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:id="@+id/toggleEditingToolsButton"
+                android:layout_gravity="left|bottom"
+                android:layout_above="@+id/editingToolsLayout"
+                android:onClick="toggleEditingToolsLayout"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Info"
+                android:id="@+id/showInfoButton"
+                android:clickable="true"
+                android:onClick="showEditRegionDetailsOverlay"
+                android:layout_gravity="left|bottom"
+                android:layout_toRightOf="@+id/toggleEditingToolsButton"
+                android:layout_above="@+id/editingToolsLayout"/>
+        </LinearLayout>
+
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@+id/linearLayout"
-            android:id="@+id/overlayContainerLayout"></FrameLayout>
+            android:layout_above="@+id/editingToolsLayout"
+            android:id="@+id/overlayContainerLayout">
+
+        </FrameLayout>
     </FrameLayout>
 
     <LinearLayout
@@ -38,7 +66,7 @@
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout"
+        android:id="@+id/editingToolsLayout"
         android:background="@color/reverb_blue_1"
         android:weightSum="1">
 
@@ -74,14 +102,6 @@
             android:layout_alignParentEnd="true"
             android:onClick="onClearRegionClick"
             android:layout_weight="0.15"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Info"
-            android:id="@+id/showInfoButton"
-            android:clickable="true"
-            android:onClick="showEditRegionDetailsOverlay"/>
 
     </LinearLayout>
 

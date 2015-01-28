@@ -24,6 +24,7 @@ public abstract class DrawMapShapeOverlayView extends View
     float touchDownPointY = 0.0f;
     float latestTouchPointX = 0.0f;
     float latestTouchPointY = 0.0f;
+    protected ShapeAddedToOverlayListener shapeAddedListener;
 
     public DrawMapShapeOverlayView(Context context, AttributeSet attrs, int defStyleAttr)
     {
@@ -77,6 +78,10 @@ public abstract class DrawMapShapeOverlayView extends View
             shape.getShapeDrawable().draw(canvas);
         }
         currentShape.getShapeDrawable().draw(canvas);
+    }
+
+    public void attachShapeAddedToOverlayListener(ShapeAddedToOverlayListener listener) {
+        this.shapeAddedListener = listener;
     }
 
     protected abstract void onTouchDown();
