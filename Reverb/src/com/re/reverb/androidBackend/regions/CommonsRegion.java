@@ -13,18 +13,23 @@ import java.util.ArrayList;
  */
 public class CommonsRegion extends Region{
 
-    private double regionRadius = 3;    //3km
+    private double regionRadius = 500; //in m
 
     public CommonsRegion(Location centre) {
-        super.addShape(new CircleRegionShape(centre, regionRadius));
+        this.addShape(new CircleRegionShape(centre, regionRadius)).throwErrorIfFailed();
         this.writePermission = true;
         this.readPermission = true;
-        this.setName("Commons");
+        this.name = "Commons";
+        this.description = "Post to others in your area!";
     }
 
-    @Override
     public SuccessStatus addShape(RegionShape shape){
-        return new SuccessStatus(false, "You can't add to the commons region");
+        if (shape != null) {
+            shapes.add(shape);
+            return new SuccessStatus(true);
+        } else {
+            return new SuccessStatus(false, "There was no shape to add to the region");
+        }
     }
 
     @Override
@@ -39,13 +44,14 @@ public class CommonsRegion extends Region{
 
     @Override
     public void update(){
-        super.removeAllShapes().throwErrorIfFailed();
-        super.addShape(new CircleRegionShape(Reverb.getInstance().getCurrentLocation(), regionRadius)).throwErrorIfFailed();
-        ArrayList<RegionShape> shapes = (ArrayList<RegionShape>)getShapes();
-        RegionShape shape = shapes.get(0);
-        boolean b = shape.containsPoint(new Location(47.5879637,-52.7008522));
-        b = shape.containsPoint(new Location(47.396386,-52.9267519));
+        this.removeAllShapes().throwErrorIfFailed();
+        this.addShape(new CircleRegionShape(Reverb.getInstance().getCurrentLocation(), regionRadius)).throwErrorIfFailed();
         super.update();
+    }
+
+    @Override
+    public SuccessStatus canEdit(){
+        return new SuccessStatus(false,"You can't edit the commons region");
     }
 
 }
