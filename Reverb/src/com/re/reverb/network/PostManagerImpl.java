@@ -14,21 +14,31 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class PostManagerImpl extends PersistenceManagerImpl implements PostManager
 {
-    public static Collection<Post> getPosts(double latitude, double longitude, Feed feed)
+    private static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/test/test/Reverb.php";
+
+    //TODO: introduce concept of paging for post retrieval
+
+    public static void getPosts(double latitude, double longitude, final Feed feed)
     {
-        Collection<Post> results = new ArrayList<Post>();
-        return results;
+
     }
 
-    public static Collection<Post> getPosts(final Feed feed)
+    public static void getPostsForRegion(int regionId, final Feed feed)
     {
-        Collection<Post> results = new ArrayList<Post>();
-        //TODO: figure out how GET is uniquely identified by server. Path Params? Query Params? JSON?
 
+    }
+
+    public static void getPostsForUser(int userId, final Feed feed)
+    {
+
+    }
+
+    public static void getPosts(final Feed feed)
+    {
+        String params = "?commandtype=get&command=getAllMessages";
 
         Response.Listener<JSONArray> listener = new Response.Listener<JSONArray>()
         {
@@ -45,7 +55,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
 
                         //TODO: fix create post to create new posts
-                        Post p = PostFactory.createPost(postDto);
+                        Post p = PostFactory.createParentPost(postDto);
                         returnedPosts.add(p);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -57,11 +67,17 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
             }
         };
 
-        return results;
+        requestJsonArray(listener, baseURL + params);
     }
 
     public static boolean submitPost(CreatePostDto postDto)
     {
-        return requestJson(postDto, Request.Method.PUT);
+        String params = "?commandtype=post&command=postMessageText";
+        return requestJson(postDto, Request.Method.PUT, baseURL + params);
+    }
+
+    public static void submitReplyPost(CreatePostDto postDto)
+    {
+
     }
 }

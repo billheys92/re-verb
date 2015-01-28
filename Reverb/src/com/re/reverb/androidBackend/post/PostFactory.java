@@ -9,6 +9,7 @@ import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -38,6 +39,25 @@ public class PostFactory
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getTime_stamp());
             return new Post(gsonPost.getPoster_id(), gsonPost.getMessage_id(), new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()), date, new TextPostContent(gsonPost.getMessage_body()), gsonPost.getAnon_flag() == 1);
+        } catch (ParseException e) {
+            throw new InvalidPostException("Could not parse a time stamp from post");
+        }
+    }
+
+    public static ParentPost createParentPost(ReceivePostDto gsonPost) throws InvalidPostException
+    {
+        try
+        {
+            Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getTime_stamp());
+            return new ParentPost(gsonPost.getRegion_id(),
+                    0,
+                    new ArrayList<ChildPost>(0),
+                    gsonPost.getPoster_id(),
+                    gsonPost.getMessage_id(),
+                    new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()),
+                    date,
+                    new TextPostContent(gsonPost.getMessage_body()),
+                    gsonPost.getAnon_flag() == 1);
         } catch (ParseException e) {
             throw new InvalidPostException("Could not parse a time stamp from post");
         }

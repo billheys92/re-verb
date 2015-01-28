@@ -23,7 +23,7 @@ public class Reverb {
     private static Collection<AvailableRegionsUpdateRegion> availableRegionsUpdateListeners;
 
     //private UserProfile currentUser;
-    private UserProfile currentUser = new UserProfile("test", "test", "test", "test", 1);
+    private UserProfile currentUser = new UserProfile("test", "test", "test", "test", 0);
     private RegionManager regionManager;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();

@@ -1,7 +1,5 @@
 package com.re.reverb.androidBackend.post.dto;
 
-import com.re.reverb.androidBackend.post.content.dto.PostContentDto;
-
 public class CreatePostDto
 {
     public int Poster_id;

@@ -148,7 +148,12 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         {
             convertView = inflater.inflate(R.layout.parent_post_row, null);
         }
-        StandardPostContent postContent = (StandardPostContent) parentPost.getContent();
+
+        //Removed while postContent is still just text
+        //StandardPostContent postContent = (StandardPostContent) parentPost.getContent();
+
+        //Added while postContext is still TextPostContent
+        StandardPostContent postContent = new StandardPostContent(convertView.getContext(), parentPost.getContent().getMessageString());
 
         //((ImageView) convertView.findViewById(R.id.profilePicture)).setImageResource(R.drawable.chris_pp);
         ((ImageView) convertView.findViewById(R.id.profilePicture)).setImageBitmap(postContent.getProfilePicture());
