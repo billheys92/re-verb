@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
-import com.re.reverb.androidBackend.post.dto.CreatePostDto;
+import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
@@ -30,19 +30,18 @@ public class AWSPersistenceManager
     private static final String getPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymessagemysqljson.php";
     private static final String sendPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/messagemysqljson.php";
 
-    private PostManager postManager;
+    private PostManagerImpl postManagerImpl;
 
     private Feed feed;
 
     public AWSPersistenceManager(){}
     public AWSPersistenceManager(Feed feed){
         this.feed = feed;
-        this.postManager = new PostManager(feed);
     }
 
-    public PostManager getPostManager()
+    public PostManagerImpl getPostManagerImpl()
     {
-        return postManager;
+        return postManagerImpl;
     }
 
     public Collection<Post> getPosts(float latitude, float longitude) {
@@ -62,7 +61,7 @@ public class AWSPersistenceManager
                         for(int i = 0; i < response.length(); i++){
                             try {
                                 Gson gson = new Gson();
-                                GsonPost gsonPost = gson.fromJson(response.get(i).toString(), GsonPost.class);
+                                ReceivePostDto gsonPost = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
                                 Post p = PostFactory.createPost(gsonPost);
                                 returnedPosts.add(p);
                             } catch (JSONException e) {
@@ -89,7 +88,7 @@ public class AWSPersistenceManager
 
     public boolean submitPost(Post post) {
 
-        GsonPost gsonPost = new GsonPost(post);
+        ReceivePostDto gsonPost = new ReceivePostDto(post);
         Gson gson = new Gson();
         String jsonPost = gson.toJson(gsonPost);
         System.out.println(jsonPost);
