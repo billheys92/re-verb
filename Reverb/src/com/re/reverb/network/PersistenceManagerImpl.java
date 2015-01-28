@@ -14,11 +14,10 @@ import org.json.JSONObject;
 public class PersistenceManagerImpl implements PersistenceManager
 {
     private static final String getPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymessagemysqljson.php";
-    private static final String sendPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/release/messagemysqljson.php";
 
     private static final RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
-    public  static boolean requestJson(Object request, int requestType)
+    public  static boolean requestJson(Object request, int requestType, String url)
     {
         Gson gson = new Gson();
         String jsonObjectString = gson.toJson(request);
@@ -33,14 +32,12 @@ public class PersistenceManagerImpl implements PersistenceManager
         }
 
         //TODO: Pass in Listener from the extension of the manager
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(requestType, sendPostsURL, jsonObject, new Response.Listener<JSONObject>()
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(requestType, url, jsonObject, new Response.Listener<JSONObject>()
         {
 
             @Override
             public void onResponse(JSONObject response)
             {
-                // public void onResponse(String response) {
-                // Display the response string.
                 System.out.println("Response is: "+ response);
             }
         }, new Response.ErrorListener()
@@ -57,9 +54,9 @@ public class PersistenceManagerImpl implements PersistenceManager
         return true;
     }
 
-    public static boolean requestJsonArray(Object request, int requestType, Response.Listener<JSONArray> listener)
+    public static boolean requestJsonArray(Response.Listener<JSONArray> listener, String url)
     {
-        JsonArrayRequest jsonRequest = new JsonArrayRequest(getPostsURL, listener, new Response.ErrorListener()
+        JsonArrayRequest jsonRequest = new JsonArrayRequest(url, listener, new Response.ErrorListener()
         {
             @Override
             public void onErrorResponse(VolleyError error)

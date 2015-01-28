@@ -1,7 +1,10 @@
 package com.re.reverb.androidBackend.post.content;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import com.re.reverb.R;
 import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostDataTypeException;
 
@@ -21,6 +24,14 @@ public class StandardPostContent implements PostContent
         this.handle = handle;
         this.postBody = postBody;
         this.profilePicture = profilePicture;
+    }
+
+    public StandardPostContent(Context context, String postBody)
+    {
+        this.profilePicture = BitmapFactory.decodeResource(context.getResources(), R.drawable.chris_pp);
+        this.username = "Christopher";
+        this.handle = "@chris";
+        this.postBody = postBody;
     }
 
     @Override

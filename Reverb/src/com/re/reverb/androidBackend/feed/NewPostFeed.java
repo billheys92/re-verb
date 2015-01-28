@@ -76,6 +76,7 @@ public class NewPostFeed implements Feed<ParentPost>
         NewPostFactory factory = new NewPostFactory(context);
 
         //Fake Posts
+        /*
         ArrayList<ParentPost> testParents = new ArrayList<ParentPost>();
 
         for(int i = 0; i < 50; i++)
@@ -85,9 +86,10 @@ public class NewPostFeed implements Feed<ParentPost>
         }
 
         this.setPosts(testParents);
+        */
 
         //TODO: Get real posts from the server
-        //Collection<Post> posts = PostManagerImpl.getPosts(this);
+        PostManagerImpl.getPosts(this);
 
         //AWSPersistenceManager persistenceManager = new AWSPersistenceManager(this);
         //persistenceManager.getPosts();
