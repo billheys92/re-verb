@@ -167,20 +167,20 @@ public class NewPostFactory
         switch ((int) (Math.random() * 5))
         {
             case 0:
-                result = new StandardPostContent("christopher", "@christopher", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.chris_pp));
+                result = new StandardPostContent("christopher", "@christopher", genPostBody(), 1, 1, BitmapFactory.decodeResource(context.getResources(), R.drawable.chris_pp));
                 break;
             case 1:
-                result = new StandardPostContent("colin", "@colin", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.colin_pp));
+                result = new StandardPostContent("colin", "@colin", genPostBody(), 1, 1, BitmapFactory.decodeResource(context.getResources(), R.drawable.colin_pp));
                 break;
             case 2:
-                result = new StandardPostContent("jacob", "@jacob", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.jacob_pp));
+                result = new StandardPostContent("jacob", "@jacob", genPostBody(), 1, 1, BitmapFactory.decodeResource(context.getResources(), R.drawable.jacob_pp));
                 break;
             case 3:
-                result = new StandardPostContent("bill", "@bill", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.bill_pp));
+                result = new StandardPostContent("bill", "@bill", genPostBody(), 1, 1, BitmapFactory.decodeResource(context.getResources(), R.drawable.bill_pp));
                 break;
             case 4:
             default:
-                result = new StandardPostContent("", "", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.anonymous_pp));
+                result = new StandardPostContent("", "", genPostBody(), 1, 1, BitmapFactory.decodeResource(context.getResources(), R.drawable.anonymous_pp));
                 break;
         }
 

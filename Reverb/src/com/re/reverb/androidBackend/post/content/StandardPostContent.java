@@ -13,16 +13,22 @@ public class StandardPostContent implements PostContent
     private String username;
     private String handle;
     private String postBody;
+    private Integer numVotes;
+    private Integer numReplies;
     private Bitmap profilePicture;
 
     public StandardPostContent(String username,
                                String handle,
                                String postBody,
+                               Integer numVotes,
+                               Integer numReplies,
                                Bitmap profilePicture)
     {
         this.username = username;
         this.handle = handle;
         this.postBody = postBody;
+        this.numVotes = numVotes;
+        this.numReplies = numReplies;
         this.profilePicture = profilePicture;
     }
 
@@ -31,6 +37,8 @@ public class StandardPostContent implements PostContent
         this.profilePicture = BitmapFactory.decodeResource(context.getResources(), R.drawable.chris_pp);
         this.username = "Christopher";
         this.handle = "@chris";
+        this.numVotes = 40;
+        this.numReplies = 0;
         this.postBody = postBody;
     }
 
@@ -76,6 +84,26 @@ public class StandardPostContent implements PostContent
     public void setHandle(String handle)
     {
         this.handle = handle;
+    }
+
+    public Integer getNumVotes()
+    {
+        return numVotes;
+    }
+
+    public void setNumVotes(Integer numVotes)
+    {
+        this.numVotes = numVotes;
+    }
+
+    public Integer getNumReplies()
+    {
+        return numReplies;
+    }
+
+    public void setNumReplies(Integer numReplies)
+    {
+        this.numReplies = numReplies;
     }
 
     public String getPostBody()

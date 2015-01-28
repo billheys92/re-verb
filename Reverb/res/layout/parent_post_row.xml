@@ -48,6 +48,29 @@
                     android:paddingRight="2sp"
                     android:paddingLeft="2sp"/>
             </TableRow>
+            <TableRow>
+                <LinearLayout>
+                    <ImageView android:id="@+id/replyIcon"
+                               android:layout_width="20dip"
+                               android:layout_height="20dip"/>
+                    <ImageView android:id="@+id/voteIcon"
+                        android:layout_width="20dip"
+                        android:layout_height="20dip"/>
+                    <TextView
+                        android:id="@+id/voteCount"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:textColor="@color/main_font"
+                        android:textSize="12sp"
+                        android:layout_weight="2"
+                        android:paddingRight="2sp"
+                        android:paddingLeft="2sp"/>
+                </LinearLayout>
+            </TableRow>
         </TableLayout>
+        <ImageView
+            android:id="@+id/viewRepliesIcon"
+            android:layout_width="50dip"
+            android:layout_height="50dip"/>
     </TableRow>
 </LinearLayout>
