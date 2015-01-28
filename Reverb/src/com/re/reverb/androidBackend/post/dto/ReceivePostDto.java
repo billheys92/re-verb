@@ -1,4 +1,4 @@
-package com.re.reverb.network;
+package com.re.reverb.androidBackend.post.dto;
 
 import com.re.reverb.androidBackend.post.Post;
 
@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by Colin on 10/7/2014.
  */
-public class GsonPost {
+public class ReceivePostDto {
 
     int Message_id;
     int Poster_id;
@@ -15,7 +15,7 @@ public class GsonPost {
     int Anon_flag;
     double Location_lat;
     double Location_long;
-    String Time_stamp;
+    String Time_stamp; //TODO: remove this
     int Region_id;
     int Spam;
     int Up_vote;
@@ -23,7 +23,7 @@ public class GsonPost {
     int Repost_link;
     int Reply_link;
 
-    GsonPost(int Message_id,
+    ReceivePostDto(int Message_id,
              int Poster_id,
             String Message_body,
             int Anon_flag,
@@ -52,7 +52,7 @@ public class GsonPost {
         this.Reply_link = Reply_link;
     }
 
-    public GsonPost(Post post) {
+    public ReceivePostDto(Post post) {
         this.Message_id = post.getPostId();
         this.Poster_id = post.getUserId();
         this.Message_body = post.getContent().getMessageString();

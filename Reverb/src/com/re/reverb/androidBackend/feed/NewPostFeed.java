@@ -6,8 +6,12 @@ import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.post.NewPostFactory;
 import com.re.reverb.androidBackend.post.ParentPost;
+import com.re.reverb.androidBackend.post.Post;
+import com.re.reverb.network.AWSPersistenceManager;
+import com.re.reverb.network.PostManagerImpl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,6 +85,9 @@ public class NewPostFeed implements Feed<ParentPost>
         }
 
         this.setPosts(testParents);
+
+        //TODO: Get real posts from the server
+        //Collection<Post> posts = PostManagerImpl.getPosts(this);
 
         //AWSPersistenceManager persistenceManager = new AWSPersistenceManager(this);
         //persistenceManager.getPosts();

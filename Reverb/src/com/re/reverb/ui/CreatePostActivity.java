@@ -83,7 +83,8 @@ public class CreatePostActivity extends Activity {
                     anonymous,
                     location.getLatitude(),
                     location.getLongitude(),
-                    new StandardPostContentDto(text));
+                    //new StandardPostContentDto(text));
+                    text);
         } catch (NotSignedInException e)
         {
             Toast.makeText(this, "Could not create post because " + e.getMessage(), Toast.LENGTH_SHORT).show();

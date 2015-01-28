@@ -3,19 +3,22 @@ package com.re.reverb.network;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class PersistenceManagerImpl implements PersistenceManager
 {
     private static final String getPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymessagemysqljson.php";
-    private static final String sendPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/messagemysqljson.php";
+    private static final String sendPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/release/messagemysqljson.php";
 
     private static final RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
-    public boolean requestJson(Object request, int requestType)
+    public  static boolean requestJson(Object request, int requestType)
     {
         Gson gson = new Gson();
         String jsonObjectString = gson.toJson(request);
@@ -47,6 +50,22 @@ public class PersistenceManagerImpl implements PersistenceManager
             {
                 error.printStackTrace();
                 System.out.println("Error Sending Message");
+            }
+        });
+
+        queue.add(jsonRequest);
+        return true;
+    }
+
+    public static boolean requestJsonArray(Object request, int requestType, Response.Listener<JSONArray> listener)
+    {
+        JsonArrayRequest jsonRequest = new JsonArrayRequest(getPostsURL, listener, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                error.printStackTrace();
+                System.out.println("Error Getting Message");
             }
         });
 

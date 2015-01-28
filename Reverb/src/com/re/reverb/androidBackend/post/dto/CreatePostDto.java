@@ -4,23 +4,23 @@ import com.re.reverb.androidBackend.post.content.dto.PostContentDto;
 
 public class CreatePostDto
 {
-    public int userId;
-    public boolean anonymous;
-    public double latitude;
-    public double longitude;
-    public PostContentDto content;
+    public int Poster_id;
+    public boolean Anon_flag;
+    public double Location_lat;
+    public double Location_long;
+    public String Message_body;
 
     public CreatePostDto(int userId,
                          boolean anonymous,
                          double latitude,
                          double longitude,
-                         PostContentDto content)
+                         String content)
     {
-        this.userId = userId;
-        this.anonymous = anonymous;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.content = content;
+        this.Poster_id = userId;
+        this.Anon_flag = anonymous;
+        this.Location_lat = latitude;
+        this.Location_long = longitude;
+        this.Message_body = content;
     }
 }
 

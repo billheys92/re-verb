@@ -2,16 +2,13 @@ package com.re.reverb.androidBackend;
 
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.feed.Feed;
-import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
-import com.re.reverb.androidBackend.regions.CommonsRegion;
-import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.network.AWSPersistenceManager;
+import com.re.reverb.network.PostManagerImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class Reverb {
 
@@ -26,7 +23,7 @@ public class Reverb {
     private static Collection<AvailableRegionsUpdateRegion> availableRegionsUpdateListeners;
 
     //private UserProfile currentUser;
-    private UserProfile currentUser;
+    private UserProfile currentUser = new UserProfile("test", "test", "test", "test", 1);
     private RegionManager regionManager;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
@@ -49,7 +46,7 @@ public class Reverb {
 
     public boolean submitPost(CreatePostDto postDto)
     {
-        return persistenceManager.getPostManager().submitPost(postDto);
+        return PostManagerImpl.submitPost(postDto);
 
         //send post to PersistenceManager
         //AWSPersistenceManager testPer = new AWSPersistenceManager();

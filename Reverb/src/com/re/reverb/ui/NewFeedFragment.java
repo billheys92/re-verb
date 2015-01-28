@@ -1,6 +1,7 @@
 package com.re.reverb.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -11,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.post.ParentPost;
@@ -58,13 +61,29 @@ public class NewFeedFragment extends Fragment implements OnRefreshListener, OnFe
     @Override
     public void onDataChanged()
     {
-
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onRefresh()
     {
-
+        try
+        {
+            dataFeed.refreshPosts();
+            adapter.notifyDataSetChanged();
+        } catch (UnsuccessfulRefreshException e)
+        {
+            Toast.makeText(getActivity(), R.string.refresh_error_toast_message, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 3000);
     }
 
     private class FeedScrollListener implements AbsListView.OnScrollListener

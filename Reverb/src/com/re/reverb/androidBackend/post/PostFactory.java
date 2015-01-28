@@ -5,7 +5,7 @@ import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.post.content.TextPostContent;
-import com.re.reverb.network.GsonPost;
+import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +33,7 @@ public class PostFactory
         return new Post(posterId, 1, reverb.getCurrentLocation(), new Date(), new TextPostContent(text), anonymous);
     }
 
-    public static Post createPost(GsonPost gsonPost) throws InvalidPostException
+    public static Post createPost(ReceivePostDto gsonPost) throws InvalidPostException
     {
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getTime_stamp());
