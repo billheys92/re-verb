@@ -37,11 +37,13 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Name"
+                    android:textColor="@android:color/black"
                     android:id="@+id/regionNameTextView"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:id="@+id/editRegionName"/>
 
             </LinearLayout>
@@ -56,11 +58,13 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Description"
+                    android:textColor="@android:color/black"
                     android:id="@+id/regionDescriptionTextView"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="148dp"
+                    android:textColor="@android:color/black"
                     android:id="@+id/editRegionDescription"/>
 
             </LinearLayout>

@@ -1,16 +1,21 @@
 package com.re.reverb.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -30,6 +35,7 @@ import com.re.reverb.androidBackend.regions.CircleRegionShape;
 import com.re.reverb.androidBackend.regions.RectangleRegionShape;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionShape;
+import com.re.reverb.androidBackend.utils.SuccessStatus;
 import com.re.reverb.ui.shapeWrappers.Shape;
 
 import java.util.ArrayList;
@@ -69,6 +75,7 @@ public class CreateRegionActivity extends FragmentActivity{
         }
         else
         {
+            this.region = new Region();
             showEditRegionDetailsOverlay();
             Toast.makeText(this, "Creating new region", Toast.LENGTH_SHORT).show();
         }
@@ -119,7 +126,7 @@ public class CreateRegionActivity extends FragmentActivity{
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         double lat = Reverb.getInstance().locationManager.getCurrentLatitude();
         double longi = Reverb.getInstance().locationManager.getCurrentLongitude();
-        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(lat, longi), 16.0f);
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(lat, longi), 13.0f);
         mMap.moveCamera(update);
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -132,6 +139,9 @@ public class CreateRegionActivity extends FragmentActivity{
     }
 
     public void onSaveRegionClick(View view) {
+        region.setShapes(regionShapes);
+        SuccessStatus status = region.saveRegion();
+        Log.d("Reverb",status.reason());
     }
 
     public void onClearRegionClick(View view){
@@ -176,15 +186,56 @@ public class CreateRegionActivity extends FragmentActivity{
         button.setBackgroundColor(Color.TRANSPARENT);
     }
 
+    public void showEditRegionDetailsOverlay(View view){
+        this.showEditRegionDetailsOverlay();
+    }
+
     private void showEditRegionDetailsOverlay(){
         displayOverlay(R.layout.region_details_overlay_layout);
+        region.beginEditing();
+        final Activity activity = this;
         Button b = (Button)findViewById(R.id.saveRegionDetailsButton);
-        b.setOnClickListener(new View.OnClickListener() {
+        b.setOnClickListener(new View.OnClickListener()
+        {
 
             @Override
             public void onClick(View v)
             {
                 removeOverlays();
+            }
+        });
+        EditText nameExitText = (EditText)findViewById(R.id.editRegionName);
+        nameExitText.setText(region.getName());
+        nameExitText.addTextChangedListener(new TextWatcher()
+        {
+            public void afterTextChanged(Editable s)
+            {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                region.setName(s.toString());
+            }
+        });
+        EditText descriptionEditText = (EditText)findViewById(R.id.editRegionDescription);
+        descriptionEditText.setText(region.getDescription());
+        descriptionEditText.addTextChangedListener(new TextWatcher()
+        {
+            public void afterTextChanged(Editable s)
+            {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                region.setDescription(s.toString());
             }
         });
     }
@@ -216,25 +267,6 @@ public class CreateRegionActivity extends FragmentActivity{
             parent.removeView(this.currentOverlay);
             this.currentOverlay = null;
         }
-//        View view = findViewById(R.id.drawCircleLayout);
-//        if(view != null) {
-//            ViewGroup parent = (ViewGroup) view.getParent();
-//            parent.removeView(view);
-//        }
-//        view = findViewById(R.id.drawRectLayout);
-//        if(view != null) {
-//            ViewGroup parent = (ViewGroup) view.getParent();
-//            parent.removeView(view);
-//        }
-//        view = findViewById(R.id.regionOverlayLayout);
-//        if(view != null) {
-//            ViewGroup parent = (ViewGroup) view.getParent();
-//            parent.removeView(view);
-//        }
-//        View circleButton = findViewById(R.id.editRegionCircle);
-//        circleButton.setBackgroundColor(Color.TRANSPARENT);
-//        View rectButton = findViewById(R.id.editRegionSquare);
-//        rectButton.setBackgroundColor(Color.TRANSPARENT);
     }
 
     public void addRegionShape(Shape shape){
@@ -253,11 +285,9 @@ public class CreateRegionActivity extends FragmentActivity{
 
     public void addRegionShapeToMap(RegionShape regionShape) {
 
-        CircleRegionShape circleShape = ((CircleRegionShape)regionShape);
-        Log.d("Reverb", "shape has a radius of "+circleShape.getRadius());
         if(regionShape instanceof CircleRegionShape) {
             CircleRegionShape circleRegionShape = (CircleRegionShape) regionShape;
-
+            Log.d("Reverb", "shape has a radius of "+circleRegionShape.getRadius());
             LatLng centre = new LatLng(circleRegionShape.getCentrePoint().getLatitude(),circleRegionShape.getCentrePoint().getLongitude());
             Circle circle = mMap.addCircle(new CircleOptions()
                     .center(centre)
