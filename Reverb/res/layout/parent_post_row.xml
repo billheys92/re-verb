@@ -7,7 +7,7 @@
     android:stretchColumns="1" android:paddingTop="0dip">
     <TableRow android:layout_width="match_parent"
               android:layout_height="match_parent">
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/profilePicture"
             android:layout_width="75dip"
             android:layout_height="75dip"

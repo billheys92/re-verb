@@ -22,6 +22,9 @@ public class ReceivePostDto {
     int Down_vote;
     int Repost_link;
     int Reply_link;
+    String Profile_picture;
+    String Name;
+    String Handle;
 
     ReceivePostDto(int Message_id,
              int Poster_id,
@@ -35,7 +38,10 @@ public class ReceivePostDto {
             int Up_vote,
             int Down_vote,
             int Repost_link,
-            int Reply_link)
+            int Reply_link,
+            String Profile_picture,
+            String Name,
+            String Handle)
     {
         this.Message_id = Message_id;
         this.Poster_id = Poster_id;
@@ -50,6 +56,9 @@ public class ReceivePostDto {
         this.Down_vote = Down_vote;
         this.Repost_link = Repost_link;
         this.Reply_link = Reply_link;
+        this.Profile_picture = Profile_picture;
+        this.Name = Name;
+        this.Handle = Handle;
     }
 
     public ReceivePostDto(Post post) {
@@ -119,5 +128,20 @@ public class ReceivePostDto {
 
     public int getReply_link() {
         return Reply_link;
+    }
+
+    public String getProfile_picture()
+    {
+        return Profile_picture;
+    }
+
+    public String getName()
+    {
+        return Name;
+    }
+
+    public String getHandle()
+    {
+        return Handle;
     }
 }
