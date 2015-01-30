@@ -4,6 +4,7 @@ import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.post.content.StandardPostContent;
 import com.re.reverb.androidBackend.post.content.TextPostContent;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 
@@ -56,7 +57,8 @@ public class PostFactory
                     gsonPost.getMessage_id(),
                     new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()),
                     date,
-                    new TextPostContent(gsonPost.getMessage_body()),
+                    //new TextPostContent(gsonPost.getMessage_body()),
+                    new StandardPostContent(gsonPost.getName(), gsonPost.getHandle(), gsonPost.getMessage_body(), gsonPost.getProfile_picture()),
                     gsonPost.getAnon_flag() == 1);
         } catch (ParseException e) {
             throw new InvalidPostException("Could not parse a time stamp from post");

@@ -1,34 +1,32 @@
 package com.re.reverb.androidBackend.post.content;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
-import com.re.reverb.R;
 import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostDataTypeException;
 
 public class StandardPostContent implements PostContent
 {
+    private static final String profilePictureBaseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/test/";
     private String username;
     private String handle;
     private String postBody;
-    private Bitmap profilePicture;
+    private String profilePictureURL;
 
     public StandardPostContent(String username,
                                String handle,
                                String postBody,
-                               Bitmap profilePicture)
+                               String profilePictureURL)
     {
         this.username = username;
         this.handle = handle;
         this.postBody = postBody;
-        this.profilePicture = profilePicture;
+        this.profilePictureURL = profilePictureURL;
     }
 
     public StandardPostContent(Context context, String postBody)
     {
-        this.profilePicture = BitmapFactory.decodeResource(context.getResources(), R.drawable.chris_pp);
+        this.profilePictureURL = profilePictureBaseURL + "uploads/test_upload1417126786685";
         this.username = "Christopher";
         this.handle = "@chris";
         this.postBody = postBody;
@@ -88,13 +86,13 @@ public class StandardPostContent implements PostContent
         this.postBody = postBody;
     }
 
-    public Bitmap getProfilePicture()
+    public String getProfilePictureURL()
     {
-        return profilePicture;
+        return profilePictureBaseURL + profilePictureURL;
     }
 
-    public void setProfilePicture(Bitmap profilePicture)
+    public void setProfilePictureURL(String profilePictureURL)
     {
-        this.profilePicture = profilePicture;
+        this.profilePictureURL = profilePictureURL;
     }
 }

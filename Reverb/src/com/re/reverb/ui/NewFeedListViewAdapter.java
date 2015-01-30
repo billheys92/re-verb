@@ -5,16 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.post.ChildPost;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
+import com.re.reverb.androidBackend.post.ChildPost;
 import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.post.content.StandardPostContent;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.network.RequestQueueSingleton;
 
 public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 {
@@ -75,7 +76,11 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         }
         StandardPostContent postContent = (StandardPostContent) child.getContent();
 
-        ((ImageView) convertView.findViewById(R.id.profilePicture)).setImageBitmap(postContent.getProfilePicture());
+        NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
+        netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
+        //((ImageView) convertView.findViewById(R.id.profilePicture)).setImageBitmap(postContent.getProfilePicture());
+        netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
+        //((ImageView) convertView.findViewById(R.id.profilePicture)).setImageBitmap(postContent.getProfilePicture());
         ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
@@ -150,13 +155,18 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         }
 
         //Removed while postContent is still just text
-        //StandardPostContent postContent = (StandardPostContent) parentPost.getContent();
+        StandardPostContent postContent = (StandardPostContent) parentPost.getContent();
 
         //Added while postContext is still TextPostContent
-        StandardPostContent postContent = new StandardPostContent(convertView.getContext(), parentPost.getContent().getMessageString());
+        //StandardPostContent postContent = new StandardPostContent(convertView.getContext(), parentPost.getContent().getMessageString());
 
+
+        NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
+        netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
         //((ImageView) convertView.findViewById(R.id.profilePicture)).setImageResource(R.drawable.chris_pp);
-        ((ImageView) convertView.findViewById(R.id.profilePicture)).setImageBitmap(postContent.getProfilePicture());
+        //((ImageView) convertView.findViewById(R.id.profilePicture)).setImageBitmap(postContent.getProfilePicture());
+        netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
+
         ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());

@@ -2,9 +2,7 @@ package com.re.reverb.androidBackend.post;
 
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 
-import com.re.reverb.R;
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.post.content.StandardPostContent;
@@ -167,20 +165,20 @@ public class NewPostFactory
         switch ((int) (Math.random() * 5))
         {
             case 0:
-                result = new StandardPostContent("christopher", "@christopher", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.chris_pp));
+                result = new StandardPostContent("christopher", "@christopher", genPostBody(), "");
                 break;
             case 1:
-                result = new StandardPostContent("colin", "@colin", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.colin_pp));
+                result = new StandardPostContent("colin", "@colin", genPostBody(), "");
                 break;
             case 2:
-                result = new StandardPostContent("jacob", "@jacob", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.jacob_pp));
+                result = new StandardPostContent("jacob", "@jacob", genPostBody(), "");
                 break;
             case 3:
-                result = new StandardPostContent("bill", "@bill", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.bill_pp));
+                result = new StandardPostContent("bill", "@bill", genPostBody(), "");
                 break;
             case 4:
             default:
-                result = new StandardPostContent("", "", genPostBody(), BitmapFactory.decodeResource(context.getResources(), R.drawable.anonymous_pp));
+                result = new StandardPostContent("", "", genPostBody(), "");
                 break;
         }
 

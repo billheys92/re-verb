@@ -16,7 +16,7 @@
             android:id="@+id/userinfo"
             android:scaleType="centerCrop"/>
 
-        <ImageButton
+        <com.android.volley.toolbox.NetworkImageView
             android:layout_width="@dimen/user_display_pic_side"
             android:layout_height="@dimen/user_display_pic_side"
             android:id="@+id/profilePicture"
