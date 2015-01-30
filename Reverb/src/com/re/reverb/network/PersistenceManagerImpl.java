@@ -13,8 +13,6 @@ import org.json.JSONObject;
 
 public class PersistenceManagerImpl implements PersistenceManager
 {
-    private static final String getPostsURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/querymessagemysqljson.php";
-
     private static final RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
     public  static boolean requestJson(Object request, int requestType, String url)

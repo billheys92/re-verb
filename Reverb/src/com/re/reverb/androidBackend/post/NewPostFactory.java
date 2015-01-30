@@ -165,20 +165,20 @@ public class NewPostFactory
         switch ((int) (Math.random() * 5))
         {
             case 0:
-                result = new StandardPostContent("christopher", "@christopher", genPostBody(), "");
+                result = new StandardPostContent("christopher", "@christopher", genPostBody(), 1, 1, "");
                 break;
             case 1:
-                result = new StandardPostContent("colin", "@colin", genPostBody(), "");
+                result = new StandardPostContent("colin", "@colin", genPostBody(), 1, 1, "");
                 break;
             case 2:
-                result = new StandardPostContent("jacob", "@jacob", genPostBody(), "");
+                result = new StandardPostContent("jacob", "@jacob", genPostBody(), 1, 1, "");
                 break;
             case 3:
-                result = new StandardPostContent("bill", "@bill", genPostBody(), "");
+                result = new StandardPostContent("bill", "@bill", genPostBody(), 1, 1, "");
                 break;
             case 4:
             default:
-                result = new StandardPostContent("", "", genPostBody(), "");
+                result = new StandardPostContent("", "", genPostBody(), 1, 1, "");
                 break;
         }
 

@@ -14,15 +14,10 @@ import android.widget.Toast;
 
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.post.Post;
-import com.re.reverb.androidBackend.post.PostFactory;
-import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
-import com.re.reverb.androidBackend.post.content.dto.StandardPostContentDto;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
-
-import java.util.Calendar;
 
 public class CreatePostActivity extends Activity {
 
@@ -72,7 +67,7 @@ public class CreatePostActivity extends Activity {
 
     private CreatePostDto buildPost() {
         TextView contentText = (TextView)findViewById(R.id.editPostTextContentView);
-        String text = contentText.getText().toString() + " lat("+Reverb.getInstance().locationManager.getCurrentLatitude()+") long("+Reverb.getInstance().locationManager.getCurrentLongitude()+")";
+        String text = contentText.getText().toString();// + " lat("+Reverb.getInstance().locationManager.getCurrentLatitude()+") long("+Reverb.getInstance().locationManager.getCurrentLongitude()+")";
         Location location = Reverb.getInstance().getCurrentLocation();
 
         CreatePostDto postDto;
