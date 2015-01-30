@@ -169,9 +169,12 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
         ((ImageView) convertView.findViewById(R.id.replyIcon)).setImageResource(R.drawable.reply_icon);
         ((ImageView) convertView.findViewById(R.id.voteIcon)).setImageResource(R.drawable.votes_icon);
+        ((TextView) convertView.findViewById(R.id.voteCount)).setText(postContent.getNumVotes().toString());
         ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
+        ((TextView) convertView.findViewById(R.id.timeNumber)).setText("                            8:35");
+        ((TextView) convertView.findViewById(R.id.timeLetter)).setText("PM");
 
         /*
         Post post = (Post) getGroup(groupPosition);
