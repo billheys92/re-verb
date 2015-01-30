@@ -1,10 +1,5 @@
 package com.re.reverb.ui;
 
-import com.re.reverb.R;
-import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.account.UserProfile;
-import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,9 +15,14 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.toolbox.NetworkImageView;
+import com.re.reverb.R;
+import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.account.UserProfile;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -41,7 +41,7 @@ public class UserProfileFragment extends Fragment
 
     UserProfile profile = new UserProfile("test@test.com","bheys","Bill Heys","description",1);
     private ImageView backgroundMapImageView;
-    ImageButton profilePic;
+    NetworkImageView profilePic;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -82,7 +82,7 @@ public class UserProfileFragment extends Fragment
         descriptionText.setText(profile.getDescription());
         TextView emailText = (TextView) view.findViewById(R.id.emailTextView);
         emailText.setText(profile.getEmail());
-        profilePic = (ImageButton) view.findViewById(R.id.profilePicture);
+        profilePic = (NetworkImageView) view.findViewById(R.id.profilePicture);
         profilePic.setOnClickListener(new View.OnClickListener() {
 
             @Override

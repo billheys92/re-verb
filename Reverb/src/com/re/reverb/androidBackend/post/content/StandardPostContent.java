@@ -1,40 +1,38 @@
 package com.re.reverb.androidBackend.post.content;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
-import com.re.reverb.R;
 import com.re.reverb.androidBackend.errorHandling.EmptyPostException;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostDataTypeException;
 
 public class StandardPostContent implements PostContent
 {
+    private static final String profilePictureBaseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/test/";
     private String username;
     private String handle;
     private String postBody;
+    private String profilePictureURL;
     private Integer numVotes;
     private Integer numReplies;
-    private Bitmap profilePicture;
 
     public StandardPostContent(String username,
                                String handle,
                                String postBody,
                                Integer numVotes,
                                Integer numReplies,
-                               Bitmap profilePicture)
+                               String profilePictureURL)
     {
         this.username = username;
         this.handle = handle;
         this.postBody = postBody;
+        this.profilePictureURL = profilePictureURL;
         this.numVotes = numVotes;
         this.numReplies = numReplies;
-        this.profilePicture = profilePicture;
     }
 
     public StandardPostContent(Context context, String postBody)
     {
-        this.profilePicture = BitmapFactory.decodeResource(context.getResources(), R.drawable.chris_pp);
+        this.profilePictureURL = profilePictureBaseURL + "uploads/test_upload1417126786685";
         this.username = "Christopher";
         this.handle = "@chris";
         this.numVotes = 40;
@@ -116,13 +114,13 @@ public class StandardPostContent implements PostContent
         this.postBody = postBody;
     }
 
-    public Bitmap getProfilePicture()
+    public String getProfilePictureURL()
     {
-        return profilePicture;
+        return profilePictureBaseURL + profilePictureURL;
     }
 
-    public void setProfilePicture(Bitmap profilePicture)
+    public void setProfilePictureURL(String profilePictureURL)
     {
-        this.profilePicture = profilePicture;
+        this.profilePictureURL = profilePictureURL;
     }
 }
