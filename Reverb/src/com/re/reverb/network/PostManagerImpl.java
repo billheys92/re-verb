@@ -21,9 +21,16 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
     //TODO: introduce concept of paging for post retrieval
 
+    public static void getPosts(final Feed feed)
+    {
+        String params = "?commandtype=get&command=getAllMessages";
+        getPosts(feed, params);
+    }
+
     public static void getPosts(double latitude, double longitude, final Feed feed)
     {
-
+        String params = "?commandtype=get&command=getAllMessages&lat=" + Double.toString(latitude) + "&lon=" + Double.toString(longitude);
+        getPosts(feed, params);
     }
 
     public static void getPostsForRegion(int regionId, final Feed feed)
@@ -36,9 +43,9 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
     }
 
-    public static void getPosts(final Feed feed)
+    public static void getPosts(final Feed feed, final String params)
     {
-        String params = "?commandtype=get&command=getAllMessages";
+        String url = baseURL + params;
 
         Response.Listener<JSONArray> listener = new Response.Listener<JSONArray>()
         {
@@ -67,7 +74,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
             }
         };
 
-        requestJsonArray(listener, baseURL + params);
+        requestJsonArray(listener, url);
     }
 
     public static boolean submitPost(CreatePostDto postDto)

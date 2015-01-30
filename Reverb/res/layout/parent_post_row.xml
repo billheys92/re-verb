@@ -4,17 +4,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:stretchColumns="1" android:paddingTop="0dip" android:layout_gravity="top">
+    android:stretchColumns="1" android:paddingTop="0dip">
     <TableRow android:layout_width="match_parent"
               android:layout_height="match_parent">
         <ImageView
             android:id="@+id/profilePicture"
             android:layout_width="75dip"
-            android:layout_height="75dip"/>
+            android:layout_height="75dip"
+            android:layout_margin="3dp"/>
         <TableLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:paddingTop="0dip">
+            android:layout_height="wrap_content"
+            android:paddingTop="0dip"
+            android:layout_margin="3dp">
             <TableRow>
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -33,9 +35,58 @@
                         android:textColor="@color/main_font"
                         android:textSize="12sp"
                         android:layout_height="fill_parent"
-                        android:layout_width="wrap_content"/>
+                        android:layout_width="wrap_content"
+                        android:paddingTop="2sp"/>
+                    <TextView
+                        android:id="@+id/timeNumber"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"/>
+                    <TextView
+                        android:id="@+id/timeLetter"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:paddingTop="2sp"/>
                 </LinearLayout>
-
+                <!--<RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="20sp">
+                    <TextView
+                        android:id="@+id/username"
+                        android:textColor="@color/main_font"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_height="fill_parent"
+                        android:layout_width="wrap_content"
+                        android:paddingRight="2sp"
+                        android:paddingLeft="2sp"/>
+                    <TextView
+                        android:id="@+id/handle"
+                        android:textColor="@color/main_font"
+                        android:textSize="12sp"
+                        android:layout_height="fill_parent"
+                        android:layout_width="40dp"
+                        android:paddingTop="2sp"/>
+                    <TextView
+                        android:id="@+id/timeNumber"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="14sp"
+                        android:layout_alignParentRight="true"
+                        android:layout_toLeftOf="@+id/timeLetter"
+                        android:layout_width="40dp"
+                        android:layout_height="fill_parent"/>
+                    <TextView
+                        android:id="@+id/timeLetter"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="12sp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="40dp"
+                        android:layout_height="fill_parent"
+                        android:paddingTop="2sp"/>
+                </RelativeLayout>-->
             </TableRow>
             <TableRow>
                 <TextView
@@ -49,22 +100,24 @@
                     android:paddingLeft="2sp"/>
             </TableRow>
             <TableRow>
-                <LinearLayout>
+                <LinearLayout android:paddingTop="8dip">
                     <ImageView android:id="@+id/replyIcon"
-                               android:layout_width="20dip"
-                               android:layout_height="20dip"/>
+                        android:layout_width="22dip"
+                        android:layout_height="22dip"
+                        android:layout_marginRight="4sp"/>
                     <ImageView android:id="@+id/voteIcon"
-                        android:layout_width="20dip"
-                        android:layout_height="20dip"/>
+                        android:layout_width="22dip"
+                        android:layout_height="22dip"
+                        android:layout_marginLeft="4sp"/>
                     <TextView
                         android:id="@+id/voteCount"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_width="wrap_content"
                         android:textColor="@color/main_font"
-                        android:textSize="12sp"
-                        android:layout_weight="2"
-                        android:paddingRight="2sp"
-                        android:paddingLeft="2sp"/>
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:paddingTop="2sp"
+                        android:layout_margin="2sp"/>
                 </LinearLayout>
             </TableRow>
         </TableLayout>

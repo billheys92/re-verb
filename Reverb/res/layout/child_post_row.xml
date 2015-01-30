@@ -4,7 +4,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:stretchColumns="1" android:paddingTop="0dip" android:layout_gravity="top"
+    android:stretchColumns="1" android:paddingTop="0dip"
     android:background="@color/reply_background"
     >
     <TableRow android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_height="75dip"/>
         <TableLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:paddingTop="0dip">
             <TableRow>
                 <LinearLayout
@@ -28,13 +28,15 @@
                         android:textStyle="bold"
                         android:layout_height="fill_parent"
                         android:layout_width="wrap_content"
-                        android:paddingRight="1sp"/>
+                        android:paddingRight="2sp"
+                        android:paddingLeft="2sp"/>
                     <TextView
                         android:id="@+id/handle"
                         android:textColor="@color/main_font"
                         android:textSize="12sp"
                         android:layout_height="fill_parent"
-                        android:layout_width="wrap_content"/>
+                        android:layout_width="wrap_content"
+                        android:paddingTop="2sp"/>
                 </LinearLayout>
 
             </TableRow>
@@ -45,7 +47,25 @@
                     android:layout_width="wrap_content"
                     android:textColor="@color/main_font"
                     android:textSize="12sp"
-                    android:layout_weight="2"/>
+                    android:layout_weight="2"
+                    android:paddingRight="2sp"
+                    android:paddingLeft="2sp"/>
+            </TableRow>
+            <TableRow>
+                <LinearLayout>
+                    <ImageView android:id="@+id/voteIcon"
+                               android:layout_width="22dip"
+                               android:layout_height="22dip"
+                               android:layout_margin="2sp"/>
+                    <TextView
+                        android:id="@+id/voteCount"
+                        android:layout_height="fill_parent"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/main_font"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:layout_margin="2sp"/>
+                </LinearLayout>
             </TableRow>
         </TableLayout>
     </TableRow>

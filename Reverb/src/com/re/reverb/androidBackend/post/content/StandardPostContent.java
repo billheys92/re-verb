@@ -34,7 +34,7 @@ public class StandardPostContent implements PostContent
 
     public StandardPostContent(Context context, String postBody)
     {
-        this.profilePicture = BitmapFactory.decodeResource(context.getResources(), R.drawable.chris_pp);
+        this.profilePicture = BitmapFactory.decodeResource(context.getResources(), R.drawable.anonymous_pp);
         this.username = "Christopher";
         this.handle = "@chris";
         this.numVotes = 40;
