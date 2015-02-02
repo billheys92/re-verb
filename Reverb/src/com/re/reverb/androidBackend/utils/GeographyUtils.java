@@ -2,6 +2,8 @@ package com.re.reverb.androidBackend.utils;
 
 import com.re.reverb.androidBackend.Location;
 
+import java.util.List;
+
 /**
  * Created by Bill on 2014-11-15.
  */
@@ -25,5 +27,15 @@ public class GeographyUtils {
         double dist = earthRadius * c;
 
         return dist*1000;
+    }
+
+    public static Location centreOfLocations(List<Location> locations) {
+        double centreLatitude = 0.0;
+        double centreLongitude = 0.0;
+        for(Location l : locations) {
+            centreLatitude += l.getLatitude();
+            centreLongitude += l.getLongitude();
+        }
+        return new Location(centreLatitude/locations.size(), centreLongitude/locations.size());
     }
 }

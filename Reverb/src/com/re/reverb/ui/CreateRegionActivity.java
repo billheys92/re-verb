@@ -354,8 +354,8 @@ public class CreateRegionActivity extends FragmentActivity{
             Circle circle = mMap.addCircle(new CircleOptions()
                     .center(centre)
                     .radius(circleRegionShape.getRadius())
-                    .strokeColor(Color.RED)
-                    .fillColor(Color.BLUE));
+                    .strokeWidth(0)
+                    .fillColor(R.color.map_shape_color));
         }
         else if (regionShape instanceof RectangleRegionShape) {
             RectangleRegionShape rectRegionShape = (RectangleRegionShape) regionShape;
@@ -367,8 +367,8 @@ public class CreateRegionActivity extends FragmentActivity{
             }
             Polygon rect = mMap.addPolygon(new PolygonOptions()
                     .addAll(rectPointsLatLng)
-                    .strokeColor(Color.RED)
-                    .fillColor(Color.BLUE));
+                    .strokeWidth(0)
+                    .fillColor(R.color.map_shape_color));
         }
     }
 

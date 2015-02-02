@@ -15,7 +15,7 @@ public class DrawMapCircleOverlayView extends DrawMapShapeOverlayView
     {
         super(context, attrs, defStyleAttr);
         this.currentShape = new CircleShape();
-        this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+        this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
     }
 
     public DrawMapCircleOverlayView(Context context, AttributeSet attrs) {
@@ -31,7 +31,7 @@ public class DrawMapCircleOverlayView extends DrawMapShapeOverlayView
     {
         if(this.currentShape == null) {
             this.currentShape = new CircleShape();
-            this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+            this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
         }
         currentShape.getShapeDrawable().setBounds(0, 0, 0, 0);
     }

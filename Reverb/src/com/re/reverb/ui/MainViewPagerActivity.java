@@ -34,7 +34,7 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
     static final int CREATE_POST_REQUEST = 1;  // The request code for creating a post activity
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 2; //for checking playservices
     private static final int MILLISECONDS_PER_SECOND = 1000;
-    public static final int UPDATE_INTERVAL_IN_SECONDS = 5;
+    public static final int UPDATE_INTERVAL_IN_SECONDS = 60;
     private static final long UPDATE_INTERVAL =
             MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
     private static final int FASTEST_INTERVAL_IN_SECONDS = 1;

@@ -70,19 +70,19 @@
         android:background="@color/reverb_blue_1"
         android:weightSum="1">
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="Square"
+            android:layout_height="wrap_content"
             android:id="@+id/editRegionSquare"
-            android:onClick="onSelectRectangle" />
+            android:onClick="onSelectRectangle"
+            android:src="@drawable/rect_shape"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="Circle"
+            android:layout_height="wrap_content"
             android:id="@+id/editRegionCircle"
-            android:onClick="onSelectCircle" />
+            android:src="@drawable/circle_shape"
+            android:onClick="onSelectCircle"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -102,6 +102,12 @@
             android:layout_alignParentEnd="true"
             android:onClick="onClearRegionClick"
             android:layout_weight="0.15"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Undo"
+            android:id="@+id/undoButton"/>
 
     </LinearLayout>
 

@@ -1,21 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
+    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/bottom_toolbar_height"
+        android:focusable="true"
+        android:clickable="false"
+        >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:text="Subscribed"
+            android:id="@+id/subscribedRegionsTabButton"
+            android:layout_weight="1"
+            android:background="@drawable/selected_tab"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:text="Nearby"
+            android:id="@+id/nearbyRegionsTabButton"
+            android:layout_weight="1"
+            android:background="@color/reverb_blue_1"/>
+    </LinearLayout>
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@android:id/list"
-        android:layout_above="@+id/editRegionSquare" />
+        android:layout_alignParentTop="false"
+        android:layout_weight="1"
+        />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create_region_button_label"
+
+    <ImageButton
         android:id="@+id/editRegionSquare"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="startCreateRegionActivity" />
-</RelativeLayout>
+        android:layout_width="@dimen/bottom_toolbar_height"
+        android:layout_height="@dimen/bottom_toolbar_height"
+        android:src="@drawable/create_region_image"
+        android:scaleType="centerCrop"
+        android:background="@android:color/transparent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="20dip"
+        android:layout_marginBottom="20dip"
+        android:onClick="startCreateRegionActivity"
+        />
+
+</LinearLayout>

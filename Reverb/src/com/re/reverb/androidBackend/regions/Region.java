@@ -2,10 +2,10 @@ package com.re.reverb.androidBackend.regions;
 
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.utils.GeographyUtils;
 import com.re.reverb.androidBackend.utils.SuccessStatus;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,6 +49,14 @@ public class Region
             area += shape.getArea();
         }
         return area;
+    }
+
+    public Location getCentre(){
+        List<Location> shapeCentres = new ArrayList<Location>();
+        for(RegionShape shape: shapes) {
+            shapeCentres.add(shape.getCentre());
+        }
+        return GeographyUtils.centreOfLocations(shapeCentres);
     }
 
     public boolean containsPoint(Location point){
