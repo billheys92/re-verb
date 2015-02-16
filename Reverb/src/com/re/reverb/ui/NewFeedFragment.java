@@ -69,6 +69,7 @@ public class NewFeedFragment extends Fragment implements OnRefreshListener, OnFe
     {
         try
         {
+            ((MainViewPagerActivity) this.getActivity()).updateLocation();
             dataFeed.refreshPosts();
             adapter.notifyDataSetChanged();
         } catch (UnsuccessfulRefreshException e)
