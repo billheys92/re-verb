@@ -28,19 +28,14 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit"
-                android:id="@+id/toggleEditingToolsButton"
-                android:layout_gravity="left|bottom"
-                android:layout_above="@+id/editingToolsLayout"
-                android:onClick="toggleEditingToolsLayout"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Info"
+            <ImageButton
+                android:layout_width="@dimen/info_button_size"
+                android:layout_height="@dimen/info_button_size"
+                android:scaleType="centerCrop"
+                android:src="@drawable/info_icon"
+                android:layout_marginLeft="20dip"
+                android:layout_marginBottom="20dip"
+                android:background="@android:color/transparent"
                 android:id="@+id/showInfoButton"
                 android:clickable="true"
                 android:onClick="showEditRegionDetailsOverlay"
@@ -71,17 +66,19 @@
         android:weightSum="1">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/bottom_toolbar_height"
+            android:layout_height="@dimen/bottom_toolbar_height"
             android:id="@+id/editRegionSquare"
             android:onClick="onSelectRectangle"
+            android:background="@android:color/transparent"
             android:src="@drawable/rect_shape"/>
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/bottom_toolbar_height"
+            android:layout_height="@dimen/bottom_toolbar_height"
             android:id="@+id/editRegionCircle"
             android:src="@drawable/circle_shape"
+            android:background="@android:color/transparent"
             android:onClick="onSelectCircle"/>
 
         <Button

@@ -2,21 +2,18 @@ package com.re.reverb.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.re.reverb.R;
@@ -26,10 +23,7 @@ import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionImageUrlFactory;
 import com.re.reverb.network.RequestQueueSingleton;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class RegionsFragment extends ListFragment implements AvailableRegionsUpdateRegion
 {
@@ -40,18 +34,16 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
     }
 
     private static View view;
-    private ArrayList<Region> nearbyRegionNames;
+    private ArrayList<Region> regionsList;
     private ArrayAdapter<Region> adapter;
     private TabType selectedTab = TabType.SUBSCRIBED;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-        this.nearbyRegionNames = new ArrayList<Region>();
+        this.regionsList = new ArrayList<Region>();
         Reverb.attachAvailableRegionsUpdateListener(this);
-
 
 	}
 
@@ -66,7 +58,7 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
         }
         try {
             view = inflater.inflate(R.layout.fragment_regions, container, false);
-            adapter = new RegionsArrayAdapter(getActivity(), nearbyRegionNames);
+            adapter = new RegionsArrayAdapter(getActivity(), regionsList);
             setListAdapter(adapter);
 
 
@@ -79,6 +71,7 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
                 {
                     if(selectedTab != TabType.SUBSCRIBED) {
                         selectedTab = TabType.SUBSCRIBED;
+                        Reverb.notifyAvailableRegionsUpdateListeners();
                         subscribedTab.setBackgroundResource(R.drawable.selected_tab);
                         nearbyTab.setBackgroundColor(getResources().getColor(R.color.reverb_blue_1));
                     }
@@ -91,6 +84,7 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
                 {
                     if(selectedTab != TabType.NEARBY) {
                         selectedTab = TabType.NEARBY;
+                        Reverb.notifyAvailableRegionsUpdateListeners();
                         nearbyTab.setBackgroundResource(R.drawable.selected_tab);
                         subscribedTab.setBackgroundColor(getResources().getColor(R.color.reverb_blue_1));
                     }
@@ -103,15 +97,23 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
         return view;
 	}
 
-
     @Override
     public void onAvailableRegionsUpdated()
     {
-        this.nearbyRegionNames.clear();
-        for(Region region: Reverb.getInstance().getRegionManager().getNearbyRegions()) {
-            this.nearbyRegionNames.add(region);
+        this.regionsList.clear();
+        ArrayList<Region> newList;
+        if(this.selectedTab == TabType.NEARBY) {
+            newList = Reverb.getInstance().getRegionManager().getNearbyRegions();
         }
-//        Collections.copy(this.nearbyRegionNames, Reverb.getInstance().getRegionManager().getNearbyRegionNames());
+        else
+        {
+            newList = Reverb.getInstance().getRegionManager().getSubscribedRegions();
+        }
+
+        for(Region region: newList) {
+            this.regionsList.add(region);
+        }
+//        Collections.copy(this.regionsList, Reverb.getInstance().getRegionManager().getNearbyRegionNames());
 //        this.subscribedRegionNames = Reverb.getInstance().getRegionManager().getSubscribedRegionNames();
         adapter.notifyDataSetChanged();
     }
@@ -137,21 +139,38 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            final Region selectedRegion = values.get(position);
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.region_list_row, parent, false);
             TextView textView = (TextView) rowView.findViewById(R.id.regionName);
             NetworkImageView imageView = (NetworkImageView) rowView.findViewById(R.id.regionThumbnail);
-            textView.setText(values.get(position).getName());
+            textView.setText(selectedRegion.getName());
             imageView.setDefaultImageResId(R.drawable.anonymous_pp);
-            imageView.setImageUrl(RegionImageUrlFactory.createFromRegion(values.get(position)).toString(), RequestQueueSingleton.getInstance().getImageLoader());
+            imageView.setImageUrl(RegionImageUrlFactory.createFromRegion(selectedRegion).toString(), RequestQueueSingleton.getInstance().getImageLoader());
             final ImageView toggleSubscribedImage = (ImageView) rowView.findViewById(R.id.subscribeToRegionToggleButton);
+            if(selectedRegion.isSubscribedTo())
+            {
+                toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.checkmark ));
+            }
             toggleSubscribedImage.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.checkmark ));
+                    if(!selectedRegion.isSubscribedTo())
+                    {
+                        Reverb.getInstance().getRegionManager().subscribeToRegion(selectedRegion);
+                        toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.checkmark ));
+                        Toast.makeText(getActivity(), "Subscribed to region "+selectedRegion.getName(), Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Reverb.getInstance().getRegionManager().unsubscribeFromRegion(selectedRegion);
+                        toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.plus_sign ));
+                        Toast.makeText(getActivity(), "Unsubscribed From region "+selectedRegion.getName(), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
             return rowView;

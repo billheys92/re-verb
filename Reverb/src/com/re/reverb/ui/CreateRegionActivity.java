@@ -63,7 +63,6 @@ public class CreateRegionActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_region);
-        closeEditingTools();
         setUpMapIfNeeded();
 
         Bundle extras = getIntent().getExtras();
@@ -72,6 +71,7 @@ public class CreateRegionActivity extends FragmentActivity{
             for(RegionShape shape: this.region.getShapes()) {
                 regionShapes.add(shape);
             }
+            closeEditingTools();
             drawMapShapes();
             Toast.makeText(this, "Opened region: "+this.region.getName(), Toast.LENGTH_SHORT).show();
         }
@@ -143,6 +143,10 @@ public class CreateRegionActivity extends FragmentActivity{
         SuccessStatus status = region.saveRegion();
         if(!status.success()) {
             Toast.makeText(this, status.reason(), Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Region \""+region.getName()+"\" created.", Toast.LENGTH_SHORT).show();
         }
         Log.d("Reverb",status.reason());
     }
@@ -253,7 +257,6 @@ public class CreateRegionActivity extends FragmentActivity{
             }
         });
         EditText nameExitText = (EditText)findViewById(R.id.editRegionName);
-        nameExitText.setText(region.getName());
         nameExitText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
@@ -270,7 +273,6 @@ public class CreateRegionActivity extends FragmentActivity{
             }
         });
         EditText descriptionEditText = (EditText)findViewById(R.id.editRegionDescription);
-        descriptionEditText.setText(region.getDescription());
         descriptionEditText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)

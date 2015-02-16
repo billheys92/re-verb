@@ -15,6 +15,8 @@ public class Region
     protected boolean readPermission = true;
     protected boolean writePermission = true;
 
+    protected boolean subscribedTo = false;
+
     protected int regionId;
     protected final double MAX_AREA = 10;    //10 km max area maybe?
 
@@ -110,6 +112,20 @@ public class Region
         return description;
     }
 
+    public void subscribe()
+    {
+        this.subscribedTo = true;
+    }
+
+    public void unsubscribe()
+    {
+        this.subscribedTo = false;
+    }
+
+    public boolean isSubscribedTo() {
+        return this.subscribedTo;
+    }
+
     /*************************************************************
      * Editing regions code
      *
@@ -165,7 +181,7 @@ public class Region
         if(this.editing) {
             SuccessStatus validation = validateRegion();
             if(validation.success()) {
-                Reverb.getInstance().getRegionManager().addRegion(this);
+                Reverb.getInstance().getRegionManager().createNewRegion(this);
                 this.editing = false;
                 this.regionCopy = null;
             }
@@ -239,6 +255,5 @@ public class Region
             this.description = description;
         }
     }
-
 
 }

@@ -15,8 +15,8 @@ import java.util.List;
 public class RegionManagerImpl implements RegionManager, LocationUpdateListener
 {
     private Region currentRegion;
-    private List<Region> nearbyRegions;
-    private List<Region> subscribedRegions;
+    private ArrayList<Region> nearbyRegions;
+    private ArrayList<Region> subscribedRegions;
 
     public RegionManagerImpl(){
         this.nearbyRegions = new ArrayList<Region>();
@@ -41,13 +41,13 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     }
 
     @Override
-    public List<Region> getNearbyRegions()
+    public ArrayList<Region> getNearbyRegions()
     {
         return this.nearbyRegions;
     }
 
     @Override
-    public List<Region> getSubscribedRegions()
+    public ArrayList<Region> getSubscribedRegions()
     {
         return this.subscribedRegions;
     }
@@ -73,14 +73,39 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     }
 
     @Override
-    public void addRegion(Region region)
+    public void createNewRegion(Region region)
     {
         //TODO: check if the region is already in the list before adding to list, if it is just update it
         // TODO: persist the region on server
 
-        this.nearbyRegions.add(region);
-        this.subscribedRegions.add(region);
-        Reverb.notifyAvailableRegionsUpdateListeners();
+        if(region != null)
+        {
+            this.nearbyRegions.add(region);
+//            subscribeToRegion(region);
+            Reverb.notifyAvailableRegionsUpdateListeners();
+        }
+    }
+
+    @Override
+    public void subscribeToRegion(Region region)
+    {
+        if(region != null) {
+            this.subscribedRegions.add(region);
+            region.subscribe();
+            Reverb.notifyAvailableRegionsUpdateListeners();
+        }
+    }
+
+    @Override
+    public boolean unsubscribeFromRegion(Region region)
+    {
+        if(region != null) {
+            region.unsubscribe();
+            boolean success = this.subscribedRegions.remove(region);
+            Reverb.notifyAvailableRegionsUpdateListeners();
+            return success;
+        }
+        return false;
     }
 
     @Override
