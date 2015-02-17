@@ -31,10 +31,12 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.regions.CircleRegionShape;
 import com.re.reverb.androidBackend.regions.RectangleRegionShape;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionShape;
+import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.utils.SuccessStatus;
 import com.re.reverb.ui.shapeWrappers.Shape;
 
@@ -53,7 +55,6 @@ public class CreateRegionActivity extends FragmentActivity{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private ShapeType selectedShapeType = ShapeType.None;
-    private Stack<Shape> shapeStack = new Stack<Shape>();
     private Stack<RegionShape> regionShapes = new Stack<RegionShape>();
     private View currentOverlay = null;
     private Region region;
@@ -156,7 +157,6 @@ public class CreateRegionActivity extends FragmentActivity{
         {
             region.beginEditing();
             mMap.clear();
-            this.shapeStack.clear();
             this.regionShapes.clear();
         }
         else
@@ -178,6 +178,7 @@ public class CreateRegionActivity extends FragmentActivity{
             if (selectedShapeType != shapeType)
             {
                 removeOverlays();
+                removeAllShapeButtonColours();
                 setSelectShapeButtonColourSelected(selectButtonId);
                 selectedShapeType = shapeType;
                 mMap.getUiSettings().setZoomControlsEnabled(false);
@@ -200,9 +201,6 @@ public class CreateRegionActivity extends FragmentActivity{
                 selectedShapeType = ShapeType.None;
                 setSelectShapeButtonColourDeselected(selectButtonId);
                 DrawMapShapeOverlayView overlayView = (DrawMapShapeOverlayView) findViewById(viewId);
-//            for(Shape shape: overlayView.shapeStack){
-//                addRegionShape(shape);
-//            }
                 removeOverlays();
             }
         }
@@ -210,6 +208,12 @@ public class CreateRegionActivity extends FragmentActivity{
         {
             Toast.makeText(this, region.canEdit().reason(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void removeAllShapeButtonColours()
+    {
+        setSelectShapeButtonColourDeselected(R.id.editRegionSquare);
+        setSelectShapeButtonColourDeselected(R.id.editRegionCircle);
     }
 
     private void setSelectShapeButtonColourSelected(int buttonId){
@@ -257,6 +261,7 @@ public class CreateRegionActivity extends FragmentActivity{
             }
         });
         EditText nameExitText = (EditText)findViewById(R.id.editRegionName);
+        nameExitText.setText(region.getName() == null ? "Region Name" : region.getName());
         nameExitText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
@@ -273,6 +278,7 @@ public class CreateRegionActivity extends FragmentActivity{
             }
         });
         EditText descriptionEditText = (EditText)findViewById(R.id.editRegionDescription);
+        descriptionEditText.setText(region.getDescription() == null ? "Description" : region.getDescription());
         descriptionEditText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
@@ -335,7 +341,6 @@ public class CreateRegionActivity extends FragmentActivity{
 
     public void addRegionShape(Shape shape){
         RegionShape regionShape = shape.getReverbRegionShape(mMap);
-        this.shapeStack.push(shape);
         this.regionShapes.push(regionShape);
         addRegionShapeToMap(regionShape);
     }
