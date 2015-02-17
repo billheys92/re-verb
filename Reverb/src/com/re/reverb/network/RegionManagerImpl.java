@@ -11,6 +11,7 @@ import com.re.reverb.androidBackend.post.PostFactory;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
+import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,5 +36,11 @@ public class RegionManagerImpl extends PersistenceManagerImpl
     {
         String params = "?commandtype=post&command=postRegion";
         return requestJson(regionDto, Request.Method.PUT, baseURL + params);
+    }
+
+    public static boolean followRegion(FollowRegionDto followRegionDto)
+    {
+        String params = "?commandtype=post&command=postRegion2Users";
+        return requestJson(followRegionDto, Request.Method.PUT, baseURL + params);
     }
 }

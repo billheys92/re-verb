@@ -122,6 +122,10 @@ public class Region
         this.subscribedTo = false;
     }
 
+    public boolean canUnsubscribe(){
+        return true;
+    }
+
     public boolean isSubscribedTo() {
         return this.subscribedTo;
     }

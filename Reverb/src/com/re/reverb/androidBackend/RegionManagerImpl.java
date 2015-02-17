@@ -7,6 +7,7 @@ import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
+import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,9 +113,17 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     public void subscribeToRegion(Region region)
     {
         if(region != null) {
-            this.subscribedRegions.add(region);
-            region.subscribe();
-            Reverb.notifyAvailableRegionsUpdateListeners();
+            FollowRegionDto followRegionDto;
+            try {
+                followRegionDto = new FollowRegionDto(Reverb.getInstance().getCurrentUserId(), region.getRegionId());
+                this.subscribedRegions.add(region);
+                region.subscribe();
+                com.re.reverb.network.RegionManagerImpl.followRegion(followRegionDto);
+                Reverb.notifyAvailableRegionsUpdateListeners();
+            }
+            catch (NotSignedInException e) {
+                e.printStackTrace();
+            }
         }
     }
 

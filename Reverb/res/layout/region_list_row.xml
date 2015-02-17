@@ -29,6 +29,17 @@
         android:layout_below="@+id/regionName"
         android:layout_toRightOf="@+id/regionThumbnail"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="0 Followers | 0 Posts"
+        android:id="@+id/regionStatsTextView"
+        android:layout_below="@+id/regionDescriptionTextView"
+        android:layout_alignLeft="@+id/regionDescriptionTextView"
+        android:layout_alignStart="@+id/regionDescriptionTextView"
+        android:textColor="@color/light_grey"/>
+
     <ImageView
         android:layout_width="75dip"
         android:layout_height="75dip"

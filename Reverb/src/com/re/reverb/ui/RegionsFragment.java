@@ -143,13 +143,18 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.region_list_row, parent, false);
-            TextView textView = (TextView) rowView.findViewById(R.id.regionName);
+            TextView regionNameTextView = (TextView) rowView.findViewById(R.id.regionName);
+            TextView regionDescriptionTextView = (TextView) rowView.findViewById(R.id.regionDescriptionTextView);
             NetworkImageView imageView = (NetworkImageView) rowView.findViewById(R.id.regionThumbnail);
-            textView.setText(selectedRegion.getName());
+            regionNameTextView.setText(selectedRegion.getName());
+            regionDescriptionTextView.setText(selectedRegion.getDescription());
             imageView.setDefaultImageResId(R.drawable.anonymous_pp);
             imageView.setImageUrl(RegionImageUrlFactory.createFromRegion(selectedRegion).toString(), RequestQueueSingleton.getInstance().getImageLoader());
             final ImageView toggleSubscribedImage = (ImageView) rowView.findViewById(R.id.subscribeToRegionToggleButton);
-            if(selectedRegion.isSubscribedTo())
+            if(!selectedRegion.canUnsubscribe()) {
+                toggleSubscribedImage.setImageDrawable(null);
+            }
+            else if(selectedRegion.isSubscribedTo())
             {
                 toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.checkmark ));
             }
@@ -164,13 +169,12 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
                         toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.checkmark ));
                         Toast.makeText(getActivity(), "Subscribed to region "+selectedRegion.getName(), Toast.LENGTH_SHORT).show();
                     }
-                    else
+                    else if(selectedRegion.canUnsubscribe())
                     {
                         Reverb.getInstance().getRegionManager().unsubscribeFromRegion(selectedRegion);
                         toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.plus_sign ));
                         Toast.makeText(getActivity(), "Unsubscribed From region "+selectedRegion.getName(), Toast.LENGTH_SHORT).show();
                     }
-
                 }
             });
             return rowView;

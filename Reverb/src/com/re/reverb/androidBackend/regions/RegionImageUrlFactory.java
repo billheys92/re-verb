@@ -17,19 +17,24 @@ public class RegionImageUrlFactory
         String centreLat = ""+r.getCentre().getLatitude();
         String centreLong = ""+r.getCentre().getLongitude();
         urlBase += "center=" + centreLat + "," + centreLong;
-        urlBase  += "&zoom=15";
+        urlBase  += r.getShapes().size() <= 3 ? "&zoom=15" : "&zoom=10";
         urlBase += "&size=600x600";
         urlBase += "&maptype=road";
         urlBase += "&sensor=false";
 
-        for(RegionShape shape: r.getShapes()) {
-            ArrayList<Location> points = shape.getShapeAsPoints();
-            urlBase += "&path=color%3ablack|weight:1|fillcolor%3ablack";
-            for(Location location: points) {
-                urlBase += "|" + location.getLatitude() + "," + location.getLongitude();
+        if(r.getShapes().size() > 0 && r.getShapes().size() <= 3)
+        {
+            for (RegionShape shape : r.getShapes())
+            {
+                ArrayList<Location> points = shape.getShapeAsPoints();
+                urlBase += "&path=color%3ablack|weight:1|fillcolor%3ablack";
+                for (Location location : points)
+                {
+                    urlBase += "|" + location.getLatitude() + "," + location.getLongitude();
+                }
             }
         }
-        if(r.getShapes().size() > 0)
+        if(r.getShapes().size() > 0 && r.getShapes().size() <= 3)
         {
             urlBase += "&visible=";
             for (RegionShape shape : r.getShapes())

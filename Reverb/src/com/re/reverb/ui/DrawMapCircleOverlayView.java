@@ -45,14 +45,13 @@ public class DrawMapCircleOverlayView extends DrawMapShapeOverlayView
     @Override
     protected void onTouchUp()
     {
-        shapeStack.add(currentShape);
         this.shapeAddedListener.shapeAdded(currentShape);
         resetCurrentShape();
     }
 
     private void resetCurrentShape(){
         currentShape = new CircleShape();
-        currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+        currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
         this.touchDownPointX = 0;
         this.touchDownPointY = 0;
     }

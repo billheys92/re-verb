@@ -53,6 +53,10 @@ public class CommonsRegion extends Region{
 
     }
 
+    public boolean canUnsubscribe(){
+        return false;
+    }
+
     @Override
     public void update(){
         this.removeAllShapes().throwErrorIfFailed();
