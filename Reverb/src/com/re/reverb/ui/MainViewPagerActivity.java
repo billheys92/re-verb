@@ -28,19 +28,11 @@ import com.google.android.gms.location.LocationRequest;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
 
-public class MainViewPagerActivity extends FragmentActivity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, LocationListener
+public class MainViewPagerActivity extends FragmentActivity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
 {
 
     static final int CREATE_POST_REQUEST = 1;  // The request code for creating a post activity
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 2; //for checking playservices
-    private static final int MILLISECONDS_PER_SECOND = 1000;
-    public static final int UPDATE_INTERVAL_IN_SECONDS = 60;
-    private static final long UPDATE_INTERVAL =
-            MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
-    private static final int FASTEST_INTERVAL_IN_SECONDS = 1;
-    private static final long FASTEST_INTERVAL =
-            MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
-
 
 	static final int NUM_PAGES = 3;
 	private int defaultPage = 1;
@@ -48,9 +40,6 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
 	MainViewPagerAdapter mPagerAdapter;
     ViewPager mViewPager;
     LocationClient mLocationClient;
-    boolean mUpdatesRequested;
-    LocationRequest mLocationRequest;
-    Location mCurrentLocation;
     SharedPreferences mPrefs;
     SharedPreferences.Editor mEditor;
 
@@ -74,16 +63,10 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         servicesConnected();
 
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        mLocationClient = new LocationClient(this, this, this);
 
         mPrefs = getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
         mEditor = mPrefs.edit();
-        mLocationClient = new LocationClient(this, this, this);
-        mUpdatesRequested = false;
-
 
     }
     
@@ -207,15 +190,21 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
     @Override
     public void onConnected(Bundle dataBundle) {
         // Display the connection status
-        //Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
-        //mCurrentLocation = mLocationClient.getLastLocation();
-        //Toast.makeText(this,"Current location = lat("+mCurrentLocation.getCurrentLatitude()+") long("+mCurrentLocation.getCurrentLongitude()+")",Toast.LENGTH_SHORT).show();
-        // If already requested, start periodic updates
-        if (mUpdatesRequested) {
-            mLocationClient.requestLocationUpdates(mLocationRequest, this);
-        }
+        Toast.makeText(this, "Connected to location services", Toast.LENGTH_SHORT).show();
+        Log.d("Reverb", "Connected to location services");
+        updateLocation();
     }
-    
+
+    void updateLocation()
+    {
+        Location location = mLocationClient.getLastLocation();
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        Reverb.getInstance().setCurrentLocation((float) location.getLatitude(), (float) location.getLongitude());
+    }
+
     /*
      * Called by Location Services if the connection to the
      * location client drops because of an error.
@@ -223,7 +212,7 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
     @Override
     public void onDisconnected() {
         // Display the connection status
-        Toast.makeText(this, "Disconnected. Please re-connect.",
+        Toast.makeText(this, "Disconnected from location services. Please re-connect.",
                 Toast.LENGTH_SHORT).show();
     }
     
@@ -265,17 +254,6 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
         Toast.makeText(this, "Error Connecting to Location Services", Toast.LENGTH_SHORT).show();
     }
 
-    // Define the callback method that receives location updates
-    @Override
-    public void onLocationChanged(Location location) {
-        // Report to the UI that the location was updated
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        Reverb.getInstance().setCurrentLocation((float) location.getLatitude(), (float) location.getLongitude());
-    }
-
     /*
      * Called when the Activity becomes visible.
      */
@@ -292,19 +270,6 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
      */
     @Override
     protected void onStop() {
-        // Disconnecting the client invalidates it.
-//        mLocationClient.disconnect();
-//        super.onStop();
-
-        // If the client is connected
-        if (mLocationClient.isConnected()) {
-            /*
-             * Remove location updates for a listener.
-             * The current Activity is the listener, so
-             * the argument is "this".
-             */
-            mLocationClient.removeLocationUpdates(this);
-        }
         /*
          * After disconnect() is called, the client is
          * considered "dead".
@@ -315,40 +280,13 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
 
     @Override
     protected void onPause() {
-        // Save the current setting for updates
-        mEditor.putBoolean("KEY_UPDATES_ON", mUpdatesRequested);
+        // Save the last known locations
+        Log.d("Reverb","Pausing app and saving last known location");
+        mEditor.putFloat("LAST_KNOWN_LAT", (float) Reverb.getInstance().getCurrentLocation().getLatitude());
+        mEditor.putFloat("LAST_KNOWN_LONG", (float) Reverb.getInstance().getCurrentLocation().getLatitude());
         mEditor.commit();
         super.onPause();
     }
-
-    @Override
-    protected void onResume() {
-
-        super.onResume();
-        /*
-         * Get any previous setting for location updates
-         * Gets "false" if an error occurs
-         */
-        if (mPrefs.contains("KEY_UPDATES_ON")) {
-            mUpdatesRequested = mPrefs.getBoolean("KEY_UPDATES_ON", false);
-
-            // Otherwise, turn off location updates
-        } else {
-            mEditor.putBoolean("KEY_UPDATES_ON", false);
-            mEditor.commit();
-        }
-        mUpdatesRequested = true;
-
-    }
-
-
-
-    public void onDoneEditingClick(View view){
-        int i  = 0;
-    }
-
-
-
 
 
 }
