@@ -47,17 +47,6 @@ public class Reverb {
     public boolean submitPost(CreatePostDto postDto)
     {
         return PostManagerImpl.submitPost(postDto);
-
-        //send post to PersistenceManager
-        //AWSPersistenceManager testPer = new AWSPersistenceManager();
-        //return testPer.submitPost(postDto);
-//This should be commented back in but isn't working yet
-//        try {
-//            postFeed.getPosts().add(0,post);
-//        } catch (UnsuccessfulRefreshException e) {
-//            e.printStackTrace();
-//        }
-        //return false;
     }
 
     public RegionManager getRegionManager()
