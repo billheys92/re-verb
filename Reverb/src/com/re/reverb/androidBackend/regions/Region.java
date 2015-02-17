@@ -2,10 +2,10 @@ package com.re.reverb.androidBackend.regions;
 
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.utils.GeographyUtils;
 import com.re.reverb.androidBackend.utils.SuccessStatus;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +14,8 @@ public class Region
 
     protected boolean readPermission = true;
     protected boolean writePermission = true;
+
+    protected boolean subscribedTo = false;
 
     protected int regionId;
     protected final double MAX_AREA = 10;    //10 km max area maybe?
@@ -49,6 +51,14 @@ public class Region
             area += shape.getArea();
         }
         return area;
+    }
+
+    public Location getCentre(){
+        List<Location> shapeCentres = new ArrayList<Location>();
+        for(RegionShape shape: shapes) {
+            shapeCentres.add(shape.getCentre());
+        }
+        return GeographyUtils.centreOfLocations(shapeCentres);
     }
 
     public boolean containsPoint(Location point){
@@ -100,6 +110,20 @@ public class Region
     public String getDescription()
     {
         return description;
+    }
+
+    public void subscribe()
+    {
+        this.subscribedTo = true;
+    }
+
+    public void unsubscribe()
+    {
+        this.subscribedTo = false;
+    }
+
+    public boolean isSubscribedTo() {
+        return this.subscribedTo;
     }
 
     /*************************************************************
@@ -157,7 +181,7 @@ public class Region
         if(this.editing) {
             SuccessStatus validation = validateRegion();
             if(validation.success()) {
-                Reverb.getInstance().getRegionManager().addRegion(this);
+                Reverb.getInstance().getRegionManager().createNewRegion(this);
                 this.editing = false;
                 this.regionCopy = null;
             }
@@ -231,6 +255,5 @@ public class Region
             this.description = description;
         }
     }
-
 
 }

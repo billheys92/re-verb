@@ -14,7 +14,7 @@ import static java.lang.Math.sqrt;
 public class RectangleRegionShape extends RegionShape
 {
 
-    private List<Location> points = new ArrayList<Location>();
+    private ArrayList<Location> points = new ArrayList<Location>();
 
     /**
      * @pre p1-p4 must be sorted in clockwise order starting at the top-left
@@ -48,6 +48,17 @@ public class RectangleRegionShape extends RegionShape
     {
         //TODO: do this
         return false;
+    }
+
+    @Override
+    public Location getCentre()
+    {
+        return GeographyUtils.centreOfLocations(points);
+    }
+
+    @Override
+    public ArrayList<Location> getShapeAsPoints(){
+        return points;
     }
 
 }

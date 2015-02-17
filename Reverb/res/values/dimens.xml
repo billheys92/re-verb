@@ -12,8 +12,11 @@
     <dimen name="post_padding_sides">5dp</dimen>
     <dimen name="post_padding_top_and_bottom">10dp</dimen>
     <dimen name="bottom_toolbar_height">60dp</dimen>
+    <dimen name="info_button_size">50dp</dimen>
+    <dimen name="region_list_thumbnail_sidelength">75dip</dimen>
 
     <dimen name="region_list_row_height">100dp</dimen>
+    <dimen name="region_title_text_size">25dp</dimen>
 
 
 </resources>
