@@ -1,11 +1,13 @@
 package com.re.reverb.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,12 +33,10 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.regions.CircleRegionShape;
 import com.re.reverb.androidBackend.regions.RectangleRegionShape;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionShape;
-import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.utils.SuccessStatus;
 import com.re.reverb.ui.shapeWrappers.Shape;
 
@@ -44,7 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class CreateRegionActivity extends FragmentActivity{
+public class CreateRegionActivity extends ActionBarActivity
+{
 
     private enum ShapeType{
         None,
@@ -65,16 +66,22 @@ public class CreateRegionActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_region);
         setUpMapIfNeeded();
+        closeEditingTools();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.getInt("SELECTED_REGION_ID") > -1) {
             this.region = Reverb.getInstance().getRegionManager().getNearbyRegions().get(extras.getInt("SELECTED_REGION_ID"));
-            for(RegionShape shape: this.region.getShapes()) {
-                regionShapes.add(shape);
+            if(this.region != null)
+            {
+                ActionBar actionBar = getSupportActionBar();
+                actionBar.setTitle(this.region.getName());
+                for (RegionShape shape : this.region.getShapes())
+                {
+                    regionShapes.add(shape);
+                }
+                drawMapShapes();
+                Toast.makeText(this, "Opened region: " + this.region.getName(), Toast.LENGTH_SHORT).show();
             }
-            closeEditingTools();
-            drawMapShapes();
-            Toast.makeText(this, "Opened region: "+this.region.getName(), Toast.LENGTH_SHORT).show();
         }
         else
         {
@@ -152,6 +159,7 @@ public class CreateRegionActivity extends FragmentActivity{
         Log.d("Reverb",status.reason());
     }
 
+
     public void onClearRegionClick(View view){
         if(region.canEdit().success())
         {
@@ -218,7 +226,7 @@ public class CreateRegionActivity extends FragmentActivity{
 
     private void setSelectShapeButtonColourSelected(int buttonId){
         View button = findViewById(buttonId);
-        button.setBackgroundColor(getResources().getColor(R.color.white));
+        button.setBackgroundColor(getResources().getColor(R.color.dark_grey));
     }
 
     private void setSelectShapeButtonColourDeselected(int buttonId){
@@ -238,28 +246,35 @@ public class CreateRegionActivity extends FragmentActivity{
     }
 
     private void showEditRegionDetailsOverlay(){
+        final Activity activity = this;
         displayOverlay(R.layout.edit_region_details_overlay_layout);
         region.beginEditing();
         Button b = (Button)findViewById(R.id.saveRegionDetailsButton);
-        b.setOnClickListener(new View.OnClickListener()
+        View.OnClickListener listener = new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-                removeOverlays();
+                if(region.getName() == null && region.getDescription() == null)
+                {
+                    Toast.makeText(activity, "You must provide a name and description for this region.",Toast.LENGTH_SHORT).show();
+                } else if(region.getName() == null)
+                {
+                    Toast.makeText(activity, "You must provide a name for this region.",Toast.LENGTH_SHORT).show();
+                } else if(region.getDescription() == null)
+                {
+                    Toast.makeText(activity, "You must provide a description for this region.",Toast.LENGTH_SHORT).show();
+                } else
+                {
+                    openEditingTools();
+                    removeOverlays();
+                }
             }
-        });
+        };
+        b.setOnClickListener(listener);
         Button b2 = (Button)findViewById(R.id.discardChangesButton);
-        b2.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-                removeOverlays();
-            }
-        });
+        b2.setOnClickListener(listener);
         EditText nameExitText = (EditText)findViewById(R.id.editRegionName);
         nameExitText.setText(region.getName() == null ? "Region Name" : region.getName());
         nameExitText.addTextChangedListener(new TextWatcher()
@@ -298,6 +313,10 @@ public class CreateRegionActivity extends FragmentActivity{
 
     private void showRegionDetailsOverlay(){
         displayOverlay(R.layout.display_region_details_overlay_layout);
+        final TextView nameTextView = (TextView)findViewById(R.id.displayRegionName);
+        nameTextView.setText(region.getName());
+        TextView descriptionTextView = (TextView)findViewById(R.id.displayRegionDescription);
+        descriptionTextView.setText(region.getDescription());
         Button b2 = (Button)findViewById(R.id.closeDetailsButton);
         b2.setOnClickListener(new View.OnClickListener()
         {
@@ -307,10 +326,7 @@ public class CreateRegionActivity extends FragmentActivity{
             {
                 removeOverlays();
             }
-        });        TextView nameTextView = (TextView)findViewById(R.id.displayRegionName);
-        nameTextView.setText(region.getName());
-        TextView descriptionTextView = (TextView)findViewById(R.id.displayRegionDescription);
-        descriptionTextView.setText(region.getDescription());
+        });
     }
 
     private View displayOverlay(int resource) {
@@ -377,6 +393,12 @@ public class CreateRegionActivity extends FragmentActivity{
                     .strokeWidth(0)
                     .fillColor(R.color.map_shape_color));
         }
+    }
+
+    public void undoAddShape(View view)
+    {
+        this.regionShapes.pop();
+        drawMapShapes();
     }
 
     public void toggleEditingToolsLayout(View view) {

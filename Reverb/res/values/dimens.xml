@@ -16,7 +16,7 @@
     <dimen name="region_list_thumbnail_sidelength">75dip</dimen>
 
     <dimen name="region_list_row_height">100dp</dimen>
-    <dimen name="region_title_text_size">25dp</dimen>
+    <dimen name="region_title_text_size">20dp</dimen>
 
 
 </resources>
