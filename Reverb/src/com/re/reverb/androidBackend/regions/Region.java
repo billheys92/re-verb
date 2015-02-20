@@ -15,6 +15,7 @@ public class Region
     protected boolean readPermission = true;
     protected boolean writePermission = true;
 
+    protected boolean canEdit = true;
     protected boolean subscribedTo = false;
 
     protected int regionId;
@@ -151,7 +152,7 @@ public class Region
     }
 
     public SuccessStatus canEdit(){
-        if(this.writePermission) {
+        if(this.canEdit) {
             return new SuccessStatus(true, "This region can be edited");
         }
         else {
@@ -187,6 +188,7 @@ public class Region
             if(validation.success()) {
                 Reverb.getInstance().getRegionManager().createNewRegion(this);
                 this.editing = false;
+                this.canEdit = false;
                 this.regionCopy = null;
             }
             return validation;

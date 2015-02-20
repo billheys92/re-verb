@@ -12,7 +12,7 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="@drawable/rounded_bg_layout"
                     android:padding="10dp"
                     android:layout_gravity="center_vertical">
 
@@ -37,53 +37,27 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
-                <!--<LinearLayout-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:layout_height="fill_parent">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-                        <!--android:text="Name"-->
-                        <!--android:textColor="@android:color/black"-->
-                        <!--android:id="@+id/regionNameTextView"/>-->
-
                     <EditText
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:text="Region Name"
+                        android:inputType="textCapSentences"
+                        android:hint="Region Name"
+                        android:textColorHint="@color/light_grey"
                         android:textColor="@android:color/black"
                         android:ems="10"
                         android:id="@+id/editRegionName"
                         android:layout_gravity="left"/>
 
-                <!--</LinearLayout>-->
-
-                <!--<LinearLayout-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:layout_height="fill_parent">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-                        <!--android:text="Description"-->
-                        <!--android:textColor="@android:color/black"-->
-                        <!--android:id="@+id/regionDescriptionTextView"/>-->
-
                     <EditText
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="textCapSentences"
                         android:textColor="@android:color/black"
                         android:id="@+id/editRegionDescription"
-                        android:text="Description"
+                        android:hint="Region Description"
+                        android:textColorHint="@color/light_grey"
                         android:layout_gravity="top"/>
 
-                <!--</LinearLayout>-->
             </LinearLayout>
         </ScrollView>
 
