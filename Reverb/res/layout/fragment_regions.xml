@@ -52,4 +52,12 @@
         android:onClick="startCreateRegionActivity"
         />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fetch region"
+        android:id="@+id/fetchRegionButton"
+        android:layout_gravity="left|bottom"
+        android:onClick="fetchSingleRegion"/>
+
 </FrameLayout>

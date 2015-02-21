@@ -321,4 +321,9 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
     }
 
 
+    //TODO: TAKE THIS OUT!
+    public void fetchSingleRegion(View view){
+        Reverb.getInstance().getRegionManager().getRegionById(11);
+    }
+
 }

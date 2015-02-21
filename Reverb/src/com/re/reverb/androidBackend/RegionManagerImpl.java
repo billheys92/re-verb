@@ -8,6 +8,7 @@ import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
+import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +144,12 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     public void updateRegionLists()
     {
         //TODO: re-fetch nearby and subscribed
+    }
+
+    @Override
+    public void getRegionById(int regionId)
+    {
+        com.re.reverb.network.RegionManagerImpl.getRegionById(new GetRegionByIdDto(regionId));
     }
 
     @Override
