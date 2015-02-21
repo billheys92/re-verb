@@ -6,8 +6,8 @@ package com.re.reverb.androidBackend.regions.dto;
 public class GetRegionByIdDto
 {
 
-    int regionId;
+    int Region_id;
     public GetRegionByIdDto(int regionId){
-        this.regionId = regionId;
+        this.Region_id = regionId;
     }
 }
