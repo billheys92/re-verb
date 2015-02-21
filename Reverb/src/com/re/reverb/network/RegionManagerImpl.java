@@ -12,7 +12,9 @@ import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
+import com.re.reverb.androidBackend.regions.dto.GetNearbyRegionsDto;
 import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
+import com.re.reverb.androidBackend.regions.dto.GetSubscribedRegionsDto;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,15 +25,16 @@ public class RegionManagerImpl extends PersistenceManagerImpl
 {
     private static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/jacob_test/Reverb.php";
 
-    public static void getNearbyRegions()
+    public static boolean getNearbyRegions(GetNearbyRegionsDto dto)
     {
-
-
+        String params = "?commandtype=get&command=getRegions";
+        return requestJson(dto ,Request.Method.GET, baseURL + params);
     }
 
-    public static void getSubscribedRegions()
+    public static boolean getSubscribedRegions(GetSubscribedRegionsDto dto)
     {
-
+        String params = "?commandtype=get&command=getRegions";
+        return requestJson(dto ,Request.Method.GET, baseURL + params);
     }
 
     public static boolean getRegionById(GetRegionByIdDto getRegionByIdDto)

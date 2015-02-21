@@ -8,7 +8,9 @@ import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
+import com.re.reverb.androidBackend.regions.dto.GetNearbyRegionsDto;
 import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
+import com.re.reverb.androidBackend.regions.dto.GetSubscribedRegionsDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +145,18 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     @Override
     public void updateRegionLists()
     {
-        //TODO: re-fetch nearby and subscribed
+        GetNearbyRegionsDto nearbyRegionsDto = new GetNearbyRegionsDto(Reverb.getInstance().getCurrentLocation());
+        com.re.reverb.network.RegionManagerImpl.getNearbyRegions(nearbyRegionsDto);
+        try
+        {
+            GetSubscribedRegionsDto subscribedRegionsDto = new GetSubscribedRegionsDto(Reverb.getInstance().getCurrentUserId());
+            com.re.reverb.network.RegionManagerImpl.getSubscribedRegions(subscribedRegionsDto);
+        } catch (NotSignedInException e)
+        {
+            e.printStackTrace();
+            Log.e("Reverb", "Tried to fetch subscribed regions when user was not logged in!");
+        }
+
     }
 
     @Override
@@ -155,6 +168,7 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     @Override
     public void onLocationChanged(Location newLocation)
     {
+        updateRegionLists();
 //        this.update();
         if(this.currentRegion == null)
         {
