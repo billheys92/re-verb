@@ -12,6 +12,7 @@ import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
+import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,11 +26,18 @@ public class RegionManagerImpl extends PersistenceManagerImpl
     public static void getNearbyRegions()
     {
 
+
     }
 
     public static void getSubscribedRegions()
     {
 
+    }
+
+    public static boolean getRegionById(GetRegionByIdDto getRegionByIdDto)
+    {
+        String params = "?commandtype=get&command=getRegion";
+        return requestJson(getRegionByIdDto ,Request.Method.GET, baseURL + params);
     }
 
     public static boolean submitNewRegion(CreateRegionDto regionDto)

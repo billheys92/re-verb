@@ -29,6 +29,8 @@ public interface RegionManager
 
     public void subscribeToRegion(Region region);
 
+    public void getRegionById(int regionId);
+
     /**
      *
      * @param region
