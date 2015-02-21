@@ -15,7 +15,9 @@ public class ReceivePostDto {
     int Anon_flag;
     double Location_lat;
     double Location_long;
-    String Time_stamp; //TODO: remove this
+    //String Time_stamp; //TODO: remove this
+    String Create_time;
+    String Update_time;
     int Region_id;
     int Spam;
     int Up_vote;
@@ -27,21 +29,22 @@ public class ReceivePostDto {
     String Handle;
 
     ReceivePostDto(int Message_id,
-             int Poster_id,
-            String Message_body,
-            int Anon_flag,
-            float Location_lat,
-            float Location_long,
-            String Time_stamp,
-            int Region_id,
-            int spam,
-            int Up_vote,
-            int Down_vote,
-            int Repost_link,
-            int Reply_link,
-            String Profile_picture,
-            String Name,
-            String Handle)
+                   int Poster_id,
+                   String Message_body,
+                   int Anon_flag,
+                   float Location_lat,
+                   float Location_long,
+                   String Create_time,
+                   String Update_time,
+                   int Region_id,
+                   int spam,
+                   int Up_vote,
+                   int Down_vote,
+                   int Repost_link,
+                   int Reply_link,
+                   String Profile_picture,
+                   String Name,
+                   String Handle)
     {
         this.Message_id = Message_id;
         this.Poster_id = Poster_id;
@@ -49,7 +52,8 @@ public class ReceivePostDto {
         this.Anon_flag = Anon_flag;
         this.Location_lat = Location_lat;
         this.Location_long = Location_long;
-        this.Time_stamp = Time_stamp;
+        this.Create_time = Create_time;
+        this.Update_time = Update_time;
         this.Region_id = Region_id;
         this.Spam = spam;
         this.Up_vote = Up_vote;
@@ -69,7 +73,7 @@ public class ReceivePostDto {
         this.Location_lat = post.getPostLocation().getLatitude();
         this.Location_long = post.getPostLocation().getLongitude();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        this.Time_stamp = sdf.format(post.getTimeCreated());
+        this.Create_time = sdf.format(post.getTimeCreated());
         this.Region_id = 0;
         this.Spam = 0;
         this.Up_vote = 0;
@@ -102,8 +106,15 @@ public class ReceivePostDto {
         return Location_long;
     }
 
-    public String getTime_stamp() {
-        return Time_stamp;
+    public String getTime_stamp() { //TODO: Fix this
+        if(Update_time != null)
+        {
+            return Update_time;
+        }
+        else
+        {
+            return Create_time;
+        }
     }
 
     public int getRegion_id() {
