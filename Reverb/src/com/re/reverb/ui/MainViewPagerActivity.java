@@ -15,7 +15,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,7 +32,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
 
-public class MainViewPagerActivity extends FragmentActivity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
+public class MainViewPagerActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
 {
 
     static final int CREATE_POST_REQUEST = 1;  // The request code for creating a post activity
@@ -104,7 +108,7 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
         startActivity(intent);
     }
 
-    public void openSettings(View view)
+    public void openSettings()
     {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
@@ -286,6 +290,34 @@ public class MainViewPagerActivity extends FragmentActivity implements GooglePla
         mEditor.putFloat("LAST_KNOWN_LONG", (float) Reverb.getInstance().getCurrentLocation().getLatitude());
         mEditor.commit();
         super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_view_pager_activity, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_anonymous:
+                toggleAnonymity();
+                return true;
+            case R.id.action_settings:
+                openSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void toggleAnonymity()
+    {
+        Toast.makeText(this, "Toggling Anonymity (but not actually)", Toast.LENGTH_SHORT).show();
     }
 
 
