@@ -19,7 +19,6 @@ import java.util.Stack;
 public abstract class DrawMapShapeOverlayView extends View
 {
     protected Shape currentShape;
-    protected Stack<Shape> shapeStack = new Stack<Shape>();
     float touchDownPointX = 0.0f;
     float touchDownPointY = 0.0f;
     float latestTouchPointX = 0.0f;
@@ -38,11 +37,6 @@ public abstract class DrawMapShapeOverlayView extends View
 
     public DrawMapShapeOverlayView(Context context) {
         this(context, null, 0);
-    }
-
-    public Stack<Shape> getShapeStack()
-    {
-        return shapeStack;
     }
 
     @Override
@@ -74,9 +68,9 @@ public abstract class DrawMapShapeOverlayView extends View
 
     @Override
     protected void onDraw(Canvas canvas) {
-        for(Shape shape: shapeStack) {
-            shape.getShapeDrawable().draw(canvas);
-        }
+//        for(Shape shape: shapeStack) {
+//            shape.getShapeDrawable().draw(canvas);
+//        }
         currentShape.getShapeDrawable().draw(canvas);
     }
 

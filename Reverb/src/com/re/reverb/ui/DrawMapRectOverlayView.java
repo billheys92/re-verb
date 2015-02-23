@@ -21,7 +21,7 @@ public class DrawMapRectOverlayView extends DrawMapShapeOverlayView
     {
         super(context, attrs, defStyleAttr);
         this.currentShape = new RectangleShape();
-        this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+        this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
     }
 
     public DrawMapRectOverlayView(Context context, AttributeSet attrs) {
@@ -38,7 +38,7 @@ public class DrawMapRectOverlayView extends DrawMapShapeOverlayView
         if (this.currentShape == null)
         {
             this.currentShape = new RectangleShape();
-            this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+            this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
         }
         currentShape.getShapeDrawable().setBounds(0, 0, 0, 0);
     }
@@ -52,14 +52,13 @@ public class DrawMapRectOverlayView extends DrawMapShapeOverlayView
     @Override
     protected void onTouchUp()
     {
-        shapeStack.add(currentShape);
         this.shapeAddedListener.shapeAdded(currentShape);
         resetCurrentShape();
     }
 
     private void resetCurrentShape(){
-        currentShape = new CircleShape();
-        currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.reverb_blue_1));
+        currentShape = new RectangleShape();
+        currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
         this.touchDownPointX = 0;
         this.touchDownPointY = 0;
     }

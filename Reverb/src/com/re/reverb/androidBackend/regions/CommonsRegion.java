@@ -19,6 +19,7 @@ public class CommonsRegion extends Region{
         this.addShape(new CircleRegionShape(centre, regionRadius)).throwErrorIfFailed();
         this.writePermission = true;
         this.readPermission = true;
+        this.subscribedTo = true;
         this.name = "Commons";
         this.description = "Post to others in your area!";
     }
@@ -40,6 +41,20 @@ public class CommonsRegion extends Region{
     @Override
     public void setWritePermission(boolean val){
 
+    }
+
+    @Override
+    public void subscribe(){
+
+    }
+
+    @Override
+    public void unsubscribe(){
+
+    }
+
+    public boolean canUnsubscribe(){
+        return false;
     }
 
     @Override

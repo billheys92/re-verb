@@ -3,8 +3,14 @@ package com.re.reverb.androidBackend;
 import android.util.Log;
 
 import com.google.android.gms.maps.Projection;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
+import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
+import com.re.reverb.androidBackend.regions.dto.GetNearbyRegionsDto;
+import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
+import com.re.reverb.androidBackend.regions.dto.GetSubscribedRegionsDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +21,8 @@ import java.util.List;
 public class RegionManagerImpl implements RegionManager, LocationUpdateListener
 {
     private Region currentRegion;
-    private List<Region> nearbyRegions;
-    private List<Region> subscribedRegions;
+    private ArrayList<Region> nearbyRegions;
+    private ArrayList<Region> subscribedRegions;
 
     public RegionManagerImpl(){
         this.nearbyRegions = new ArrayList<Region>();
@@ -41,13 +47,13 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     }
 
     @Override
-    public List<Region> getNearbyRegions()
+    public ArrayList<Region> getNearbyRegions()
     {
         return this.nearbyRegions;
     }
 
     @Override
-    public List<Region> getSubscribedRegions()
+    public ArrayList<Region> getSubscribedRegions()
     {
         return this.subscribedRegions;
     }
@@ -73,25 +79,96 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     }
 
     @Override
-    public void addRegion(Region region)
+    public void createNewRegion(Region region)
     {
         //TODO: check if the region is already in the list before adding to list, if it is just update it
         // TODO: persist the region on server
 
-        this.nearbyRegions.add(region);
-        this.subscribedRegions.add(region);
-        Reverb.notifyAvailableRegionsUpdateListeners();
+        if(region != null)
+        {
+            CreateRegionDto regionDto = buildRegionDto(region);
+            if(com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto))
+            {
+                this.nearbyRegions.add(region);
+                Reverb.notifyAvailableRegionsUpdateListeners();
+            }
+        }
+    }
+
+    private CreateRegionDto buildRegionDto(Region region) {
+        CreateRegionDto regionDto;
+        try
+        {
+            regionDto = new CreateRegionDto(Reverb.getInstance().getCurrentUserId(),
+                    region.getName(),
+                    region.getDescription(),
+                    region.getShapes());
+
+        } catch (NotSignedInException e)
+        {
+            Log.d("Reverb", "Could not create region because " + e.getMessage());
+            return null;
+        }
+        return regionDto;
+    }
+
+    @Override
+    public void subscribeToRegion(Region region)
+    {
+        if(region != null) {
+            FollowRegionDto followRegionDto;
+            try {
+                followRegionDto = new FollowRegionDto(Reverb.getInstance().getCurrentUserId(), region.getRegionId());
+                this.subscribedRegions.add(region);
+                region.subscribe();
+                com.re.reverb.network.RegionManagerImpl.followRegion(followRegionDto);
+                Reverb.notifyAvailableRegionsUpdateListeners();
+            }
+            catch (NotSignedInException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public boolean unsubscribeFromRegion(Region region)
+    {
+        if(region != null) {
+            region.unsubscribe();
+            boolean success = this.subscribedRegions.remove(region);
+            Reverb.notifyAvailableRegionsUpdateListeners();
+            return success;
+        }
+        return false;
     }
 
     @Override
     public void updateRegionLists()
     {
-        //TODO: re-fetch nearby and subscribed
+        GetNearbyRegionsDto nearbyRegionsDto = new GetNearbyRegionsDto(Reverb.getInstance().getCurrentLocation());
+        com.re.reverb.network.RegionManagerImpl.getNearbyRegions(nearbyRegionsDto);
+        try
+        {
+            GetSubscribedRegionsDto subscribedRegionsDto = new GetSubscribedRegionsDto(Reverb.getInstance().getCurrentUserId());
+            com.re.reverb.network.RegionManagerImpl.getSubscribedRegions(subscribedRegionsDto);
+        } catch (NotSignedInException e)
+        {
+            e.printStackTrace();
+            Log.e("Reverb", "Tried to fetch subscribed regions when user was not logged in!");
+        }
+
+    }
+
+    @Override
+    public void getRegionById(int regionId)
+    {
+        com.re.reverb.network.RegionManagerImpl.getRegionById(new GetRegionByIdDto(regionId));
     }
 
     @Override
     public void onLocationChanged(Location newLocation)
     {
+        updateRegionLists();
 //        this.update();
         if(this.currentRegion == null)
         {

@@ -15,9 +15,9 @@ public interface RegionManager
 
     public Region getCurrentRegion();
 
-    public List<Region> getNearbyRegions();
+    public ArrayList<Region> getNearbyRegions();
 
-    public List<Region> getSubscribedRegions();
+    public ArrayList<Region> getSubscribedRegions();
 
     public void updateRegionLists();
 
@@ -25,6 +25,17 @@ public interface RegionManager
 
     public ArrayList<String> getSubscribedRegionNames();
 
-    public void addRegion(Region region);
+    public void createNewRegion(Region region);
+
+    public void subscribeToRegion(Region region);
+
+    public void getRegionById(int regionId);
+
+    /**
+     *
+     * @param region
+     * @return true if region unsubscribed from, false if it was never subscribed to
+     */
+    public boolean unsubscribeFromRegion(Region region);
 
 }

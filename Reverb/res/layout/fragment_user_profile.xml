@@ -25,7 +25,8 @@
             android:layout_alignParentStart="true"
             android:layout_marginLeft="@dimen/user_display_pic_margin"
             android:layout_marginTop="@dimen/user_display_pic_margin"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:onClick="choosePictureFromGallery"/>
 
         <TextView
             android:layout_width="fill_parent"
@@ -84,14 +85,5 @@
             tools:layout="@layout/post_list_fragment" />
 
     </RelativeLayout>
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:id="@+id/settingsButton"
-        android:layout_gravity="right|top"
-        android:onClick="openSettings" />
 
 </FrameLayout>
