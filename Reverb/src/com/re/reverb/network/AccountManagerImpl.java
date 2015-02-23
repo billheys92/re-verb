@@ -22,9 +22,8 @@ public class AccountManagerImpl extends PersistenceManagerImpl
 
     public static void getUserExists(final String email, final String token, final SplashScreenActivity activity)
     {
-        String params = "?commandtype=get&command=getUserExistsByEmail";
-
-        String url = baseURL + params;
+        final String params = "?commandtype=get&command=getUserExistsByEmail";
+        final String url = baseURL + params;
 
         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
         {
@@ -67,8 +66,8 @@ public class AccountManagerImpl extends PersistenceManagerImpl
 
     public static void createUser(final CreateUserDto createUserDto)
     {
-        String params = "?commandtype=post&command=createUser";
-        String url = baseURL + params;
+        final String params = "?commandtype=post&command=postUser";
+        final String url = baseURL + params;
 
         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
         {
@@ -76,10 +75,10 @@ public class AccountManagerImpl extends PersistenceManagerImpl
             public void onResponse(JSONObject response)
             {
                 Gson gson = new Gson();
-                Boolean successfulCreated = gson.fromJson(response.toString(), Boolean.class);
-                if(successfulCreated)
+                UserExistsDto successfulCreated = gson.fromJson(response.toString(), UserExistsDto.class);
+                if(successfulCreated.user_exists)
                 {
-                    loginUser(createUserDto.email, createUserDto.token);
+                    loginUser(createUserDto.Email, createUserDto.Token);
                 }
                 else
                 {
@@ -88,13 +87,13 @@ public class AccountManagerImpl extends PersistenceManagerImpl
             }
         };
 
-        //TODO: submit
+        requestJson(listener, createUserDto, Request.Method.POST, url);
     }
 
     public static void loginUser(final String email, final String token)
     {
-        String params = "?commandtype=post&command=loginUser";
-        String url = baseURL + params;
+        final String params = "?commandtype=get&command=getLoginUser";
+        final String url = baseURL + params;
 
         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
         {
@@ -104,28 +103,29 @@ public class AccountManagerImpl extends PersistenceManagerImpl
                 //TODO: add handling for invalid token
                 Gson gson = new Gson();
                 UserProfile userProfile = gson.fromJson(response.toString(), UserProfile.class);
+                userProfile.Token = token;
                 Reverb.getInstance().signInUser(userProfile);
             }
         };
 
-        requestJson(listener, new LoginUserDto(email,token), Request.Method.PUT, url);
+        requestJson(listener, new LoginUserDto(email,token), Request.Method.POST, url);
     }
 
     public static class LoginUserDto
     {
-        private final String email;
-        private final String token;
+        private final String Email;
+        private final String Token;
 
-        public LoginUserDto(String email, String token)
+        public LoginUserDto(String Email, String Token)
         {
-            this.email = email;
-            this.token = token;
+            this.Email = Email;
+            this.Token = Token;
         }
     }
 
     public static void getUserProfilePicture(final String email, final String token)
     {
-        String url = profilePictureURL + key;
+        final String url = profilePictureURL + key;
 
         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
         {
