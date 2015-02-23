@@ -23,7 +23,7 @@ public class Reverb {
     private static Collection<AvailableRegionsUpdateRegion> availableRegionsUpdateListeners;
 
     //private UserProfile currentUser;
-    private UserProfile currentUser = new UserProfile("test", "test", "test", "test", 0);
+    private UserProfile currentUser = new UserProfile("test", "test", "test", "test", "test", 8);
     private RegionManager regionManager;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
@@ -44,20 +44,9 @@ public class Reverb {
         this.currentUser = user;
     }
 
-    public boolean submitPost(CreatePostDto postDto)
+    public void submitPost(CreatePostDto postDto)
     {
-        return PostManagerImpl.submitPost(postDto);
-
-        //send post to PersistenceManager
-        //AWSPersistenceManager testPer = new AWSPersistenceManager();
-        //return testPer.submitPost(postDto);
-//This should be commented back in but isn't working yet
-//        try {
-//            postFeed.getPosts().add(0,post);
-//        } catch (UnsuccessfulRefreshException e) {
-//            e.printStackTrace();
-//        }
-        //return false;
+        PostManagerImpl.submitPost(postDto);
     }
 
     public RegionManager getRegionManager()

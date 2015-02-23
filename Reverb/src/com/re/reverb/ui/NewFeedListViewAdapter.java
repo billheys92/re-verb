@@ -173,7 +173,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
-        ((TextView) convertView.findViewById(R.id.timeNumber)).setText("                            8:35");
+        ((TextView) convertView.findViewById(R.id.timeNumber)).setText("8:35");
         ((TextView) convertView.findViewById(R.id.timeLetter)).setText("PM");
 
         /*

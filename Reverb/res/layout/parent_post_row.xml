@@ -42,14 +42,15 @@
                         android:textColor="@color/dark_grey"
                         android:textSize="14sp"
                         android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"/>
+                        android:layout_height="fill_parent"
+                        android:paddingLeft="2sp"/>
                     <TextView
                         android:id="@+id/timeLetter"
                         android:textColor="@color/dark_grey"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
-                        android:paddingTop="2sp"/>
+                        android:paddingTop="4sp"/>
                 </LinearLayout>
                 <!--<RelativeLayout
                     android:layout_width="fill_parent"
