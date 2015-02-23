@@ -58,7 +58,7 @@ public class Reverb {
         if(currentUser == null){
             throw new NotSignedInException("Get User ID");
         }
-        return currentUser.getUserId();
+        return currentUser.User_id;
     }
 
     public UserProfile getCurrentUser()  throws NotSignedInException{

@@ -58,17 +58,23 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                     try {
                         Gson gson = new Gson();
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
-
-                        //TODO: fix create post to create new posts
                         Post p = PostFactory.createParentPost(postDto);
-                        returnedPosts.add(p);
+
+                        if(!feed.getPosts().contains(p))
+                        {
+                            returnedPosts.add(p);
+                        }
+                        else
+                        {
+                            //TODO: update values inside post if needed
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (InvalidPostException e) {
                         e.printStackTrace();
                     }
                 }
-                feed.setPosts(returnedPosts);
+                feed.getPosts().addAll(0, returnedPosts);
             }
         };
 

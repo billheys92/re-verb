@@ -34,10 +34,11 @@ public class CreateUserActivity extends Activity
     public void createUser(View view)
     {
         CreateUserDto createUserDto = new CreateUserDto(
-                ((TextView)findViewById(R.id.username)).toString(),
-                ((TextView)findViewById(R.id.handle)).toString(),
+                ((TextView)findViewById(R.id.username)).getText().toString(),
+                ((TextView)findViewById(R.id.handle)).getText().toString(),
                 email,
-                token
+                token,
+                "test about me"
         );
 
         AccountManagerImpl.createUser(createUserDto);

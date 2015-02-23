@@ -87,11 +87,11 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
         if(region != null)
         {
             CreateRegionDto regionDto = buildRegionDto(region);
-            if(com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto))
-            {
+
+            com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto);
+                //TODO: add next two lines to listener for submitNewRegion if we want it upon success
                 this.nearbyRegions.add(region);
                 Reverb.notifyAvailableRegionsUpdateListeners();
-            }
         }
     }
 

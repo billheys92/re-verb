@@ -2,16 +2,18 @@ package com.re.reverb.androidBackend.account;
 
 public class CreateUserDto
 {
-    public String username;
-    public String handle;
-    public String email;
-    public String token;
+    public String Name;
+    public String Handle;
+    public String Email;
+    public String Token;
+    public String About_me;
 
-    public CreateUserDto(String username, String handle, String email, String token)
+    public CreateUserDto(String Name, String Handle, String Email, String Token, String About_me)
     {
-        this.username = username;
-        this.handle = handle;
-        this.email = email;
-        this.token = token;
+        this.Name = Name;
+        this.Handle = Handle;
+        this.Email = Email;
+        this.Token = Token;
+        this.About_me = About_me;
     }
 }

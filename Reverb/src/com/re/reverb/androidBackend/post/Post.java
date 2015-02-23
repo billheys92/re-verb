@@ -91,4 +91,16 @@ public class Post
                 return "invalid post property index";
         }
     }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean equal = false;
+        if(object != null && object instanceof Post)
+        {
+            equal = this.postId == ((Post) object).postId;
+        }
+
+        return equal;
+    }
 }

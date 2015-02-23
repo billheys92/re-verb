@@ -75,13 +75,13 @@ public class UserProfileFragment extends Fragment
         transaction.replace(R.id.userProfilePostListFragment, postListFragment).commit();
 */
 		TextView nameText = (TextView) view.findViewById(R.id.nameTextView);
-        nameText.setText(profile.getUsername());
+        nameText.setText(profile.Name);
 		TextView handleText = (TextView) view.findViewById(R.id.handleTextView);
-        handleText.setText(profile.getHandle());
+        handleText.setText(profile.Handle);
         TextView descriptionText = (TextView) view.findViewById(R.id.userDescription);
-        descriptionText.setText(profile.getDescription());
+        descriptionText.setText(profile.About_me);
         TextView emailText = (TextView) view.findViewById(R.id.emailTextView);
-        emailText.setText(profile.getEmail());
+        emailText.setText(profile.Email_address);
         profilePic = (NetworkImageView) view.findViewById(R.id.profilePicture);
         profilePic.setOnClickListener(new View.OnClickListener() {
 

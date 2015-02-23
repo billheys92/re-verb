@@ -71,28 +71,7 @@ public class NewPostFeed implements Feed<ParentPost>
 
     @Override
     public void refreshPosts() throws UnsuccessfulRefreshException {
-        this.posts.clear();
-
-        NewPostFactory factory = new NewPostFactory(context);
-
-        //Fake Posts
-        /*
-        ArrayList<ParentPost> testParents = new ArrayList<ParentPost>();
-
-        for(int i = 0; i < 50; i++)
-        {
-            ParentPost generatedPost = factory.createPost();
-            testParents.add(generatedPost);
-        }
-
-        this.setPosts(testParents);
-        */
-
-        //TODO: Get real posts from the server
         PostManagerImpl.getPosts(this);
-
-        //AWSPersistenceManager persistenceManager = new AWSPersistenceManager(this);
-        //persistenceManager.getPosts();
     }
 
     @Override
