@@ -39,7 +39,7 @@ public class UserProfileFragment extends Fragment
     private static final int SELECT_PHOTO = 100;
     private static View view;
 
-    UserProfile profile = new UserProfile("test@test.com","bheys","Bill Heys","description",1);
+    UserProfile profile = new UserProfile("test@test.com","bheys","Bill Heys","description", "token", 1);
     private ImageView backgroundMapImageView;
     NetworkImageView profilePic;
 

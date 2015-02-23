@@ -6,13 +6,15 @@ public class UserProfile {
     private String username;
     private String handle;
     private String description;
+    private String token;
     private int id;
 
-    public UserProfile(String email, String username, String handle, String description, int id) {
+    public UserProfile(String email, String username, String handle, String description, String token, int id) {
         this.email = email;
         this.username = username;
         this.handle = handle;
         this.description = description;
+        this.token = token;
         this.id = id;
     }
 
@@ -50,5 +52,15 @@ public class UserProfile {
 
     public int getUserId() {
         return id;
+    }
+
+    public String getToken()
+    {
+        return token;
+    }
+
+    public void setToken(String token)
+    {
+        this.token = token;
     }
 }

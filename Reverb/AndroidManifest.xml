@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
     <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
 
@@ -54,6 +55,12 @@
             android:label="@string/title_activity_create_region">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.re.reverb.ui.MainViewPagerActivity" />
+
+        </activity>
+        <activity android:name="com.re.reverb.ui.CreateUserActivity"
+                  android:label="@string/title_activity_create_user">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value="com.re.reverb.ui.SplashScreenActivity" />
 
         </activity>
 

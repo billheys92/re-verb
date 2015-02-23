@@ -17,8 +17,6 @@ import java.util.ArrayList;
 
 public class PostManagerImpl extends PersistenceManagerImpl implements PostManager
 {
-    private static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/test/test/Reverb.php";
-
     //TODO: introduce concept of paging for post retrieval
 
     public static void getPosts(final Feed feed)
@@ -77,10 +75,10 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         requestJsonArray(listener, url);
     }
 
-    public static boolean submitPost(CreatePostDto postDto)
+    public static void submitPost(CreatePostDto postDto)
     {
         String params = "?commandtype=post&command=postMessageText";
-        return requestJson(postDto, Request.Method.PUT, baseURL + params);
+        requestJson(postDto, Request.Method.PUT, baseURL + params);
     }
 
     public static void submitReplyPost(CreatePostDto postDto)

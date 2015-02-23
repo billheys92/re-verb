@@ -22,6 +22,7 @@ import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 public class CreatePostActivity extends Activity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int CHARACTER_LIMIT = 1024;
     ImageView attachedPhoto;
     boolean postSubmitted = false;
     //UserProfile user;
@@ -93,7 +94,7 @@ public class CreatePostActivity extends Activity {
     {
         TextView contentText = (TextView)findViewById(R.id.editPostTextContentView);
         String text = contentText.getText().toString();
-        if(text == null || text.replaceAll("\\s+","").length() == 0) {
+        if(text == null || text.replaceAll("\\s+","").length() == 0 || text.length() > CHARACTER_LIMIT) {
             return false;
         }
         return true;

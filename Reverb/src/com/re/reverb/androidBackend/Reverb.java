@@ -23,7 +23,7 @@ public class Reverb {
     private static Collection<AvailableRegionsUpdateRegion> availableRegionsUpdateListeners;
 
     //private UserProfile currentUser;
-    private UserProfile currentUser = new UserProfile("test", "test", "test", "test", 3);
+    private UserProfile currentUser = new UserProfile("test", "test", "test", "test", "test", 8);
     private RegionManager regionManager;
     private Feed postFeed;
     private Settings settings = Settings.getInstance();
@@ -44,9 +44,9 @@ public class Reverb {
         this.currentUser = user;
     }
 
-    public boolean submitPost(CreatePostDto postDto)
+    public void submitPost(CreatePostDto postDto)
     {
-        return PostManagerImpl.submitPost(postDto);
+        PostManagerImpl.submitPost(postDto);
     }
 
     public RegionManager getRegionManager()
