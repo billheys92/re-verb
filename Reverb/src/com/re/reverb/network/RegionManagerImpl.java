@@ -23,8 +23,6 @@ import java.util.ArrayList;
 
 public class RegionManagerImpl extends PersistenceManagerImpl
 {
-    private static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/jacob_test/Reverb.php";
-
     public static void getNearbyRegions(GetNearbyRegionsDto dto)
     {
         String params = "?commandtype=get&command=getRegions";

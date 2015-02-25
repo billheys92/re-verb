@@ -6,7 +6,7 @@ import com.re.reverb.androidBackend.post.content.PostContent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Post
+public class Post implements Comparable<Post>
 {
     private final int userId;
     private final int postId;
@@ -102,5 +102,18 @@ public class Post
         }
 
         return equal;
+    }
+
+    @Override
+    public int compareTo(Post another)
+    {
+        if(this.getTimeCreated() != null && this.getTimeCreated().before(another.getTimeCreated()))
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
     }
 }
