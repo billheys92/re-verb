@@ -154,40 +154,40 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         {
             convertView = inflater.inflate(R.layout.parent_post_row, null);
         }
-
-        //Removed while postContent is still just text
         StandardPostContent postContent = (StandardPostContent) parentPost.getContent();
-
-        //Added while postContext is still TextPostContent
-        //StandardPostContent postContent = new StandardPostContent(convertView.getContext(), parentPost.getContent().getMessageString());
-
 
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
         netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
-        //((ImageView) convertView.findViewById(R.id.profilePicture)).setImageResource(R.drawable.chris_pp);
-        //((ImageView) convertView.findViewById(R.id.profilePicture)).setImageBitmap(postContent.getProfilePicture());
         netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
-        ((ImageView) convertView.findViewById(R.id.replyIcon)).setImageResource(R.drawable.reply_icon);
+
+        final ImageView replyImage = (ImageView) convertView.findViewById(R.id.replyIcon);
+        replyImage.setImageResource(R.drawable.reply_icon);
+        replyImage.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                if(activity instanceof MainViewPagerActivity)
+                {
+                    ((MainViewPagerActivity) activity).startCreateReplyPostActivity(v, parentPost.getPostId());
+                    System.out.println("Reply to post: " + parentPost.getPostId());
+                }
+                else
+                {
+                    System.out.println("Wrong activity for reply icon");
+                }
+            }
+        });
+
         ((ImageView) convertView.findViewById(R.id.voteIcon)).setImageResource(R.drawable.votes_icon);
         ((TextView) convertView.findViewById(R.id.voteCount)).setText(postContent.getNumVotes().toString());
         ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
-        ((TextView) convertView.findViewById(R.id.timeNumber)).setText("8:35");
-        ((TextView) convertView.findViewById(R.id.timeLetter)).setText("PM");
+        ((TextView) convertView.findViewById(R.id.timeNumber)).setText(parentPost.getTimeCreated().toString());
+        ((TextView) convertView.findViewById(R.id.timeLetter)).setText("format am pm");
 
-        /*
-        Post post = (Post) getGroup(groupPosition);
-        String postData = "Error: Blank text";
-        try
-        {
-            postData = (String) post.getContent().getPostData();
-        } catch (EmptyPostException e)
-        {
-            e.printStackTrace();
-        }
-        ((CheckedTextView) convertView).setText(postData);
-        ((CheckedTextView) convertView).setChecked(isExpanded);*/
         return convertView;
     }
 
