@@ -8,12 +8,14 @@ import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
+import com.re.reverb.androidBackend.post.dto.CreateReplyPostDto;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PostManagerImpl extends PersistenceManagerImpl implements PostManager
 {
@@ -60,6 +62,8 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
                         Post p = PostFactory.createParentPost(postDto);
 
+                        System.out.println(p.getPostId());
+
                         if(!feed.getPosts().contains(p))
                         {
                             returnedPosts.add(p);
@@ -75,6 +79,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                     }
                 }
                 feed.getPosts().addAll(0, returnedPosts);
+                Collections.sort(feed.getPosts());
             }
         };
 
@@ -87,8 +92,9 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         requestJson(postDto, Request.Method.PUT, baseURL + params);
     }
 
-    public static void submitReplyPost(CreatePostDto postDto)
+    public static void submitReplyPost(CreateReplyPostDto replyPostDto)
     {
-
+        String params = "?commandtype=post&command=postReplyText";
+        requestJson(replyPostDto, Request.Method.POST, baseURL + params);
     }
 }

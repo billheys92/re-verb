@@ -36,6 +36,7 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
 {
 
     static final int CREATE_POST_REQUEST = 1;  // The request code for creating a post activity
+    static final int CREATE_REPLY_POST_REQUEST = 3;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 2; //for checking playservices
 
 	static final int NUM_PAGES = 3;
@@ -102,6 +103,13 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
         startActivityForResult(intent, CREATE_POST_REQUEST);
     }
 
+    public void startCreateReplyPostActivity(View view, int postId)
+    {
+        Intent intent = new Intent(this, CreatePostActivity.class);
+        intent.putExtra("POST_ID", postId);
+        startActivityForResult(intent, CREATE_REPLY_POST_REQUEST);
+    }
+
     public void startCreateRegionActivity(View view) {
         Intent intent = new Intent(this, CreateRegionActivity.class);
         intent.putExtra("SELECTED_REGION_ID", -1);
@@ -125,14 +133,24 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
                         servicesConnected();    //try request again
                         break;
                 }
+                break;
 
             case CREATE_POST_REQUEST :
                 switch (resultCode) {
                     case Activity.RESULT_OK :
                         newFeedFragment.onRefresh();
+                        break;
 
                 }
+                break;
+            case CREATE_REPLY_POST_REQUEST :
+                switch (resultCode) {
+                    case Activity.RESULT_OK :
+                        newFeedFragment.onRefresh();
+                        break;
 
+                }
+                break;
         }
     }
 
