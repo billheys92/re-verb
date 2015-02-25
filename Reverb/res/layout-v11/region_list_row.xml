@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:descendantFocusability="blocksDescendants"
+                android:layout_height="75dip"
                 android:padding="5dip">
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/regionThumbnail"
         android:layout_width="75dip"
         android:layout_height="75dip"
-        android:focusable="false"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="false"/>
 
@@ -19,7 +16,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Region "
-        android:focusable="false"
         android:id="@+id/regionName"
         android:layout_alignTop="@+id/regionThumbnail"
         android:layout_alignParentLeft="false"
@@ -29,52 +25,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Description"
-        android:focusable="false"
         android:id="@+id/regionDescriptionTextView"
         android:layout_below="@+id/regionName"
-        android:layout_toRightOf="@+id/regionThumbnail"
-        android:maxWidth="200dp"
-        android:maxLines="3"/>
+        android:layout_toRightOf="@+id/regionThumbnail"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="0 Followers | 0 Posts"
-        android:focusable="false"
         android:id="@+id/regionStatsTextView"
         android:layout_below="@+id/regionDescriptionTextView"
         android:layout_alignLeft="@+id/regionDescriptionTextView"
         android:layout_alignStart="@+id/regionDescriptionTextView"
-        android:textColor="@color/dark_grey"/>
+        android:textColor="@color/light_grey"/>
 
     <ImageButton
         android:layout_width="50dp"
-        android:layout_height="75dp"
+        android:layout_height="fill_parent"
         android:id="@+id/subscribeToRegionToggleButton"
         android:src="@drawable/plus_sign"
         android:layout_gravity="center|right"
-        android:clickable="false"
+        android:clickable="true"
         android:scaleType="centerCrop"
         android:layout_alignParentEnd="false"
         android:padding="20dp"
-        android:focusable="false"
-        android:background="@android:color/transparent"
-        android:layout_toLeftOf="@+id/regionViewInfoButton"
-        android:layout_alignParentTop="true"/>
+        android:background="?android:selectableItemBackground"
+        android:layout_toLeftOf="@+id/regionViewInfoButton"/>
 
-    <ImageView
+    <ImageButton
         android:layout_width="25dp"
-        android:layout_height="75dp"
+        android:layout_height="fill_parent"
         android:src="@drawable/details_arrow_icon"
         android:layout_gravity="center|right"
-        android:clickable="false"
+        android:clickable="true"
         android:scaleType="centerCrop"
         android:padding="15dp"
-        android:focusable="false"
         android:id="@+id/regionViewInfoButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:background="@android:color/transparent"/>
+        android:background="?android:selectableItemBackground"/>
 
 </RelativeLayout>

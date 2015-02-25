@@ -30,7 +30,7 @@
             android:name="com.re.reverb.ui.CreatePostActivity"
             android:label="@string/title_activity_create_post"
             android:parentActivityName="com.re.reverb.ui.MainViewPagerActivity"
-            android:theme="@style/Theme.Transparent">
+            android:theme="@style/Theme.CustomActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.re.reverb.ui.MainViewPagerActivity" />

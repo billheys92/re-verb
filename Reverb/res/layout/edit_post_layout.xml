@@ -45,7 +45,8 @@
                     android:src="@drawable/camera_icon"
                     android:scaleType="centerInside"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"/>
+                    android:background="@android:color/transparent"
+                    android:onClick="includePhoto"/>
 
                 <ImageButton
                     android:layout_width="80dp"
@@ -55,7 +56,8 @@
                     android:scaleType="centerInside"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_marginLeft="10dp"
+                    android:onClick="submitPost"/>
             </LinearLayout>
 
             <ImageView

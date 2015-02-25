@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/floatingMenu" />
+        android:layout_above="@+id/floatingMenu"
+        android:id="@+id/editPostIncludedLayout"/>
 
 
     <LinearLayout
@@ -25,27 +26,13 @@
         android:id="@+id/floatingMenu"
         android:visibility="visible">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Camera"
-            android:id="@+id/postAttachImageButton"
-            android:onClick="includePhoto"/>
-
         <CheckBox
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="Anonymous"
             android:id="@+id/anonymousCheckbox"
             android:checked="true"
             android:onClick="toggleAnonymity"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Post"
-            android:id="@+id/postSubmitButton"
-            android:onClick="submitPost" />
 
     </LinearLayout>
 

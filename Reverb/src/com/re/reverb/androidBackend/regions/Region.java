@@ -8,6 +8,7 @@ import com.re.reverb.androidBackend.utils.SuccessStatus;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Region
 {
@@ -18,6 +19,7 @@ public class Region
     protected boolean canEdit = true;
     protected boolean subscribedTo = false;
 
+    Random r = new Random();
     protected int regionId;
     protected final double MAX_AREA = 10;    //10 km max area maybe?
 
@@ -26,6 +28,7 @@ public class Region
     protected String description;
 
     public Region(){
+        this.regionId = r.nextInt();
     }
 
     public Region(Region r){

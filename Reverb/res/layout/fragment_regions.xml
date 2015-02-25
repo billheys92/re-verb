@@ -36,7 +36,11 @@
         android:id="@android:id/list"
         android:layout_alignParentTop="false"
         android:layout_weight="1"
-        android:layout_marginTop="@dimen/bottom_toolbar_height"/>
+        android:layout_marginTop="@dimen/bottom_toolbar_height"
+        android:clickable="true"
+        android:focusable="true"
+        android:footerDividersEnabled="false"
+        android:focusableInTouchMode="true"/>
 
 
     <ImageButton
@@ -51,13 +55,5 @@
         android:layout_marginBottom="20dip"
         android:onClick="startCreateRegionActivity"
         />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fetch region"
-        android:id="@+id/fetchRegionButton"
-        android:layout_gravity="left|bottom"
-        android:onClick="fetchSingleRegion"/>
 
 </FrameLayout>

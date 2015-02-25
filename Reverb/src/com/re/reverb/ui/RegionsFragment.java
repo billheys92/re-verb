@@ -1,5 +1,6 @@
 package com.re.reverb.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -122,9 +124,10 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
     public void onListItemClick(ListView parent, View v, int position, long id)
     {
         super.onListItemClick(parent, v, position, id);
-        Intent intent = new Intent(this.getActivity(), CreateRegionActivity.class);
-        intent.putExtra("SELECTED_REGION_ID", position);
-        startActivity(intent);
+           v.setBackgroundResource(R.drawable.horizontal_reverb_themed_bg_gradient);
+//        Intent intent = new Intent(this.getActivity(), CreateRegionActivity.class);
+//        intent.putExtra("SELECTED_REGION_ID", position);
+//        startActivity(intent);
     }
 
     private class RegionsArrayAdapter extends ArrayAdapter<Region> {
@@ -138,11 +141,24 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             final Region selectedRegion = values.get(position);
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.region_list_row, parent, false);
+            rowView.setClickable(true);
+            if(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId() == selectedRegion.getRegionId()) {
+                rowView.setBackgroundResource(R.drawable.horizontal_reverb_themed_bg_gradient);
+            }
+            rowView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                   Reverb.getInstance().getRegionManager().setCurrentRegion(selectedRegion);
+                    notifyDataSetChanged();
+                }
+            });
             TextView regionNameTextView = (TextView) rowView.findViewById(R.id.regionName);
             TextView regionDescriptionTextView = (TextView) rowView.findViewById(R.id.regionDescriptionTextView);
             NetworkImageView imageView = (NetworkImageView) rowView.findViewById(R.id.regionThumbnail);
@@ -153,6 +169,7 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
             final ImageView toggleSubscribedImage = (ImageView) rowView.findViewById(R.id.subscribeToRegionToggleButton);
             if(!selectedRegion.canUnsubscribe()) {
                 toggleSubscribedImage.setImageDrawable(null);
+                toggleSubscribedImage.setClickable(false);
             }
             else if(selectedRegion.isSubscribedTo())
             {
@@ -175,6 +192,19 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
                         toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.plus_sign ));
                         Toast.makeText(getActivity(), "Unsubscribed From region "+selectedRegion.getName(), Toast.LENGTH_SHORT).show();
                     }
+                }
+            });
+            ImageView regionDetailsButton = (ImageView)rowView.findViewById(R.id.regionViewInfoButton);
+            regionDetailsButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    //TODO: only fetch names and ids in the array of rgions call and then get
+                    //TODO: more details in the next activity. This requires moving region static maps api call until later
+                    Intent intent = new Intent(getActivity(), CreateRegionActivity.class);
+                    intent.putExtra("SELECTED_REGION_ID", position);
+                    startActivity(intent);
                 }
             });
             return rowView;

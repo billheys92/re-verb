@@ -81,9 +81,6 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     @Override
     public void createNewRegion(Region region)
     {
-        //TODO: check if the region is already in the list before adding to list, if it is just update it
-        // TODO: persist the region on server
-
         if(region != null)
         {
             CreateRegionDto regionDto = buildRegionDto(region);
