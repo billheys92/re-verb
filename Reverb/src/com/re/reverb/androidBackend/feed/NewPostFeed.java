@@ -2,16 +2,15 @@ package com.re.reverb.androidBackend.feed;
 
 import android.content.Context;
 
+import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
+import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.post.NewPostFactory;
 import com.re.reverb.androidBackend.post.ParentPost;
-import com.re.reverb.androidBackend.post.Post;
-import com.re.reverb.network.AWSPersistenceManager;
 import com.re.reverb.network.PostManagerImpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,28 +70,9 @@ public class NewPostFeed implements Feed<ParentPost>
 
     @Override
     public void refreshPosts() throws UnsuccessfulRefreshException {
-        this.posts.clear();
-
-        NewPostFactory factory = new NewPostFactory(context);
-
-        //Fake Posts
-        /*
-        ArrayList<ParentPost> testParents = new ArrayList<ParentPost>();
-
-        for(int i = 0; i < 50; i++)
-        {
-            ParentPost generatedPost = factory.createPost();
-            testParents.add(generatedPost);
-        }
-
-        this.setPosts(testParents);
-        */
-
-        //TODO: Get real posts from the server
-        PostManagerImpl.getPosts(this);
-
-        //AWSPersistenceManager persistenceManager = new AWSPersistenceManager(this);
-        //persistenceManager.getPosts();
+        //TODO: Add real range value
+        Location location = Reverb.getInstance().getCurrentLocation();
+        PostManagerImpl.getPosts(location.getLatitude(), location.getLongitude(), 2, this);
     }
 
     @Override

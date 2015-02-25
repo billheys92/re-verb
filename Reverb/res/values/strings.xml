@@ -22,5 +22,6 @@
     <string name="settings_map_type_default_value">roadmap</string>
     <string name="title_settings_activity">Settings</string>
     <string name="title_activity_create_region">New Region</string>
+    <string name="title_activity_create_user">Create User</string>
 
 </resources>

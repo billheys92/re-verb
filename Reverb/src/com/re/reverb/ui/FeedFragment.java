@@ -48,8 +48,6 @@ public class FeedFragment extends Fragment implements OnRefreshListener, OnFeedD
 				R.color.reverb_blue_4);
 		ExpandableListView elv = (ExpandableListView) rootView.findViewById(R.id.feedListView);
 		
-		RequestQueueSingleton.getInstance(getActivity().getApplicationContext());
-		
 		
 	    adapter = new FeedListViewAdapter(getActivity(), dataFeed);
 		elv.setAdapter(adapter);

@@ -7,7 +7,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,13 +17,47 @@ import org.json.JSONObject;
 
 public class PersistenceManagerImpl implements PersistenceManager
 {
+    protected static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/chris_test/Reverb.php";
+
     private static final RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
-    public  static boolean requestJson(Object request, int requestType, String url)
+    public static void requestJson(Object request, int requestType, String url)
     {
-        Gson gson = new Gson();
-        String jsonObjectString = gson.toJson(request);
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                System.out.println("Response is: " + response.toString());
+            }
+        };
+
+        requestJson(listener, request, requestType, url);
+    }
+
+    public static void requestJson(Response.Listener<JSONObject> listener, final Object request, int requestType, String url)
+    {
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                Gson gson = new Gson();
+                String jsonObjectString = gson.toJson(request);
+                error.printStackTrace();
+                System.out.println("Error Sending Message With: " + jsonObjectString);
+            }
+        };
+
+        requestJson(listener, errorListener, request, requestType, url);
+    }
+
+    public static void requestJson(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener, Object request, int requestType, String url)
+    {
         JSONObject jsonObject = null;
+        Gson gson = new Gson();
+
+        String jsonObjectString = gson.toJson(request);
 
         try
         {
@@ -32,26 +68,9 @@ public class PersistenceManagerImpl implements PersistenceManager
         }
 
         //TODO: Pass in Listener from the extension of the manager
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(requestType, url, jsonObject, new Response.Listener<JSONObject>()
-        {
-
-            @Override
-            public void onResponse(JSONObject response)
-            {
-                System.out.println("Response is: "+ response);
-            }
-        }, new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                error.printStackTrace();
-                System.out.println("Error Sending Message");
-            }
-        });
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(requestType, url, jsonObject, listener, errorListener);
 
         queue.add(jsonRequest);
-        return true;
     }
 
     public static boolean requestJsonArray(Response.Listener<JSONArray> listener, String url)

@@ -2,53 +2,24 @@ package com.re.reverb.androidBackend.account;
 
 public class UserProfile {
 
-    private String email;
-    private String username;
-    private String handle;
-    private String description;
-    private int id;
+    public final String Email_address;
+    public final String Name;
+    public final String Handle;
+    public final String About_me;
+    public String Token;
+    public final int User_id;
 
-    public UserProfile(String email, String username, String handle, String description, int id) {
-        this.email = email;
-        this.username = username;
-        this.handle = handle;
-        this.description = description;
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getHandle() {
-        return handle;
-    }
-
-    public void setHandle(String handle) {
-        this.handle = handle;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getUserId() {
-        return id;
+    public UserProfile(String email,
+                       String name,
+                       String handle,
+                       String about_me,
+                       String token,
+                       int user_id) {
+        Email_address = email;
+        Name = name;
+        Handle = handle;
+        About_me = about_me;
+        Token = token;
+        User_id = user_id;
     }
 }

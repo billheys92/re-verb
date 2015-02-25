@@ -17,8 +17,6 @@ import java.util.ArrayList;
 
 public class PostManagerImpl extends PersistenceManagerImpl implements PostManager
 {
-    private static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/test/test/Reverb.php";
-
     //TODO: introduce concept of paging for post retrieval
 
     public static void getPosts(final Feed feed)
@@ -27,9 +25,9 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         getPosts(feed, params);
     }
 
-    public static void getPosts(double latitude, double longitude, final Feed feed)
+    public static void getPosts(double latitude, double longitude, float range, final Feed feed)
     {
-        String params = "?commandtype=get&command=getAllMessages&lat=" + Double.toString(latitude) + "&lon=" + Double.toString(longitude);
+        String params = String.format("?commandtype=get&command=getMessagesByLocation&lat=%s&lon=%s&range=%s",Double.toString(latitude), Double.toString(longitude), range);
         getPosts(feed, params);
     }
 
@@ -60,27 +58,33 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                     try {
                         Gson gson = new Gson();
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
-
-                        //TODO: fix create post to create new posts
                         Post p = PostFactory.createParentPost(postDto);
-                        returnedPosts.add(p);
+
+                        if(!feed.getPosts().contains(p))
+                        {
+                            returnedPosts.add(p);
+                        }
+                        else
+                        {
+                            //TODO: update values inside post if needed
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (InvalidPostException e) {
                         e.printStackTrace();
                     }
                 }
-                feed.setPosts(returnedPosts);
+                feed.getPosts().addAll(0, returnedPosts);
             }
         };
 
         requestJsonArray(listener, url);
     }
 
-    public static boolean submitPost(CreatePostDto postDto)
+    public static void submitPost(CreatePostDto postDto)
     {
         String params = "?commandtype=post&command=postMessageText";
-        return requestJson(postDto, Request.Method.PUT, baseURL + params);
+        requestJson(postDto, Request.Method.PUT, baseURL + params);
     }
 
     public static void submitReplyPost(CreatePostDto postDto)
