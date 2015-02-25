@@ -157,7 +157,6 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
                 {
                    Reverb.getInstance().getRegionManager().setCurrentRegion(selectedRegion);
                     notifyDataSetChanged();
-                    ((MainViewPagerActivity)getActivity()).returnToDefaultPage();
                 }
             });
             TextView regionNameTextView = (TextView) rowView.findViewById(R.id.regionName);

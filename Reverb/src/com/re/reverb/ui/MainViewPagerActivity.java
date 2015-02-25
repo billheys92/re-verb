@@ -205,12 +205,19 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
 
     void updateLocation()
     {
-        Location location = mLocationClient.getLastLocation();
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        Reverb.getInstance().setCurrentLocation((float) location.getLatitude(), (float) location.getLongitude());
+        if(mLocationClient.isConnected())
+        {
+            Location location = mLocationClient.getLastLocation();
+            String msg = "Updated Location: " +
+                    Double.toString(location.getLatitude()) + "," +
+                    Double.toString(location.getLongitude());
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            Reverb.getInstance().setCurrentLocation((float) location.getLatitude(), (float) location.getLongitude());
+        }
+        else
+        {
+            mLocationClient.connect();
+        }
     }
 
     /*
@@ -322,12 +329,6 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
     private void toggleAnonymity()
     {
         Toast.makeText(this, "Toggling Anonymity (but not actually)", Toast.LENGTH_SHORT).show();
-    }
-
-
-    //TODO: TAKE THIS OUT!
-    public void fetchSingleRegion(View view){
-        Reverb.getInstance().getRegionManager().getRegionById(11);
     }
 
 }
