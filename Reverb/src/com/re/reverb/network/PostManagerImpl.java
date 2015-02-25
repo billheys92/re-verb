@@ -25,9 +25,9 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         getPosts(feed, params);
     }
 
-    public static void getPosts(double latitude, double longitude, final Feed feed)
+    public static void getPosts(double latitude, double longitude, float range, final Feed feed)
     {
-        String params = "?commandtype=get&command=getAllMessages&lat=" + Double.toString(latitude) + "&lon=" + Double.toString(longitude);
+        String params = String.format("?commandtype=get&command=getMessagesByLocation&lat=%s&lon=%s&range=%s",Double.toString(latitude), Double.toString(longitude), range);
         getPosts(feed, params);
     }
 
