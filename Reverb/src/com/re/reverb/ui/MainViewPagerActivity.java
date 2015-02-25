@@ -73,6 +73,10 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
         mEditor = mPrefs.edit();
 
     }
+
+    public void returnToDefaultPage() {
+        mViewPager.setCurrentItem(defaultPage);
+    }
     
     public class MainViewPagerAdapter extends FragmentPagerAdapter {
     	 

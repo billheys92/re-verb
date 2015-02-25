@@ -36,7 +36,11 @@
         android:id="@android:id/list"
         android:layout_alignParentTop="false"
         android:layout_weight="1"
-        android:layout_marginTop="@dimen/bottom_toolbar_height"/>
+        android:layout_marginTop="@dimen/bottom_toolbar_height"
+        android:clickable="true"
+        android:focusable="true"
+        android:footerDividersEnabled="false"
+        android:focusableInTouchMode="true"/>
 
 
     <ImageButton

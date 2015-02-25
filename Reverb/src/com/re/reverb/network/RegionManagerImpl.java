@@ -28,7 +28,7 @@ public class RegionManagerImpl extends PersistenceManagerImpl
     public static boolean getNearbyRegions(GetNearbyRegionsDto dto)
     {
         String params = "?commandtype=get&command=getRegions";
-        return requestJson(dto ,Request.Method.GET, baseURL + params);
+        return requestJson(dto ,Request.Method.POST, baseURL + params);
     }
 
     public static boolean getSubscribedRegions(GetSubscribedRegionsDto dto)
