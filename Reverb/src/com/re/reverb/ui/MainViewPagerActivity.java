@@ -295,7 +295,8 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
         super.onStart();
         // Connect the client.
         mLocationClient.connect();
-
+//        Intent intent = new Intent(this, LocationUpdateService.class);
+//        startService(intent);
     }
     
     /*

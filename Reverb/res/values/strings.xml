@@ -23,5 +23,7 @@
     <string name="title_settings_activity">Settings</string>
     <string name="title_activity_create_region">New Region</string>
     <string name="title_activity_create_user">Create User</string>
+    <string name="local_service_started">Local Service Started</string>
+    <string name="local_service_stopped">Service Stopped</string>
 
 </resources>
