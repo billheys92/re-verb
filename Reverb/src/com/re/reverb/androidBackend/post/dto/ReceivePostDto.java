@@ -74,6 +74,7 @@ public class ReceivePostDto {
         this.Location_long = post.getPostLocation().getLongitude();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         this.Create_time = sdf.format(post.getTimeCreated());
+        this.Update_time = sdf.format(post.getTimeUpdated());
         this.Region_id = 0;
         this.Spam = 0;
         this.Up_vote = 0;
@@ -115,6 +116,14 @@ public class ReceivePostDto {
         {
             return Create_time;
         }
+    }
+
+    public String getCreate_time() {
+        return Create_time;
+    }
+
+    public String getUpdate_time() {
+        return Update_time;
     }
 
     public int getRegion_id() {

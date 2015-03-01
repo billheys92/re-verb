@@ -5,6 +5,7 @@ import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.feed.Feed;
+import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
@@ -13,6 +14,7 @@ import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,13 +25,15 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
     public static void getPosts(final Feed feed)
     {
-        String params = "?commandtype=get&command=getAllMessages";
+        String lastUpdate = feed.getLastPostTime();
+        String params = String.format("?commandtype=get&command=getAllMessages&lastupdate='%s'",lastUpdate);
         getPosts(feed, params);
     }
 
     public static void getPosts(double latitude, double longitude, float range, final Feed feed)
     {
-        String params = String.format("?commandtype=get&command=getMessagesByLocation&lat=%s&lon=%s&range=%s",Double.toString(latitude), Double.toString(longitude), range);
+        String lastUpdate = feed.getLastPostTime();
+        String params = String.format("?commandtype=get&command=getMessagesByLocation&lat=%s&lon=%s&range=%s&lastupdate='%s'",Double.toString(latitude), Double.toString(longitude), range, lastUpdate);
         getPosts(feed, params);
     }
 
@@ -41,6 +45,23 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     public static void getPostsForUser(int userId, final Feed feed)
     {
 
+    }
+
+    public static boolean getNumNewPosts(double latitude, double longitude, float range, String lastUpdateTime) {
+
+        String url = baseURL + String.format("?commandtype=get&command=getNumNewMessages&lat=%s&lon=%s&range=%s&lastupdate='%s'",Double.toString(latitude), Double.toString(longitude), range, lastUpdateTime);
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                System.out.println("Response is: "+ response);
+
+            }
+        };
+
+        requestJsonGet(listener, url);
+        return true;
     }
 
     public static void getPosts(final Feed feed, final String params)
@@ -80,6 +101,14 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                 }
                 feed.getPosts().addAll(0, returnedPosts);
                 Collections.sort(feed.getPosts());
+                ((NewPostFeed)feed).notifyListenersOfDataChange();
+                if(feed.getPosts().get(0) != null) {
+                    feed.setLastPostTime(((Post)feed.getPosts().get(0)).getLatestTime());
+                }
+                if(feed.getPosts().size() > 0) {
+                    feed.setEarliestPostTime(((Post)feed.getPosts().get(feed.getPosts().size()-1)).getLatestTime());
+                }
+
             }
         };
 

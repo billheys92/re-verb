@@ -14,10 +14,11 @@ public class ChildPost extends Post
                      int postId,
                      Location postLocation,
                      Date timeCreated,
+                     Date timeUpdated,
                      PostContent content,
                      boolean anonymous)
     {
-        super(userId, postId, postLocation, timeCreated, content, anonymous);
+        super(userId, postId, postLocation, timeCreated, timeUpdated, content, anonymous);
         this.parentId = parentId;
     }
 

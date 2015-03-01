@@ -27,14 +27,14 @@ public class RegionManagerImpl extends PersistenceManagerImpl
 
     public static void getNearbyRegions(GetNearbyRegionsDto dto)
     {
-        String params = "?commandtype=get&command=getRegions";
-        requestJson(dto ,Request.Method.POST, baseURL + params);
+//        String params = "?commandtype=get&command=getRegions";
+//        requestJson(dto ,Request.Method.POST, baseURL + params);
     }
 
     public static void getSubscribedRegions(GetSubscribedRegionsDto dto)
     {
-        String params = "?commandtype=get&command=getRegions";
-        requestJson(dto ,Request.Method.GET, baseURL + params);
+//        String params = "?commandtype=get&command=getRegions";
+//        requestJson(dto ,Request.Method.GET, baseURL + params);
     }
 
     public static void getRegionById(GetRegionByIdDto getRegionByIdDto)

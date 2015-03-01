@@ -1,6 +1,7 @@
 package com.re.reverb.androidBackend.feed;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
@@ -14,6 +15,14 @@ public interface Feed<T extends Post>
 	public ArrayList<T> getPosts();
 
 	public boolean setPosts(ArrayList<T> posts);
+
+    public void setLastPostTime(Date timestamp);
+
+    public String getLastPostTime();
+
+    public void setEarliestPostTime(Date timestamp);
+
+    public String getEarliestPostTime();
 
     public void setOnDataChangedListener(OnFeedDataChangedListener listener);
 
