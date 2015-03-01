@@ -31,6 +31,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.network.PostManagerImpl;
 
 public class MainViewPagerActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
 {
@@ -230,6 +231,7 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
                     Double.toString(location.getLatitude()) + "," +
                     Double.toString(location.getLongitude());
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//            PostManagerImpl.getNumNewPosts(location.getLatitude(),location.getLongitude(),1.0f,"2015-02-25 00:46:15");
             Reverb.getInstance().setCurrentLocation((float) location.getLatitude(), (float) location.getLongitude());
         }
         else
@@ -295,7 +297,6 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
         super.onStart();
         // Connect the client.
         mLocationClient.connect();
-
     }
     
     /*

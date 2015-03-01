@@ -7,6 +7,7 @@ import com.re.reverb.network.AWSPersistenceManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class DummyNetworkFeed implements Feed
@@ -43,6 +44,30 @@ public class DummyNetworkFeed implements Feed
         else {
             return false;
         }
+    }
+
+    @Override
+    public void setLastPostTime(Date timestamp)
+    {
+
+    }
+
+    @Override
+    public String getLastPostTime()
+    {
+        return null;
+    }
+
+    @Override
+    public void setEarliestPostTime(Date timestamp)
+    {
+
+    }
+
+    @Override
+    public String getEarliestPostTime()
+    {
+        return null;
     }
 
     protected void notifyListenersOfDataChange()

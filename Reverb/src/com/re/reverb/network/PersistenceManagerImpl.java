@@ -17,9 +17,23 @@ import org.json.JSONObject;
 
 public class PersistenceManagerImpl implements PersistenceManager
 {
-    protected static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/chris_test/Reverb.php";
+    protected static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/bill_test/Reverb.php";
 
     private static final RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
+
+    public static void requestJsonGet(Response.Listener<JSONObject> listener, final String url){
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                error.printStackTrace();
+                Log.d("Reverb", "Error during JSON Object GET request at "+url);
+            }
+        };
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(url, null, listener, errorListener);
+        queue.add(jsonRequest);
+    }
 
     public static void requestJson(Object request, int requestType, String url)
     {

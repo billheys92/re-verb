@@ -155,7 +155,7 @@ public class NewPostFactory
 
     public ParentPost createPost()
     {
-         return new ParentPost(genInt(), genInt(), genChildPosts(), genInt(), genInt(), genLocation(), genDate(), genPost(), genBoolean());
+         return new ParentPost(genInt(), genInt(), genChildPosts(), genInt(), genInt(), genLocation(), genDate(), genDate(), genPost(), genBoolean());
     }
 
     private StandardPostContent genPost()
@@ -222,6 +222,6 @@ public class NewPostFactory
 
     private ChildPost genChildPost()
     {
-        return new ChildPost(genInt(), genInt(), genInt(), genLocation(), genDate(), genPost(), genBoolean());
+        return new ChildPost(genInt(), genInt(), genInt(), genLocation(), genDate(), genDate(), genPost(), genBoolean());
     }
 }

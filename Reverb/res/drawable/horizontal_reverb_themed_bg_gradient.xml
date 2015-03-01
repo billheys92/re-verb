@@ -4,5 +4,5 @@
     <gradient
         android:startColor="@color/reverb_blue_1"
         android:endColor="@android:color/transparent"
-        android:angle="0"/>
+        android:angle="135"/>
 </shape>
