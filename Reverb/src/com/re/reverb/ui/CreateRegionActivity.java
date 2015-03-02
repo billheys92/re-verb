@@ -147,7 +147,7 @@ public class CreateRegionActivity extends ActionBarActivity
     }
 
     public void onSaveRegionClick(View view) {
-        region.setShapes(regionShapes);
+        region.editShapes(regionShapes);
         SuccessStatus status = region.saveRegion();
         if(!status.success()) {
             Toast.makeText(this, status.reason(), Toast.LENGTH_SHORT).show();
@@ -276,7 +276,7 @@ public class CreateRegionActivity extends ActionBarActivity
         Button b2 = (Button)findViewById(R.id.discardChangesButton);
         b2.setOnClickListener(listener);
         EditText nameExitText = (EditText)findViewById(R.id.editRegionName);
-        nameExitText.setText(region.getName() == null ? "Region Name" : region.getName());
+//        nameExitText.setText(region.getName() == null ? "Region Name" : region.getName());
         nameExitText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
@@ -289,11 +289,11 @@ public class CreateRegionActivity extends ActionBarActivity
 
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                region.setName(s.toString());
+                region.editName(s.toString());
             }
         });
         EditText descriptionEditText = (EditText)findViewById(R.id.editRegionDescription);
-        descriptionEditText.setText(region.getDescription() == null ? "Description" : region.getDescription());
+//        descriptionEditText.setText(region.getDescription() == null ? "Description" : region.getDescription());
         descriptionEditText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
@@ -306,7 +306,7 @@ public class CreateRegionActivity extends ActionBarActivity
 
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                region.setDescription(s.toString());
+                region.editDescription(s.toString());
             }
         });
     }
