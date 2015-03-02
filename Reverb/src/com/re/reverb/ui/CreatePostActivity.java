@@ -18,6 +18,7 @@ import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
+import com.re.reverb.network.PostManagerImpl;
 
 public class CreatePostActivity extends Activity {
 
@@ -28,7 +29,7 @@ public class CreatePostActivity extends Activity {
     //UserProfile user;
 
     Post post;
-    private boolean anonymous = true;
+    protected boolean anonymous = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,6 @@ public class CreatePostActivity extends Activity {
         setContentView(R.layout.activity_create_post);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         attachedPhoto = (ImageView) findViewById(R.id.editPostIncludedImageView);
-
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CreatePostActivity extends Activity {
         if(validatePost())
         {
             CreatePostDto postDto = buildPost();
-            Reverb.getInstance().submitPost(postDto);
+            PostManagerImpl.submitPost(postDto);
             postSubmitted = true;
             finishActivity();
         }
@@ -90,7 +90,7 @@ public class CreatePostActivity extends Activity {
         return postDto;
     }
 
-    private boolean validatePost()
+    protected boolean validatePost()
     {
         TextView contentText = (TextView)findViewById(R.id.editPostTextContentView);
         String text = contentText.getText().toString();
@@ -133,7 +133,7 @@ public class CreatePostActivity extends Activity {
         }
     }
 
-    private void finishActivity(){
+    protected void finishActivity(){
         Intent resultIntent = new Intent();
         resultIntent.putExtra("postSubmitted", postSubmitted);
         setResult(Activity.RESULT_OK, resultIntent);

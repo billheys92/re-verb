@@ -44,11 +44,6 @@ public class Reverb {
         this.currentUser = user;
     }
 
-    public void submitPost(CreatePostDto postDto)
-    {
-        PostManagerImpl.submitPost(postDto);
-    }
-
     public RegionManager getRegionManager()
     {
         return regionManager;

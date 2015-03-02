@@ -31,7 +31,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.network.PostManagerImpl;
 
 public class MainViewPagerActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
 {
@@ -110,8 +109,8 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
 
     public void startCreateReplyPostActivity(View view, int postId)
     {
-        Intent intent = new Intent(this, CreatePostActivity.class);
-        intent.putExtra("POST_ID", postId);
+        Intent intent = new Intent(this, CreateReplyPostActivity.class);
+        intent.putExtra(CreateReplyPostActivity.POST_ID_EXTRA, postId);
         startActivityForResult(intent, CREATE_REPLY_POST_REQUEST);
     }
 

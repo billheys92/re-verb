@@ -12,4 +12,11 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/reverb_logo" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/overlaySplashScreenContainerLayout">
+
+    </FrameLayout>
 </RelativeLayout>

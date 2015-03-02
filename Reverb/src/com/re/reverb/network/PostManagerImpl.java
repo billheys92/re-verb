@@ -1,11 +1,15 @@
 package com.re.reverb.network;
 
+import android.widget.ExpandableListView;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
+import com.re.reverb.androidBackend.post.ChildPost;
+import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
@@ -83,8 +87,6 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
                         Post p = PostFactory.createParentPost(postDto);
 
-                        System.out.println(p.getPostId());
-
                         if(!feed.getPosts().contains(p))
                         {
                             returnedPosts.add(p);
@@ -115,15 +117,56 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         requestJsonArray(listener, url);
     }
 
+    public static void getPostReplies(final Feed feed, final ParentPost post, final
+                                      ExpandableListView listView, final int groupPosition)
+    {
+        String params = String.format("?commandtype=get&command=getMessageReplies&message=%s", Integer.toString(post.getPostId()));
+        String url = baseURL + params;
+
+        Response.Listener<JSONArray> listener = new Response.Listener<JSONArray>()
+        {
+            @Override
+            public void onResponse(JSONArray response)
+            {
+                for(int i = 0; i < response.length(); i++){
+                    try {
+                        Gson gson = new Gson();
+                        ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
+                        Post p = PostFactory.createChildPost(postDto);
+
+                        if(!post.getChildPosts().contains(p))
+                        {
+                            post.getChildPosts().add((ChildPost) p);
+                        }
+                        else
+                        {
+                            //TODO: update post values
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (InvalidPostException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Collections.sort(post.getChildPosts());
+                ((NewPostFeed)feed).notifyListenersOfDataChange();
+                listView.expandGroup(groupPosition);
+            }
+        };
+
+        requestJsonArray(listener, url);
+    }
+
     public static void submitPost(CreatePostDto postDto)
     {
         String params = "?commandtype=post&command=postMessageText";
-        requestJson(postDto, Request.Method.PUT, baseURL + params);
+        requestJson(postDto, Request.Method.POST, baseURL + params);
     }
 
     public static void submitReplyPost(CreateReplyPostDto replyPostDto)
     {
-        String params = "?commandtype=post&command=postReplyText";
+        String params = "?commandtype=post&command=postMessageReplyText";
+        System.out.println("Submit Reply Post Hit");
         requestJson(replyPostDto, Request.Method.POST, baseURL + params);
     }
 }

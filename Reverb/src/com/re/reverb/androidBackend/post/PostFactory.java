@@ -69,6 +69,28 @@ public class PostFactory
             throw new InvalidPostException("Could not parse a time stamp from post");
         }
     }
+
+    public static ChildPost createChildPost(ReceivePostDto gsonPost) throws InvalidPostException
+    {
+        try
+        {
+            Date createTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getCreate_time());
+            Date updateTime = null;
+            if(gsonPost.getUpdate_time() != null){
+                updateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getUpdate_time());
+            }
+            return new ChildPost(gsonPost.getReply_link(),
+                    gsonPost.getPoster_id(),
+                    gsonPost.getMessage_id(),
+                    new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()),
+                    createTime,
+                    updateTime,
+                    new StandardPostContent(gsonPost.getName(), gsonPost.getHandle(), gsonPost.getMessage_body(), 1, 1, gsonPost.getProfile_picture()),
+                    gsonPost.getAnon_flag() == 1);
+        } catch (ParseException e) {
+            throw new InvalidPostException("Could not parse a time stamp from post");
+        }
+    }
 	
 
 }
