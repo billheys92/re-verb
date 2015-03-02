@@ -97,7 +97,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
         netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
         netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
-        ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
+        ((TextView) convertView.findViewById(R.id.postMessage)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
 
@@ -105,6 +105,8 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         ((TextView) convertView.findViewById(R.id.voteCount)).setText(postContent.getNumVotes().toString());
         ((ImageView) convertView.findViewById(R.id.moreIcon)).setImageResource(R.mipmap.more_icon);
 
+        NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
+        netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
         Calendar now = GregorianCalendar.getInstance();
         now.setTime(new Date());
 
@@ -232,8 +234,12 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
         netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
 
+        NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
+        netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
+
         ((ImageView) convertView.findViewById(R.id.voteIcon)).setImageResource(R.drawable.votes_icon);
         ((TextView) convertView.findViewById(R.id.voteCount)).setText(postContent.getNumVotes().toString());
+
         final ImageView replyImage = (ImageView) convertView.findViewById(R.id.replyIcon);
         replyImage.setImageResource(R.drawable.reply_icon);
         replyImage.setOnClickListener(new View.OnClickListener()
@@ -245,7 +251,6 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
                 if(activity instanceof MainViewPagerActivity)
                 {
                     ((MainViewPagerActivity) activity).startCreateReplyPostActivity(v, parentPost.getPostId());
-                    System.out.println("Reply to post: " + parentPost.getPostId());
                 }
                 else
                 {
@@ -255,8 +260,27 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         });
 
         ((ImageView) convertView.findViewById(R.id.repostIcon)).setImageResource(R.mipmap.repost_icon);
-        ((ImageView) convertView.findViewById(R.id.moreIcon)).setImageResource(R.mipmap.more_icon);
-        ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
+
+        final ImageView moreImage = ((ImageView) convertView.findViewById(R.id.moreIcon));
+        moreImage.setImageResource(R.mipmap.more_icon);
+        moreImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(activity instanceof MainViewPagerActivity)
+                {
+                    //((MainViewPagerActivity) activity).startCreateReplyPostActivity(v, parentPost.getPostId());
+                }
+                else
+                {
+                    System.out.println("Wrong activity for more icon");
+                }
+            }
+        });
+
+
+        ((TextView) convertView.findViewById(R.id.postMessage)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
 

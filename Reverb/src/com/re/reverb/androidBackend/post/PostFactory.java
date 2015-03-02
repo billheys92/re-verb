@@ -63,7 +63,7 @@ public class PostFactory
                     createTime,
                     updateTime,
                     //new TextPostContent(gsonPost.getMessage_body()),
-                    new StandardPostContent(gsonPost.getName(), gsonPost.getHandle(), gsonPost.getMessage_body(), 1, 1, gsonPost.getProfile_picture()),
+                    new StandardPostContent(gsonPost.getName(), gsonPost.getHandle(), gsonPost.getMessage_body(), 1, 1, gsonPost.getProfile_picture(), gsonPost.getPicture_name()),
                     gsonPost.getAnon_flag() == 1);
         } catch (ParseException e) {
             throw new InvalidPostException("Could not parse a time stamp from post");
@@ -85,7 +85,7 @@ public class PostFactory
                     new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()),
                     createTime,
                     updateTime,
-                    new StandardPostContent(gsonPost.getName(), gsonPost.getHandle(), gsonPost.getMessage_body(), 1, 1, gsonPost.getProfile_picture()),
+                    new StandardPostContent(gsonPost.getName(), gsonPost.getHandle(), gsonPost.getMessage_body(), 1, 1, gsonPost.getProfile_picture(), gsonPost.getPicture_name()),
                     gsonPost.getAnon_flag() == 1);
         } catch (ParseException e) {
             throw new InvalidPostException("Could not parse a time stamp from post");

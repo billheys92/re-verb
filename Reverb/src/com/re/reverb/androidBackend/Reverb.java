@@ -1,12 +1,13 @@
 package com.re.reverb.androidBackend;
 
+import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.feed.Feed;
-import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.network.AWSPersistenceManager;
 import com.re.reverb.network.PostManagerImpl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -42,6 +43,16 @@ public class Reverb {
     public void signInUser(UserProfile user)
     {
         this.currentUser = user;
+    }
+
+    public void submitPost(CreatePostDto postDto)
+    {
+        PostManagerImpl.submitPost(postDto);
+    }
+
+    public void submitPost(CreatePostDto postDto, File image)
+    {
+        PostManagerImpl.submitPost(postDto, image);
     }
 
     public RegionManager getRegionManager()

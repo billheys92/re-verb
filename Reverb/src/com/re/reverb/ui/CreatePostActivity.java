@@ -3,6 +3,7 @@ package com.re.reverb.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -19,6 +20,12 @@ import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.network.PostManagerImpl;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class CreatePostActivity extends Activity {
 
@@ -57,7 +64,34 @@ public class CreatePostActivity extends Activity {
         if(validatePost())
         {
             CreatePostDto postDto = buildPost();
-            PostManagerImpl.submitPost(postDto);
+            if(attachedPhoto != null)
+            {
+                File f = new File(getCacheDir(), "testImage");
+                //Convert bitmap to byte array
+                Bitmap bitmap = ((BitmapDrawable)attachedPhoto.getDrawable()).getBitmap();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                byte[] bitmapdata = bos.toByteArray();
+
+                //write the bytes in file
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(f);
+                    try {
+                        fos.write(bitmapdata);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                Reverb.getInstance().submitPost(postDto, f);
+            }
+            else
+            {
+                Reverb.getInstance().submitPost(postDto);
+            }
             postSubmitted = true;
             finishActivity();
         }

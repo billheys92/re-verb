@@ -68,6 +68,7 @@
         android:layout_below="@+id/postInfo"
         android:layout_toRightOf="@+id/profilePicture">
         <TextView
+            android:id="@+id/postMessage"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textColor="@color/main_font"
@@ -78,15 +79,21 @@
             android:id="@+id/expanded"
             android:layout_width="22dip"
             android:layout_height="22dip"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentEnd="true"/>
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/messageImage"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/postMessage"
+            android:layout_marginTop="0dp"/>
     </RelativeLayout>
-    <RelativeLayout android:paddingTop="8dp"
-                    android:paddingBottom="4dp"
+    <RelativeLayout android:paddingTop="8dip"
+                    android:layout_marginBottom="6dp"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_below="@id/postBody"
-                    android:layout_toRightOf="@id/profilePicture"
-                    android:layout_alignParentBottom="true">
+                    android:layout_toEndOf="@id/profilePicture">
         <ImageView android:id="@+id/voteIcon"
                    android:layout_width="22dip"
                    android:layout_height="22dip"
@@ -97,7 +104,7 @@
             android:id="@+id/voteCount"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_toRightOf="@id/voteIcon"
+            android:layout_toEndOf="@id/voteIcon"
             android:textColor="@color/main_font"
             android:textStyle="bold"
             android:textSize="14sp"
@@ -105,27 +112,20 @@
         <ImageView android:id="@+id/repostIcon"
                    android:layout_width="22dip"
                    android:layout_height="22dip"
-                   android:layout_toRightOf="@id/voteCount"
+                   android:layout_toEndOf="@id/voteCount"
                    android:layout_marginEnd="@dimen/post_action_margin"
                    android:layout_marginStart="@dimen/post_action_margin"/>
         <ImageView android:id="@+id/replyIcon"
                    android:layout_width="22dip"
                    android:layout_height="22dip"
                    android:onClick="startCreatePostActivity"
-                   android:layout_toRightOf="@id/repostIcon"
+                   android:layout_toEndOf="@id/repostIcon"
                    android:layout_marginEnd="@dimen/post_action_margin"
                    android:layout_marginStart="@dimen/post_action_margin"/>
         <ImageView android:id="@+id/moreIcon"
                    android:layout_width="22dip"
                    android:layout_height="22dip"
-                   android:layout_alignParentRight="true"/>
+                   android:layout_alignParentEnd="true"/>
     </RelativeLayout>
-    <ImageView
-        android:id="@+id/viewRepliesIcon"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:layout_marginLeft="768dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"/>
 </RelativeLayout>
 
