@@ -36,6 +36,15 @@
                 android:value="com.re.reverb.ui.MainViewPagerActivity" />
         </activity>
         <activity
+            android:name="com.re.reverb.ui.CreateReplyPostActivity"
+            android:label="@string/title_activity_create_post_reply"
+            android:parentActivityName="com.re.reverb.ui.MainViewPagerActivity"
+            android:theme="@style/Theme.Transparent">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.re.reverb.ui.MainViewPagerActivity" />
+        </activity>
+        <activity
             android:name="com.re.reverb.ui.SettingsActivity"
             android:label="@string/title_settings_activity"
             android:parentActivityName="com.re.reverb.ui.MainViewPagerActivity">
@@ -55,12 +64,6 @@
             android:label="@string/title_activity_create_region">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.re.reverb.ui.MainViewPagerActivity" />
-
-        </activity>
-        <activity android:name="com.re.reverb.ui.CreateUserActivity"
-                  android:label="@string/title_activity_create_user">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value="com.re.reverb.ui.SplashScreenActivity" />
 
         </activity>
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +17,13 @@ import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.post.ChildPost;
 import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.post.content.StandardPostContent;
+import com.re.reverb.network.PostManagerImpl;
 import com.re.reverb.network.RequestQueueSingleton;
+
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 {
@@ -39,6 +46,16 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             e.printStackTrace();
         }
         inflater = act.getLayoutInflater();
+    }
+
+    String getMonthForInt(int num) {
+        String month = "wrong";
+        DateFormatSymbols dfs = new DateFormatSymbols();
+        String[] months = dfs.getMonths();
+        if (num >= 0 && num <= 11 ) {
+            month = months[num];
+        }
+        return month;
     }
 
     @Override
@@ -79,12 +96,44 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
         netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
-        //((ImageView) convertView.findViewById(R.id.profilePicture)).setImageBitmap(postContent.getProfilePicture());
         netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
-        //((ImageView) convertView.findViewById(R.id.profilePicture)).setImageBitmap(postContent.getProfilePicture());
         ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
+
+        //TODO: if date is the same as today, grab the hour and minutes else grab just month day
+
+        NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
+        netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
+        Calendar now = GregorianCalendar.getInstance();
+        now.setTime(new Date());
+
+        Calendar then = GregorianCalendar.getInstance();
+        then.setTime(child.getTimeCreated());
+
+        boolean sameDay = now.get(Calendar.YEAR) == then.get(Calendar.YEAR) && now.get(Calendar.DAY_OF_YEAR) == then.get(Calendar.DAY_OF_YEAR);
+
+        if(sameDay)
+        {
+            String hourOfDay = Integer.toString(then.get(Calendar.HOUR));
+            String minuteOfDay = Integer.toString(then.get(Calendar.MINUTE));
+            if(minuteOfDay.length() < 2) minuteOfDay += "0";
+
+            ((TextView) convertView.findViewById(R.id.timeNumber)).setText(hourOfDay + ":" + minuteOfDay);
+
+            String amPm = then.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
+            ((TextView) convertView.findViewById(R.id.timeLetter)).setText(amPm);
+
+        }
+        else
+        {
+            String month = getMonthForInt(then.get(Calendar.MONTH)).substring(0,3);
+            String day = Integer.toString(then.get(Calendar.DAY_OF_MONTH));
+
+            ((TextView) convertView.findViewById(R.id.timeNumber)).setText(month);
+            ((TextView) convertView.findViewById(R.id.timeLetter)).setText(" " + day);
+        }
+
         return convertView;
     }
 
@@ -144,21 +193,48 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
     }
 
     @Override
-    public View getGroupView(int groupPosition,
-                             boolean isExpanded,
+    public View getGroupView(final int groupPosition,
+                             final boolean isExpanded,
                              View convertView,
-                             ViewGroup parent)
+                             final ViewGroup parent)
     {
         final ParentPost parentPost = getGroup(groupPosition);
         if (convertView == null)
         {
             convertView = inflater.inflate(R.layout.parent_post_row, null);
         }
+
+        convertView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isExpanded)
+                {
+                    if (activity instanceof MainViewPagerActivity)
+                    {
+                        PostManagerImpl.getPostReplies(feed, parentPost, (ExpandableListView) parent, groupPosition);
+                        System.out.println("Get Replies for: " + parentPost.getPostId());
+                    } else
+                    {
+                        System.out.println("Wrong activity for get post replies");
+                    }
+                }
+                else
+                {
+                    ((ExpandableListView) parent).collapseGroup(groupPosition);
+                }
+            }
+        });
+
         StandardPostContent postContent = (StandardPostContent) parentPost.getContent();
 
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
         netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
         netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
+
+        NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
+        netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
 
         final ImageView replyImage = (ImageView) convertView.findViewById(R.id.replyIcon);
         replyImage.setImageResource(R.drawable.reply_icon);
@@ -185,8 +261,35 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
-        ((TextView) convertView.findViewById(R.id.timeNumber)).setText(parentPost.getTimeCreated().toString());
-        ((TextView) convertView.findViewById(R.id.timeLetter)).setText("format am pm");
+
+        Calendar now = GregorianCalendar.getInstance();
+        now.setTime(new Date());
+
+        Calendar then = GregorianCalendar.getInstance();
+        then.setTime(parentPost.getTimeCreated());
+
+        boolean sameDay = now.get(Calendar.YEAR) == then.get(Calendar.YEAR) && now.get(Calendar.DAY_OF_YEAR) == then.get(Calendar.DAY_OF_YEAR);
+
+        if(sameDay)
+        {
+            String hourOfDay = Integer.toString(then.get(Calendar.HOUR));
+            String minuteOfDay = Integer.toString(then.get(Calendar.MINUTE));
+            if(minuteOfDay.length() < 2) minuteOfDay += "0";
+
+            ((TextView) convertView.findViewById(R.id.timeNumber)).setText(hourOfDay + ":" + minuteOfDay);
+
+            String amPm = then.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
+            ((TextView) convertView.findViewById(R.id.timeLetter)).setText(amPm);
+
+        }
+        else
+        {
+            String month = getMonthForInt(then.get(Calendar.MONTH)).substring(0,3);
+            String day = Integer.toString(then.get(Calendar.DAY_OF_MONTH));
+
+            ((TextView) convertView.findViewById(R.id.timeNumber)).setText(month);
+            ((TextView) convertView.findViewById(R.id.timeLetter)).setText(" " + day);
+        }
 
         return convertView;
     }
@@ -201,7 +304,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
     public boolean isChildSelectable(int groupPosition,
                                      int childPosition)
     {
-        return false;
+        return true;
     }
 
 } 

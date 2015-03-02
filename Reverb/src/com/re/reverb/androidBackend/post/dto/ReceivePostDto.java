@@ -27,6 +27,7 @@ public class ReceivePostDto {
     String Profile_picture;
     String Name;
     String Handle;
+    String Picture_name;
 
     ReceivePostDto(int Message_id,
                    int Poster_id,
@@ -44,7 +45,8 @@ public class ReceivePostDto {
                    int Reply_link,
                    String Profile_picture,
                    String Name,
-                   String Handle)
+                   String Handle,
+                   String Picture_name)
     {
         this.Message_id = Message_id;
         this.Poster_id = Poster_id;
@@ -63,6 +65,7 @@ public class ReceivePostDto {
         this.Profile_picture = Profile_picture;
         this.Name = Name;
         this.Handle = Handle;
+        this.Picture_name = Picture_name;
     }
 
     public ReceivePostDto(Post post) {
@@ -163,5 +166,10 @@ public class ReceivePostDto {
     public String getHandle()
     {
         return Handle;
+    }
+
+    public String getPicture_name()
+    {
+        return Picture_name;
     }
 }

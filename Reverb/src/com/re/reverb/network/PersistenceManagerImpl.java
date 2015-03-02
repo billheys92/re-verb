@@ -7,9 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +15,7 @@ import org.json.JSONObject;
 
 public class PersistenceManagerImpl implements PersistenceManager
 {
-    protected static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/bill_test/Reverb.php";
+    protected static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/Reverb.php";
 
     private static final RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 

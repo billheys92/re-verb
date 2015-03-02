@@ -10,7 +10,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
@@ -18,6 +24,8 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.account.CreateUserDto;
+import com.re.reverb.network.AccountManagerImpl;
 import com.re.reverb.network.RequestQueueSingleton;
 
 /**
@@ -26,6 +34,7 @@ import com.re.reverb.network.RequestQueueSingleton;
 public class SplashScreenActivity extends Activity
 {
     String mEmail; // Received from newChooseAccountIntent(); passed to getToken()
+    private View currentOverlay = null;
 
     static final String USER_EMAIL = "userEmail";
     static final String NO_SAVED_EMAIL = "no saved email";
@@ -150,13 +159,73 @@ public class SplashScreenActivity extends Activity
         }
     }
 
-    public void onUserDoesNotExist(String email, String token)
+    public void onUserDoesNotExist(final String email, final String token)
     {
-        Intent intent = new Intent(this, CreateUserActivity.class);
-        intent.putExtra(EMAIL_KEY, email);
-        intent.putExtra(TOKEN_KEY, token);
-        startActivity(intent);
+        //Intent intent = new Intent(this, CreateUserActivity.class);
+        //intent.putExtra(EMAIL_KEY, email);
+        //intent.putExtra(TOKEN_KEY, token);
+        //startActivity(intent);
+
+
+        //CHANGE TO OVERLAY VIEW
+        final SplashScreenActivity activity = this;
+        displayOverlay(R.layout.overlay_create_user);
+        Button b = (Button)findViewById(R.id.createUserButton);
+        View.OnClickListener listener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(((EditText)findViewById(R.id.username)).getText().toString() == null || ((EditText)findViewById(R.id.username)).getText().toString().isEmpty())
+                {
+                    Toast.makeText(activity, "You must provide username.",Toast.LENGTH_SHORT).show();
+                }
+                else if(((EditText)findViewById(R.id.handle)).getText().toString() == null || ((EditText)findViewById(R.id.handle)).getText().toString().isEmpty())
+                {
+                    Toast.makeText(activity, "You must provide handle.",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    String aboutMe = ((EditText)findViewById(R.id.aboutMe)).getText().toString() == null ? "" : ((EditText)findViewById(R.id.aboutMe)).getText().toString();
+                    CreateUserDto createUserDto = new CreateUserDto(
+                            ((EditText)findViewById(R.id.username)).getText().toString(),
+                            ((EditText)findViewById(R.id.handle)).getText().toString(),
+                            email,
+                            token,
+                            aboutMe
+                    );
+
+                    AccountManagerImpl.createUser(createUserDto, activity);
+                }
+            }
+        };
+        b.setOnClickListener(listener);
     }
+
+    private View displayOverlay(int resource)
+    {
+        removeOverlays();
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = vi.inflate(resource, null);
+        this.currentOverlay = v;
+
+        //insert into slash screen
+        FrameLayout myLayout = (FrameLayout) findViewById(R.id.overlaySplashScreenContainerLayout);
+        myLayout.addView(v);
+        return v;
+
+    }
+
+    public void removeOverlays()
+    {
+        if(this.currentOverlay != null)
+        {
+            ViewGroup parent = (ViewGroup) this.currentOverlay.getParent();
+            parent.removeView(this.currentOverlay);
+            this.currentOverlay = null;
+        }
+    }
+
 
     public void onScreenClick(View view){
         if(testInternetConnection()) {
