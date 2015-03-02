@@ -8,6 +8,7 @@ import com.re.reverb.androidBackend.errorHandling.InvalidPostDataTypeException;
 public class StandardPostContent implements PostContent
 {
     private static final String profilePictureBaseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/test/";
+    private static final String messageImageBaseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/";
     private String username;
     private String handle;
     private String postBody;
@@ -15,12 +16,15 @@ public class StandardPostContent implements PostContent
     private Integer numVotes;
     private Integer numReplies;
 
+    private String messageImage;
+
     public StandardPostContent(String username,
                                String handle,
                                String postBody,
                                Integer numVotes,
                                Integer numReplies,
-                               String profilePictureURL)
+                               String profilePictureURL,
+                               String messageImage)
     {
         this.username = username;
         this.handle = handle;
@@ -28,6 +32,7 @@ public class StandardPostContent implements PostContent
         this.profilePictureURL = profilePictureURL;
         this.numVotes = numVotes;
         this.numReplies = numReplies;
+        this.messageImage = messageImage;
     }
 
     public StandardPostContent(Context context, String postBody)
@@ -122,5 +127,15 @@ public class StandardPostContent implements PostContent
     public void setProfilePictureURL(String profilePictureURL)
     {
         this.profilePictureURL = profilePictureURL;
+    }
+
+    public String getMessageImage()
+    {
+        return messageImageBaseURL + messageImage;
+    }
+
+    public void setMessageImage(String messageImage)
+    {
+        this.messageImage = messageImage;
     }
 }

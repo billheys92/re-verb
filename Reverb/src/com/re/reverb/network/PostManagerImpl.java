@@ -1,7 +1,9 @@
 package com.re.reverb.network;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.feed.Feed;
@@ -14,6 +16,7 @@ import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -96,5 +99,34 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     {
         String params = "?commandtype=post&command=postReplyText";
         requestJson(replyPostDto, Request.Method.POST, baseURL + params);
+    }
+
+    public static void submitPost(final CreatePostDto postDto, File image)
+    {
+        RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
+
+        MultipartRequest multiRequest = new MultipartRequest("http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php", image, "", new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                // public void onResponse(String response) {
+                // Display the response string.
+                System.out.println("Picture Response is: "+ response);
+                postDto.Picture_name = response;
+                String params = "?commandtype=post&command=postMessagePicture";
+                requestJson(postDto, Request.Method.PUT, baseURL + params);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                System.out.println("Error Sending Picture Message");
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(multiRequest);
+
     }
 }
