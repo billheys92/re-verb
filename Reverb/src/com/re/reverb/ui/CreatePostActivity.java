@@ -19,7 +19,6 @@ import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
-import com.re.reverb.network.PostManagerImpl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -64,7 +63,7 @@ public class CreatePostActivity extends Activity {
         if(validatePost())
         {
             CreatePostDto postDto = buildPost();
-            if(attachedPhoto != null)
+            if(attachedPhoto.getDrawable() != null)
             {
                 File f = new File(getCacheDir(), "testImage");
                 //Convert bitmap to byte array
