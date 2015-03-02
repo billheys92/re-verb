@@ -16,7 +16,8 @@
             android:layout_height="match_parent"
             android:childDivider="@color/light_grey"
             android:divider="@color/light_grey"
-            android:dividerHeight="1sp">
+            android:dividerHeight="1sp"
+            >
         </ExpandableListView>
 
     </android.support.v4.widget.SwipeRefreshLayout>

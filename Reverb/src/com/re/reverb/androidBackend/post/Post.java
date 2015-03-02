@@ -12,6 +12,7 @@ public class Post implements Comparable<Post>
     private final int postId;
     private final Location postLocation;
     private final Date timeCreated;
+    private final Date timeUpdated;
     private final PostContent content;
     private final boolean anonymous;
 
@@ -19,13 +20,14 @@ public class Post implements Comparable<Post>
                 int postId,
                 Location postLocation,
                 Date timeCreated,
-                PostContent content,
+                Date timeUpdated, PostContent content,
                 boolean anonymous)
     {
         this.userId = userId;
         this.postId = postId;
         this.postLocation = postLocation;
         this.timeCreated = timeCreated;
+        this.timeUpdated = timeUpdated;
         this.content = content;
         this.anonymous = anonymous;
     }
@@ -58,6 +60,22 @@ public class Post implements Comparable<Post>
     public Date getTimeCreated()
     {
         return timeCreated;
+    }
+    public Date getTimeUpdated()
+    {
+        return timeUpdated;
+    }
+
+    public Date getLatestTime()
+    {
+        if(timeUpdated != null)
+        {
+            return timeUpdated;
+        }
+        else
+        {
+            return timeCreated;
+        }
     }
 
     public boolean getAnonymous()

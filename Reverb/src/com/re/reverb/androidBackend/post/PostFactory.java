@@ -32,14 +32,14 @@ public class PostFactory
         Date now = Calendar.getInstance().getTime();
         TextPostContent content = new TextPostContent(text);
 
-        return new Post(posterId, 1, reverb.getCurrentLocation(), new Date(), new TextPostContent(text), anonymous);
+        return new Post(posterId, 1, reverb.getCurrentLocation(), new Date(), null, new TextPostContent(text), anonymous);
     }
 
     public static Post createPost(ReceivePostDto gsonPost) throws InvalidPostException
     {
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getTime_stamp());
-            return new Post(gsonPost.getPoster_id(), gsonPost.getMessage_id(), new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()), date, new TextPostContent(gsonPost.getMessage_body()), gsonPost.getAnon_flag() == 1);
+            return new Post(gsonPost.getPoster_id(), gsonPost.getMessage_id(), new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()), date, null, new TextPostContent(gsonPost.getMessage_body()), gsonPost.getAnon_flag() == 1);
         } catch (ParseException e) {
             throw new InvalidPostException("Could not parse a time stamp from post");
         }
@@ -49,15 +49,42 @@ public class PostFactory
     {
         try
         {
-            Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getTime_stamp());
+            Date createTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getCreate_time());
+            Date updateTime = null;
+            if(gsonPost.getUpdate_time() != null){
+                updateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getUpdate_time());
+            }
             return new ParentPost(gsonPost.getRegion_id(),
                     0,
                     new ArrayList<ChildPost>(0),
                     gsonPost.getPoster_id(),
                     gsonPost.getMessage_id(),
                     new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()),
-                    date,
+                    createTime,
+                    updateTime,
                     //new TextPostContent(gsonPost.getMessage_body()),
+                    new StandardPostContent(gsonPost.getName(), gsonPost.getHandle(), gsonPost.getMessage_body(), 1, 1, gsonPost.getProfile_picture(), gsonPost.getPicture_name()),
+                    gsonPost.getAnon_flag() == 1);
+        } catch (ParseException e) {
+            throw new InvalidPostException("Could not parse a time stamp from post");
+        }
+    }
+
+    public static ChildPost createChildPost(ReceivePostDto gsonPost) throws InvalidPostException
+    {
+        try
+        {
+            Date createTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getCreate_time());
+            Date updateTime = null;
+            if(gsonPost.getUpdate_time() != null){
+                updateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getUpdate_time());
+            }
+            return new ChildPost(gsonPost.getReply_link(),
+                    gsonPost.getPoster_id(),
+                    gsonPost.getMessage_id(),
+                    new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()),
+                    createTime,
+                    updateTime,
                     new StandardPostContent(gsonPost.getName(), gsonPost.getHandle(), gsonPost.getMessage_body(), 1, 1, gsonPost.getProfile_picture(), gsonPost.getPicture_name()),
                     gsonPost.getAnon_flag() == 1);
         } catch (ParseException e) {

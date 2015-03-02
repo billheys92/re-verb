@@ -109,8 +109,8 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
 
     public void startCreateReplyPostActivity(View view, int postId)
     {
-        Intent intent = new Intent(this, CreatePostActivity.class);
-        intent.putExtra("POST_ID", postId);
+        Intent intent = new Intent(this, CreateReplyPostActivity.class);
+        intent.putExtra(CreateReplyPostActivity.POST_ID_EXTRA, postId);
         startActivityForResult(intent, CREATE_REPLY_POST_REQUEST);
     }
 
@@ -230,6 +230,7 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
                     Double.toString(location.getLatitude()) + "," +
                     Double.toString(location.getLongitude());
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//            PostManagerImpl.getNumNewPosts(location.getLatitude(),location.getLongitude(),1.0f,"2015-02-25 00:46:15");
             Reverb.getInstance().setCurrentLocation((float) location.getLatitude(), (float) location.getLongitude());
         }
         else
@@ -295,7 +296,6 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
         super.onStart();
         // Connect the client.
         mLocationClient.connect();
-
     }
     
     /*

@@ -1,7 +1,6 @@
 package com.re.reverb.network;
 
-import android.content.Context;
-import android.content.Intent;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -9,7 +8,6 @@ import com.google.gson.Gson;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.account.CreateUserDto;
 import com.re.reverb.androidBackend.account.UserProfile;
-import com.re.reverb.ui.CreateUserActivity;
 import com.re.reverb.ui.SplashScreenActivity;
 
 import org.json.JSONObject;
@@ -35,7 +33,7 @@ public class AccountManagerImpl extends PersistenceManagerImpl
                 if(userExists.user_exists)
                 {
                     System.out.println("User Exists:" + userExists.toString());
-                    loginUser(email, token);
+                    loginUser(email, token, activity);
                 }
                 else
                 {
@@ -64,7 +62,8 @@ public class AccountManagerImpl extends PersistenceManagerImpl
         }
     }
 
-    public static void createUser(final CreateUserDto createUserDto)
+    public static void createUser(final CreateUserDto createUserDto,
+                                  final SplashScreenActivity activity)
     {
         final String params = "?commandtype=post&command=postUser";
         final String url = baseURL + params;
@@ -78,11 +77,12 @@ public class AccountManagerImpl extends PersistenceManagerImpl
                 UserExistsDto successfulCreated = gson.fromJson(response.toString(), UserExistsDto.class);
                 if(successfulCreated.user_exists)
                 {
-                    loginUser(createUserDto.Email, createUserDto.Token);
+                    loginUser(createUserDto.Email, createUserDto.Token, activity);
+                    activity.removeOverlays();
                 }
                 else
                 {
-                    //TODO: prompt for fix in form
+                    Toast.makeText(activity, "Provided handle is already taken.", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -90,7 +90,7 @@ public class AccountManagerImpl extends PersistenceManagerImpl
         requestJson(listener, createUserDto, Request.Method.POST, url);
     }
 
-    public static void loginUser(final String email, final String token)
+    public static void loginUser(final String email, final String token, final SplashScreenActivity activity)
     {
         final String params = "?commandtype=get&command=getLoginUser";
         final String url = baseURL + params;
@@ -105,6 +105,7 @@ public class AccountManagerImpl extends PersistenceManagerImpl
                 UserProfile userProfile = gson.fromJson(response.toString(), UserProfile.class);
                 userProfile.Token = token;
                 Reverb.getInstance().signInUser(userProfile);
+                activity.onScreenClick(null);
             }
         };
 

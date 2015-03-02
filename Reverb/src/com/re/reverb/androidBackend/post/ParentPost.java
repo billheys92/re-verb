@@ -19,10 +19,11 @@ public class ParentPost extends Post
                       int postId,
                       Location postLocation,
                       Date timeCreated,
+                      Date timeUpdated,
                       PostContent content,
                       boolean anonymous)
     {
-        super(userId, postId, postLocation, timeCreated, content, anonymous);
+        super(userId, postId, postLocation, timeCreated, timeUpdated, content, anonymous);
         this.regionId = regionId;
         this.numReplys = numReplys;
         this.childPosts = childPosts;
