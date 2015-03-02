@@ -103,6 +103,8 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 
         //TODO: if date is the same as today, grab the hour and minutes else grab just month day
 
+        NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
+        netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
         Calendar now = GregorianCalendar.getInstance();
         now.setTime(new Date());
 
@@ -230,6 +232,9 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
         netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
         netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
+
+        NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
+        netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
 
         final ImageView replyImage = (ImageView) convertView.findViewById(R.id.replyIcon);
         replyImage.setImageResource(R.drawable.reply_icon);

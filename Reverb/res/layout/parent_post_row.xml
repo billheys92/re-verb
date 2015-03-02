@@ -69,11 +69,18 @@
         android:layout_below="@+id/postInfo"
         android:layout_toRightOf="@+id/profilePicture"
         android:layout_marginTop="0dp"/>
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/messageImage"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/postBody"
+        android:layout_toRightOf="@+id/profilePicture"
+        android:layout_marginTop="0dp"/>
     <RelativeLayout android:paddingTop="8dip"
                     android:layout_marginBottom="6dp"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_below="@id/postBody"
+                    android:layout_below="@id/messageImage"
                     android:layout_toRightOf="@id/profilePicture"
                     android:layout_alignParentBottom="true">
         <ImageView android:id="@+id/replyIcon"
