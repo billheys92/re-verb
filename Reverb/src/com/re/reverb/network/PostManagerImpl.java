@@ -14,6 +14,7 @@ import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.CreateReplyPostDto;
+import com.re.reverb.androidBackend.post.dto.FavoritePostDto;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 
 import org.json.JSONArray;
@@ -166,7 +167,12 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     public static void submitReplyPost(CreateReplyPostDto replyPostDto)
     {
         String params = "?commandtype=post&command=postMessageReplyText";
-        System.out.println("Submit Reply Post Hit");
         requestJson(replyPostDto, Request.Method.POST, baseURL + params);
+    }
+
+    public static void submitFavoritePost(FavoritePostDto favoritePostDto)
+    {
+        String params = "?commandtype=put&command=updateMessageUpVote";
+        requestJson(favoritePostDto, Request.Method.PUT, baseURL + params);
     }
 }

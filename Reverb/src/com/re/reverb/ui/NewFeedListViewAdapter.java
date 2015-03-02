@@ -101,7 +101,9 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
 
-        //TODO: if date is the same as today, grab the hour and minutes else grab just month day
+        ((ImageView) convertView.findViewById(R.id.voteIcon)).setImageResource(R.drawable.votes_icon);
+        ((TextView) convertView.findViewById(R.id.voteCount)).setText(postContent.getNumVotes().toString());
+        ((ImageView) convertView.findViewById(R.id.moreIcon)).setImageResource(R.mipmap.more_icon);
 
         Calendar now = GregorianCalendar.getInstance();
         now.setTime(new Date());
@@ -128,8 +130,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             String month = getMonthForInt(then.get(Calendar.MONTH)).substring(0,3);
             String day = Integer.toString(then.get(Calendar.DAY_OF_MONTH));
 
-            ((TextView) convertView.findViewById(R.id.timeNumber)).setText(month);
-            ((TextView) convertView.findViewById(R.id.timeLetter)).setText(" " + day);
+            ((TextView) convertView.findViewById(R.id.timeNumber)).setText(month + " " + day);
         }
 
         return convertView;
@@ -231,6 +232,8 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
         netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
 
+        ((ImageView) convertView.findViewById(R.id.voteIcon)).setImageResource(R.drawable.votes_icon);
+        ((TextView) convertView.findViewById(R.id.voteCount)).setText(postContent.getNumVotes().toString());
         final ImageView replyImage = (ImageView) convertView.findViewById(R.id.replyIcon);
         replyImage.setImageResource(R.drawable.reply_icon);
         replyImage.setOnClickListener(new View.OnClickListener()
@@ -251,8 +254,8 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             }
         });
 
-        ((ImageView) convertView.findViewById(R.id.voteIcon)).setImageResource(R.drawable.votes_icon);
-        ((TextView) convertView.findViewById(R.id.voteCount)).setText(postContent.getNumVotes().toString());
+        ((ImageView) convertView.findViewById(R.id.repostIcon)).setImageResource(R.mipmap.repost_icon);
+        ((ImageView) convertView.findViewById(R.id.moreIcon)).setImageResource(R.mipmap.more_icon);
         ((TextView) convertView.findViewById(R.id.postBody)).setText(postContent.getPostBody());
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
@@ -282,8 +285,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             String month = getMonthForInt(then.get(Calendar.MONTH)).substring(0,3);
             String day = Integer.toString(then.get(Calendar.DAY_OF_MONTH));
 
-            ((TextView) convertView.findViewById(R.id.timeNumber)).setText(month);
-            ((TextView) convertView.findViewById(R.id.timeLetter)).setText(" " + day);
+            ((TextView) convertView.findViewById(R.id.timeNumber)).setText(month + " " + day);
         }
 
         return convertView;
