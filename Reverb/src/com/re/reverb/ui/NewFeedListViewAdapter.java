@@ -271,7 +271,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             {
                 if(activity instanceof MainViewPagerActivity)
                 {
-                    //((MainViewPagerActivity) activity).startCreateReplyPostActivity(v, parentPost.getPostId());
+                    ((MainViewPagerActivity) activity).getNewFeedFragment().onMoreInfoClick(parentPost.getPostId());
                 }
                 else
                 {
