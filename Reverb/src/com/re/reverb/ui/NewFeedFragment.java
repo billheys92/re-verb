@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -22,14 +20,12 @@ import android.widget.Toast;
 
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.account.CreateUserDto;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
-import com.re.reverb.network.AccountManagerImpl;
 import com.re.reverb.network.PostManagerImpl;
 import com.re.reverb.network.RequestQueueSingleton;
 
@@ -176,7 +172,6 @@ public class NewFeedFragment extends Fragment implements OnRefreshListener, OnFe
         View v = vi.inflate(resource, null);
         this.currentOverlay = v;
 
-        //insert into slash screen
         FrameLayout myLayout = (FrameLayout) this.getActivity().findViewById(R.id.overlayMainFeedLayoutContainer);
         myLayout.addView(v);
         return v;
