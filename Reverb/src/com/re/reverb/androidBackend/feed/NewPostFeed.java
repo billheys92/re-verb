@@ -18,8 +18,6 @@ import java.util.List;
 
 public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
 {
-    protected static final int FEED_SIZE = 10;
-    protected int queuePosition = 0;
     private List<OnFeedDataChangedListener> onDataChangedListeners = new ArrayList<OnFeedDataChangedListener>();
     protected ArrayList<ParentPost> posts = new ArrayList<ParentPost>();
     private Context context;

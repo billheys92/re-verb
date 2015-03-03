@@ -18,5 +18,7 @@
     <dimen name="region_list_row_height">100dp</dimen>
     <dimen name="region_title_text_size">20dp</dimen>
 
+    <dimen name="post_action_margin">15dp</dimen>
+
 
 </resources>

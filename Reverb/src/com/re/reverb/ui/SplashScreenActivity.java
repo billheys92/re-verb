@@ -64,6 +64,12 @@ public class SplashScreenActivity extends Activity
             if (resultCode == RESULT_OK)
             {
                 mEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                // Save the shared preference
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(USER_EMAIL, mEmail);
+                editor.apply();
+
                 // With the account name acquired, go get the auth token
                 getUsername();
             } else if (resultCode == RESULT_CANCELED)
@@ -161,12 +167,6 @@ public class SplashScreenActivity extends Activity
 
     public void onUserDoesNotExist(final String email, final String token)
     {
-        //Intent intent = new Intent(this, CreateUserActivity.class);
-        //intent.putExtra(EMAIL_KEY, email);
-        //intent.putExtra(TOKEN_KEY, token);
-        //startActivity(intent);
-
-
         //CHANGE TO OVERLAY VIEW
         final SplashScreenActivity activity = this;
         displayOverlay(R.layout.overlay_create_user);
