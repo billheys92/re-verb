@@ -8,8 +8,6 @@ import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.post.ParentPost;
-import com.re.reverb.androidBackend.regions.Region;
-import com.re.reverb.network.PostManager;
 import com.re.reverb.network.PostManagerImpl;
 
 import java.text.SimpleDateFormat;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
 {
@@ -65,14 +64,17 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
     @Override
     public String getLastPostTime()
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
+//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         if(latestPostTime != null)
         {
             return sdf.format(latestPostTime);
         }
         else
         {
-            return "";
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date now = new Date();
+            return sdf.format(now);
         }
     }
 
@@ -85,14 +87,16 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
     @Override
     public String getEarliestPostTime()
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
         if(earliestPostTime != null)
         {
             return sdf.format(earliestPostTime);
         }
         else
         {
-            return "";
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date now = new Date();
+            return sdf.format(now);
         }
     }
 
@@ -115,7 +119,7 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
         if(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId() == 0)
         {
             Location location = Reverb.getInstance().getCurrentLocation();
-            PostManagerImpl.getPosts(location.getLatitude(), location.getLongitude(), 2, this);
+            PostManagerImpl.getRefreshPosts(location.getLatitude(), location.getLongitude(), 2, this);
         }
         else
         {
@@ -126,6 +130,8 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
     @Override
     public boolean fetchMore() throws Exception
     {
+        Location location = Reverb.getInstance().getCurrentLocation();
+        PostManagerImpl.getPosts(location.getLatitude(), location.getLongitude(), 2, this);
         return false;
     }
 
@@ -141,5 +147,4 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
             e.printStackTrace();
         }
     }
-
 }
