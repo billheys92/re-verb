@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
 {
@@ -63,14 +64,17 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
     @Override
     public String getLastPostTime()
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
+//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         if(latestPostTime != null)
         {
             return sdf.format(latestPostTime);
         }
         else
         {
-            return "";
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date now = new Date();
+            return sdf.format(now);
         }
     }
 
@@ -83,14 +87,16 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
     @Override
     public String getEarliestPostTime()
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
         if(earliestPostTime != null)
         {
             return sdf.format(earliestPostTime);
         }
         else
         {
-            return "";
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date now = new Date();
+            return sdf.format(now);
         }
     }
 
@@ -112,12 +118,14 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
     public void refreshPosts() throws UnsuccessfulRefreshException {
         //TODO: Add real range value
         Location location = Reverb.getInstance().getCurrentLocation();
-        PostManagerImpl.getPosts(location.getLatitude(), location.getLongitude(), 2, this);
+        PostManagerImpl.getRefreshPosts(location.getLatitude(), location.getLongitude(), 2, this);
     }
 
     @Override
     public boolean fetchMore() throws Exception
     {
+        Location location = Reverb.getInstance().getCurrentLocation();
+        PostManagerImpl.getPosts(location.getLatitude(), location.getLongitude(), 2, this);
         return false;
     }
 
