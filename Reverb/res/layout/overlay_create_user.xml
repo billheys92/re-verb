@@ -8,73 +8,73 @@
              android:padding="25dp">
 
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_bg_layout"
+                    android:padding="10dp"
+                    android:layout_gravity="center_horizontal|top">
+
+        <!--<Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:id="@+id/discardChangesButton"
+            android:layout_gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"/>-->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView"
+            android:layout_below="@+id/discardChangesButton">
+
+            <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_bg_layout"
-                android:padding="10dp"
-                android:layout_gravity="center_vertical">
-
-    <!--<Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="X"
-        android:id="@+id/discardChangesButton"
-        android:layout_gravity="right"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"/>-->
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
-        android:layout_below="@+id/discardChangesButton">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username"
-                android:textColorHint="@color/light_grey"
-                android:textColor="@color/main_font"
-                android:id="@+id/username"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:textColorHint="@color/light_grey"
+                    android:textColor="@color/main_font"
+                    android:id="@+id/username"/>
 
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Handle"
-                android:textColorHint="@color/light_grey"
-                android:textColor="@color/main_font"
-                android:id="@+id/handle"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Handle"
+                    android:textColorHint="@color/light_grey"
+                    android:textColor="@color/main_font"
+                    android:id="@+id/handle"/>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="About Me"
-                android:textColorHint="@color/light_grey"
-                android:textColor="@color/main_font"
-                android:id="@+id/aboutMe"
-                android:minLines="3"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="About Me"
+                    android:textColorHint="@color/light_grey"
+                    android:textColor="@color/main_font"
+                    android:id="@+id/aboutMe"
+                    android:minLines="3"/>
 
 
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
+        </ScrollView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create User"
-        android:id="@+id/createUserButton"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/scrollView"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create User"
+            android:id="@+id/createUserButton"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/scrollView"/>
 
-</RelativeLayout>
+    </RelativeLayout>
 </FrameLayout>

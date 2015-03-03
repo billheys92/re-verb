@@ -14,7 +14,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_bg_layout"
                     android:padding="10dp"
-                    android:layout_gravity="center_vertical">
+                    android:layout_gravity="center_horizontal|top">
 
         <Button
             style="?android:attr/buttonStyleSmall"

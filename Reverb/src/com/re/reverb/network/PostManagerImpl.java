@@ -16,7 +16,7 @@ import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.CreateReplyPostDto;
-import com.re.reverb.androidBackend.post.dto.FavoritePostDto;
+import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 
 import org.json.JSONArray;
@@ -184,11 +184,17 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         requestJson(replyPostDto, Request.Method.POST, baseURL + params);
     }
 
-    public static void submitFavoritePost(FavoritePostDto favoritePostDto)
+    public static void submitFavoritePost(PostActionDto postActionDto)
     {
     
         String params = "?commandtype=put&command=updateMessageUpVote";
-        requestJson(favoritePostDto, Request.Method.PUT, baseURL + params);
+        requestJson(postActionDto, Request.Method.PUT, baseURL + params);
+    }
+
+    public static void submitReportPost(PostActionDto postActionDto)
+    {
+        String params = "?commandtype=put&command=updateMessageReport"; //or spam or something
+        requestJson(postActionDto, Request.Method.PUT, baseURL + params);
     }
 
     public static void submitPost(final CreatePostDto postDto, File image)
