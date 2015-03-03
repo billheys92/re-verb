@@ -39,7 +39,7 @@ public class CircleRegionShape extends RegionShape {
     public ArrayList<Location> getShapeAsPoints()
     {
         int earthRad = 6371;
-        int numPoints = 36;
+        int numPoints = 24;
         ArrayList<Location> pts = new ArrayList<Location>(360/numPoints);
 
         double latitude  = (centrePoint.getLatitude() * Math.PI) / 180;

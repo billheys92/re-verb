@@ -9,9 +9,10 @@ public class CreateReplyPostDto extends CreatePostDto
                          boolean anonymous,
                          double latitude,
                          double longitude,
+                         int regionId,
                          String content)
     {
-        super(userId, anonymous, latitude, longitude, content);
+        super(userId, anonymous, latitude, longitude, regionId, content);
         this.Reply_link = messageId;
     }
 }

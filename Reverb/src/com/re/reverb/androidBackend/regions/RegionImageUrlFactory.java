@@ -5,6 +5,7 @@ import com.re.reverb.androidBackend.Location;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 public class RegionImageUrlFactory
 {
     public static URL createFromRegion(Region r){
+        DecimalFormat df = new DecimalFormat("###.####");
         String urlBase = "http://maps.googleapis.com/maps/api/staticmap?";
         String centreLat = ""+r.getCentre().getLatitude();
         String centreLong = ""+r.getCentre().getLongitude();
@@ -21,17 +23,13 @@ public class RegionImageUrlFactory
         urlBase += "&size=600x600";
         urlBase += "&maptype=road";
         urlBase += "&sensor=false";
-
-        if(r.getShapes().size() > 0 && r.getShapes().size() <= 3)
+        for (RegionShape shape : r.getShapes())
         {
-            for (RegionShape shape : r.getShapes())
+            ArrayList<Location> points = shape.getShapeAsPoints();
+            urlBase += "&path=color%3ablack|weight:1|fillcolor%3ablack";
+            for (Location location : points)
             {
-                ArrayList<Location> points = shape.getShapeAsPoints();
-                urlBase += "&path=color%3ablack|weight:1|fillcolor%3ablack";
-                for (Location location : points)
-                {
-                    urlBase += "|" + location.getLatitude() + "," + location.getLongitude();
-                }
+                urlBase += "|" + df.format(location.getLatitude()) + "," + df.format(location.getLongitude());
             }
         }
         if(r.getShapes().size() > 0 && r.getShapes().size() <= 3)
@@ -43,6 +41,7 @@ public class RegionImageUrlFactory
             }
         }
         String url = urlBase;
+        System.out.println(url);
         try
         {
             return new URL(url);

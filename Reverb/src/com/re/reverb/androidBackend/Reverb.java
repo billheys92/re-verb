@@ -26,9 +26,7 @@ public class Reverb {
     //private UserProfile currentUser;
     private UserProfile currentUser = new UserProfile("test", "test", "test", "test", "test", 8);
     private RegionManager regionManager;
-    private Feed postFeed;
     private Settings settings = Settings.getInstance();
-    private final AWSPersistenceManager persistenceManager = new AWSPersistenceManager();
     public LocationManager locationManager;
 
     private Reverb()

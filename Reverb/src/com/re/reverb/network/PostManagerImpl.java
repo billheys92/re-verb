@@ -57,7 +57,8 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
     public static void getPostsForRegion(int regionId, final Feed feed)
     {
-
+        String params = String.format("?commandtype=get&command=getMessagesByRegion&region=%s",Integer.toString(regionId));
+        getPosts(feed, params);
     }
 
     public static void getPostsForUser(int userId, final Feed feed)

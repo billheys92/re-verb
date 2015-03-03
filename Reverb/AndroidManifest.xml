@@ -24,10 +24,12 @@
         android:theme="@style/Theme.CustomActionBar" >
         <activity
             android:name="com.re.reverb.ui.MainViewPagerActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.re.reverb.ui.CreatePostActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_create_post"
             android:parentActivityName="com.re.reverb.ui.MainViewPagerActivity"
             android:theme="@style/Theme.CustomActionBar" >
@@ -37,6 +39,7 @@
         </activity>
         <activity
             android:name="com.re.reverb.ui.CreateReplyPostActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_create_post_reply"
             android:parentActivityName="com.re.reverb.ui.MainViewPagerActivity"
             android:theme="@style/Theme.Transparent">
@@ -46,6 +49,7 @@
         </activity>
         <activity
             android:name="com.re.reverb.ui.SettingsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_settings_activity"
             android:parentActivityName="com.re.reverb.ui.MainViewPagerActivity">
             <meta-data
@@ -53,6 +57,7 @@
                 android:value="com.re.reverb.ui.MainViewPagerActivity" />
         </activity>
         <activity android:name="com.re.reverb.ui.SplashScreenActivity"
+                  android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,6 +66,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.re.reverb.ui.CreateRegionActivity"
+                  android:screenOrientation="portrait"
             android:label="@string/title_activity_create_region">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.re.reverb.ui.MainViewPagerActivity" />

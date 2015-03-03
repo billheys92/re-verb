@@ -15,6 +15,7 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;

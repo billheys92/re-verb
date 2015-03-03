@@ -116,9 +116,15 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
 
     @Override
     public void refreshPosts() throws UnsuccessfulRefreshException {
-        //TODO: Add real range value
-        Location location = Reverb.getInstance().getCurrentLocation();
-        PostManagerImpl.getRefreshPosts(location.getLatitude(), location.getLongitude(), 2, this);
+        if(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId() == 0)
+        {
+            Location location = Reverb.getInstance().getCurrentLocation();
+            PostManagerImpl.getRefreshPosts(location.getLatitude(), location.getLongitude(), 2, this);
+        }
+        else
+        {
+            PostManagerImpl.getPostsForRegion(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(), this);
+        }
     }
 
     @Override
