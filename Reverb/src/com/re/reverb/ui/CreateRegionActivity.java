@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,15 +31,27 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.gson.Gson;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.regions.CircleRegionShape;
+import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.RectangleRegionShape;
 import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.androidBackend.regions.RegionFactory;
+import com.re.reverb.androidBackend.regions.RegionImageUrlFactory;
 import com.re.reverb.androidBackend.regions.RegionShape;
+import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
+import com.re.reverb.androidBackend.regions.dto.ReceiveRegionCircleDto;
+import com.re.reverb.androidBackend.regions.dto.ReceiveRegionDto;
+import com.re.reverb.androidBackend.regions.dto.ReceiveRegionRectangleDto;
 import com.re.reverb.androidBackend.utils.SuccessStatus;
 import com.re.reverb.ui.shapeWrappers.Shape;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,18 +83,7 @@ public class CreateRegionActivity extends ActionBarActivity
 
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.getInt("SELECTED_REGION_ID") > -1) {
-            this.region = Reverb.getInstance().getRegionManager().getNearbyRegions().get(extras.getInt("SELECTED_REGION_ID"));
-            if(this.region != null)
-            {
-                ActionBar actionBar = getSupportActionBar();
-                actionBar.setTitle(this.region.getName());
-                for (RegionShape shape : this.region.getShapes())
-                {
-                    regionShapes.add(shape);
-                }
-                drawMapShapes();
-                Toast.makeText(this, "Opened region: " + this.region.getName(), Toast.LENGTH_SHORT).show();
-            }
+            fetchRegionDetails(extras.getInt("SELECTED_REGION_ID"));
         }
         else
         {
@@ -147,8 +149,9 @@ public class CreateRegionActivity extends ActionBarActivity
     }
 
     public void onSaveRegionClick(View view) {
-        region.setShapes(regionShapes);
+        region.editShapes(regionShapes);
         SuccessStatus status = region.saveRegion();
+//        RegionImageUrlFactory.createFromRegion(region);
         if(!status.success()) {
             Toast.makeText(this, status.reason(), Toast.LENGTH_SHORT).show();
         }
@@ -276,7 +279,7 @@ public class CreateRegionActivity extends ActionBarActivity
         Button b2 = (Button)findViewById(R.id.discardChangesButton);
         b2.setOnClickListener(listener);
         EditText nameExitText = (EditText)findViewById(R.id.editRegionName);
-        nameExitText.setText(region.getName() == null ? "Region Name" : region.getName());
+//        nameExitText.setText(region.getName() == null ? "Region Name" : region.getName());
         nameExitText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
@@ -289,11 +292,11 @@ public class CreateRegionActivity extends ActionBarActivity
 
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                region.setName(s.toString());
+                region.editName(s.toString());
             }
         });
         EditText descriptionEditText = (EditText)findViewById(R.id.editRegionDescription);
-        descriptionEditText.setText(region.getDescription() == null ? "Description" : region.getDescription());
+//        descriptionEditText.setText(region.getDescription() == null ? "Description" : region.getDescription());
         descriptionEditText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
@@ -306,7 +309,7 @@ public class CreateRegionActivity extends ActionBarActivity
 
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                region.setDescription(s.toString());
+                region.editDescription(s.toString());
             }
         });
     }
@@ -424,5 +427,81 @@ public class CreateRegionActivity extends ActionBarActivity
         LinearLayout tools=(LinearLayout)this.findViewById(R.id.editingToolsLayout);
         tools.setVisibility(LinearLayout.GONE);
         editingToolsOpen = false;
+    }
+
+    private void fetchRegionDetails(int regionId)
+    {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+
+            @Override
+            public void onResponse(JSONObject jsonObject)
+            {
+                Gson gson = new Gson();
+                ReceiveRegionDto regionDto = gson.fromJson(jsonObject.toString(), ReceiveRegionDto.class);
+
+                ArrayList<ReceiveRegionCircleDto> circleDtos = new ArrayList<ReceiveRegionCircleDto>();
+                ArrayList<ReceiveRegionRectangleDto> rectangleDtos = new ArrayList<ReceiveRegionRectangleDto>();
+                try
+                {
+                    if(jsonObject.getString("circles") != "null")
+                    {
+                        JSONArray jsonCircles = jsonObject.getJSONArray("circles");
+                        for (int i = 0; i < jsonCircles.length(); i++)
+                        {
+                            JSONObject obj = jsonCircles.getJSONObject(i);
+                            ReceiveRegionCircleDto dto = gson.fromJson(obj.toString(), ReceiveRegionCircleDto.class);
+                            circleDtos.add(dto);
+                        }
+                    }
+                    if(jsonObject.getString("rectangles") != "null")
+                    {
+                        JSONArray jsonRectangles = jsonObject.getJSONArray("rectangles");
+                        for (int i = 0; i < jsonRectangles.length(); i++)
+                        {
+                            JSONObject obj = jsonRectangles.getJSONObject(i);
+                            ReceiveRegionRectangleDto dto = gson.fromJson(obj.toString(), ReceiveRegionRectangleDto.class);
+                            rectangleDtos.add(dto);
+                        }
+                    }
+                    regionDto.setCirclesDto(circleDtos);
+                    regionDto.setRectanglesDto(rectangleDtos);
+                } catch (JSONException e)
+                {
+                    Log.e("Reverb","Error parsing JSON string while fetching Region details");
+                    e.printStackTrace();
+                }
+                region = RegionFactory.createRegionFromDto(regionDto);
+                if(region != null)
+                {
+                    ActionBar actionBar = getSupportActionBar();
+                    actionBar.setTitle(region.getName());
+                    for (RegionShape shape : region.getShapes())
+                    {
+                        regionShapes.add(shape);
+                    }
+                    drawMapShapes();
+                }
+            }
+
+        };
+
+        if(regionId > 0)
+        {
+            GetRegionByIdDto dto = new GetRegionByIdDto(regionId);
+            com.re.reverb.network.RegionManagerImpl.getRegionById(listener, dto);
+        }
+        else if (regionId == 0)
+        {
+            region = new CommonsRegion(Reverb.getInstance().getCurrentLocation());
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setTitle(region.getName());
+            for (RegionShape shape : region.getShapes())
+            {
+                regionShapes.add(shape);
+            }
+            drawMapShapes();
+        }
+
     }
 }

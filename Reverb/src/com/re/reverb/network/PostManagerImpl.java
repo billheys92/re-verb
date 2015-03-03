@@ -24,8 +24,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class PostManagerImpl extends PersistenceManagerImpl implements PostManager
 {
@@ -40,14 +43,22 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
     public static void getPosts(double latitude, double longitude, float range, final Feed feed)
     {
+        String lastUpdate = feed.getEarliestPostTime();
+        String params = String.format("?commandtype=get&command=getMessagesByLocationPaging&lat=%s&lon=%s&range=%s&lastupdate='%s'",Double.toString(latitude), Double.toString(longitude), range, lastUpdate);
+        getPosts(feed, params);
+    }
+
+    public static void getRefreshPosts(double latitude, double longitude, float range, final Feed feed)
+    {
         String lastUpdate = feed.getLastPostTime();
-        String params = String.format("?commandtype=get&command=getMessagesByLocation&lat=%s&lon=%s&range=%s&lastupdate='%s'",Double.toString(latitude), Double.toString(longitude), range, lastUpdate);
+        String params = String.format("?commandtype=get&command=getMessagesByLocationUpdateToLatest&lat=%s&lon=%s&range=%s&lastupdate='%s'",Double.toString(latitude), Double.toString(longitude), range, lastUpdate);
         getPosts(feed, params);
     }
 
     public static void getPostsForRegion(int regionId, final Feed feed)
     {
-
+        String params = String.format("?commandtype=get&command=getMessagesByRegion&region=%s",Integer.toString(regionId));
+        getPosts(feed, params);
     }
 
     public static void getPostsForUser(int userId, final Feed feed)
