@@ -105,6 +105,7 @@ public class AccountManagerImpl extends PersistenceManagerImpl
                 UserProfile userProfile = gson.fromJson(response.toString(), UserProfile.class);
                 userProfile.Token = token;
                 Reverb.getInstance().signInUser(userProfile);
+                getUserProfilePicture();
                 activity.onScreenClick(null);
             }
         };
@@ -124,7 +125,7 @@ public class AccountManagerImpl extends PersistenceManagerImpl
         }
     }
 
-    public static void getUserProfilePicture(final String email, final String token)
+    public static void getUserProfilePicture()
     {
         final String url = profilePictureURL + key;
 
@@ -140,6 +141,6 @@ public class AccountManagerImpl extends PersistenceManagerImpl
             }
         };
 
-        //requestJson(listener, url, Request.Method.GET);
+        requestJson(listener, null, Request.Method.GET, url);
     }
 }
