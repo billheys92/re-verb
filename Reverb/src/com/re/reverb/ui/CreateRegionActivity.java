@@ -36,6 +36,7 @@ import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.regions.CircleRegionShape;
 import com.re.reverb.androidBackend.regions.RectangleRegionShape;
 import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.androidBackend.regions.RegionImageUrlFactory;
 import com.re.reverb.androidBackend.regions.RegionShape;
 import com.re.reverb.androidBackend.utils.SuccessStatus;
 import com.re.reverb.ui.shapeWrappers.Shape;
@@ -149,6 +150,7 @@ public class CreateRegionActivity extends ActionBarActivity
     public void onSaveRegionClick(View view) {
         region.editShapes(regionShapes);
         SuccessStatus status = region.saveRegion();
+//        RegionImageUrlFactory.createFromRegion(region);
         if(!status.success()) {
             Toast.makeText(this, status.reason(), Toast.LENGTH_SHORT).show();
         }
