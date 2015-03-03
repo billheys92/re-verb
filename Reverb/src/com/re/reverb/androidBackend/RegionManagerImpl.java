@@ -3,18 +3,31 @@ package com.re.reverb.androidBackend;
 import android.util.Log;
 
 import com.android.volley.Response;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.post.Post;
+import com.re.reverb.androidBackend.post.PostFactory;
+import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.androidBackend.regions.RegionFactory;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
 import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
 import com.re.reverb.androidBackend.regions.dto.GetSubscribedRegionsDto;
+import com.re.reverb.androidBackend.regions.dto.ReceiveRegionCircleDto;
+import com.re.reverb.androidBackend.regions.dto.ReceiveRegionDto;
+import com.re.reverb.androidBackend.regions.dto.ReceiveRegionRectangleDto;
 import com.re.reverb.androidBackend.regions.dto.UnfollowRegionDto;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Bill on 2015-01-11.
@@ -46,17 +59,58 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
             @Override
             public void onResponse(JSONObject jsonObject)
             {
-                JSONObject obj = jsonObject;
-                updateCurrentRegion();
+                Gson gson = new Gson();
+                ReceiveRegionDto regionDto = gson.fromJson(jsonObject.toString(), ReceiveRegionDto.class);
+
+                ArrayList<ReceiveRegionCircleDto> circleDtos = new ArrayList<ReceiveRegionCircleDto>();
+                ArrayList<ReceiveRegionRectangleDto> rectangleDtos = new ArrayList<ReceiveRegionRectangleDto>();
+                try
+                {
+                    if(jsonObject.getString("circles") != "null")
+                    {
+                        JSONArray jsonCircles = jsonObject.getJSONArray("circles");
+                        for (int i = 0; i < jsonCircles.length(); i++)
+                        {
+                            JSONObject obj = jsonCircles.getJSONObject(i);
+                            ReceiveRegionCircleDto dto = gson.fromJson(obj.toString(), ReceiveRegionCircleDto.class);
+                            circleDtos.add(dto);
+                        }
+                    }
+                    if(jsonObject.getString("rectangles") != "null")
+                    {
+                        JSONArray jsonRectangles = jsonObject.getJSONArray("rectangles");
+                        for (int i = 0; i < jsonRectangles.length(); i++)
+                        {
+                            JSONObject obj = jsonRectangles.getJSONObject(i);
+                            ReceiveRegionRectangleDto dto = gson.fromJson(obj.toString(), ReceiveRegionRectangleDto.class);
+                            rectangleDtos.add(dto);
+                        }
+                    }
+                    regionDto.setCirclesDto(circleDtos);
+                    regionDto.setRectanglesDto(rectangleDtos);
+                } catch (JSONException e)
+                {
+                    Log.e("Reverb","Error parsing JSON string while fetching Region details");
+                    e.printStackTrace();
+                }
+                updateCurrentRegion(RegionFactory.createRegionFromDto(regionDto));
             }
         };
-        GetRegionByIdDto dto = new GetRegionByIdDto(this.currentRegion.getRegionId());
-        com.re.reverb.network.RegionManagerImpl.getRegionById(listener, dto);
+        if(this.currentRegion.getRegionId() > 0)
+        {
+            GetRegionByIdDto dto = new GetRegionByIdDto(this.currentRegion.getRegionId());
+            com.re.reverb.network.RegionManagerImpl.getRegionById(listener, dto);
+        }
+        else
+        {
+            updateCurrentRegion(new CommonsRegion(Reverb.getInstance().getCurrentLocation()));
+        }
 
     }
 
-    public void updateCurrentRegion()
+    public void updateCurrentRegion(Region region)
     {
+        this.currentRegion = region;
         this.currentRegion.update();
         this.currentRegion.setReadPermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()) || this.subscribedRegions.contains(this.currentRegion));
         this.currentRegion.setWritePermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()));

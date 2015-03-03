@@ -59,6 +59,7 @@ public class CreateReplyPostActivity extends CreatePostActivity
                     anonymous,
                     location.getLatitude(),
                     location.getLongitude(),
+                    Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(),
                     text);
         } catch (NotSignedInException e)
         {

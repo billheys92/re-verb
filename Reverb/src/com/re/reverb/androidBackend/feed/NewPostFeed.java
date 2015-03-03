@@ -8,6 +8,8 @@ import com.re.reverb.androidBackend.OnFeedDataChangedListener;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.post.ParentPost;
+import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.network.PostManager;
 import com.re.reverb.network.PostManagerImpl;
 
 import java.text.SimpleDateFormat;
@@ -110,9 +112,15 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
 
     @Override
     public void refreshPosts() throws UnsuccessfulRefreshException {
-        //TODO: Add real range value
-        Location location = Reverb.getInstance().getCurrentLocation();
-        PostManagerImpl.getPosts(location.getLatitude(), location.getLongitude(), 2, this);
+        if(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId() == 0)
+        {
+            Location location = Reverb.getInstance().getCurrentLocation();
+            PostManagerImpl.getPosts(location.getLatitude(), location.getLongitude(), 2, this);
+        }
+        else
+        {
+            PostManagerImpl.getPostsForRegion(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(), this);
+        }
     }
 
     @Override
@@ -133,4 +141,5 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
             e.printStackTrace();
         }
     }
+
 }

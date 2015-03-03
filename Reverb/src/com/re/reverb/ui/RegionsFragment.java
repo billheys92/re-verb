@@ -200,10 +200,17 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
                 @Override
                 public void onClick(View v)
                 {
-                    //TODO: only fetch names and ids in the array of rgions call and then get
-                    //TODO: more details in the next activity. This requires moving region static maps api call until later
+                    int rId = -1;
+                    if(selectedTab == TabType.SUBSCRIBED)
+                    {
+                        rId = Reverb.getInstance().getRegionManager().getSubscribedRegions().get(position).getRegionId();
+                    }
+                    else
+                    {
+                        rId = Reverb.getInstance().getRegionManager().getNearbyRegions().get(position).getRegionId();
+                    }
                     Intent intent = new Intent(getActivity(), CreateRegionActivity.class);
-                    intent.putExtra("SELECTED_REGION_ID", position);
+                    intent.putExtra("SELECTED_REGION_ID", rId);
                     startActivity(intent);
                 }
             });
