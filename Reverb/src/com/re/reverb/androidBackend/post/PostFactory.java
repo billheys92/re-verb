@@ -55,7 +55,7 @@ public class PostFactory
                 updateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(gsonPost.getUpdate_time());
             }
             return new ParentPost(gsonPost.getRegion_id(),
-                    0,
+                    gsonPost.getNum_replies(),
                     new ArrayList<ChildPost>(0),
                     gsonPost.getPoster_id(),
                     gsonPost.getMessage_id(),

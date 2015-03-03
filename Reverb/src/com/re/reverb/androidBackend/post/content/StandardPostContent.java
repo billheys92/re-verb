@@ -14,7 +14,7 @@ public class StandardPostContent implements PostContent
     private String postBody;
     private String profilePictureURL;
     private Integer numVotes;
-    private Integer numReplies;
+    private Integer numReplies; //get off parent post, replies don't have replies
 
     private String messageImage;
 
@@ -99,6 +99,7 @@ public class StandardPostContent implements PostContent
         this.numVotes = numVotes;
     }
 
+    @Deprecated
     public Integer getNumReplies()
     {
         return numReplies;

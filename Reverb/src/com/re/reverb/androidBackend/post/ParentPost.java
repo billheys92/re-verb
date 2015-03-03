@@ -34,7 +34,7 @@ public class ParentPost extends Post
         return regionId;
     }
 
-    public int getNumReplys()
+    public Integer getNumReplys()
     {
         return numReplys;
     }

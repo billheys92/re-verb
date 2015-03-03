@@ -241,7 +241,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         ((TextView) convertView.findViewById(R.id.voteCount)).setText(postContent.getNumVotes().toString());
 
         final ImageView replyImage = (ImageView) convertView.findViewById(R.id.replyIcon);
-        replyImage.setImageResource(R.drawable.reply_icon);
+        replyImage.setImageResource(R.mipmap.reply_icon);
         replyImage.setOnClickListener(new View.OnClickListener()
         {
 
@@ -258,6 +258,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
                 }
             }
         });
+        ((TextView) convertView.findViewById(R.id.replyCount)).setText(parentPost.getNumReplys().toString().equals("0") ? "" : parentPost.getNumReplys().toString());
 
         ((ImageView) convertView.findViewById(R.id.repostIcon)).setImageResource(R.mipmap.repost_icon);
 
