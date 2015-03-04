@@ -14,4 +14,14 @@ public class GetNearbyRegionsDto
         this.Location_lat = currentLocation.getLatitude();
         this.Location_long = currentLocation.getLongitude();
     }
+
+    public double getLat()
+    {
+        return Location_lat;
+    }
+
+    public double getLong()
+    {
+        return Location_long;
+    }
 }

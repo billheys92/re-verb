@@ -16,7 +16,7 @@ import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.CreateReplyPostDto;
-import com.re.reverb.androidBackend.post.dto.FavoritePostDto;
+import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 
 import org.json.JSONArray;
@@ -54,7 +54,8 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
     public static void getPostsForRegion(int regionId, final Feed feed)
     {
-
+        String params = String.format("?commandtype=get&command=getMessagesByRegion&region=%s",Integer.toString(regionId));
+        getPosts(feed, params);
     }
 
     public static void getPostsForUser(int userId, final Feed feed)
@@ -91,12 +92,12 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                 System.out.println("Response is: "+ response);
 
 
-                ArrayList<Post> returnedPosts = new ArrayList<Post>();
+                ArrayList<ParentPost> returnedPosts = new ArrayList<ParentPost>();
                 for(int i = 0; i < response.length(); i++){
                     try {
                         Gson gson = new Gson();
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
-                        Post p = PostFactory.createParentPost(postDto);
+                        ParentPost p = PostFactory.createParentPost(postDto);
 
                         if(!feed.getPosts().contains(p))
                         {
@@ -104,7 +105,11 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                         }
                         else
                         {
-                            //TODO: update values inside post if needed
+                            //remove old copy and add new
+                            if(feed.getPosts().remove(p))
+                            {
+                                returnedPosts.add(p);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -143,11 +148,11 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                     try {
                         Gson gson = new Gson();
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
-                        Post p = PostFactory.createChildPost(postDto);
+                        ChildPost p = PostFactory.createChildPost(postDto);
 
                         if(!post.getChildPosts().contains(p))
                         {
-                            post.getChildPosts().add((ChildPost) p);
+                            post.getChildPosts().add(p);
                         }
                         else
                         {
@@ -208,11 +213,17 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         queue.add(multiRequest);
     }
 
-    public static void submitFavoritePost(FavoritePostDto favoritePostDto)
+    public static void submitFavoritePost(PostActionDto postActionDto)
     {
     
         String params = "?commandtype=put&command=updateMessageUpVote";
-        requestJson(favoritePostDto, Request.Method.PUT, baseURL + params);
+        requestJson(postActionDto, Request.Method.PUT, baseURL + params);
+    }
+
+    public static void submitReportPost(PostActionDto postActionDto)
+    {
+        String params = "?commandtype=put&command=updateMessageReport"; //or spam or something
+        requestJson(postActionDto, Request.Method.PUT, baseURL + params);
     }
 
     public static void submitPost(final CreatePostDto postDto, File image)

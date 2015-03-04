@@ -349,4 +349,8 @@ public class MainViewPagerActivity extends ActionBarActivity implements GooglePl
         Toast.makeText(this, "Toggling Anonymity (but not actually)", Toast.LENGTH_SHORT).show();
     }
 
+    public NewFeedFragment getNewFeedFragment()
+    {
+        return newFeedFragment;
+    }
 }

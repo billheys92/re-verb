@@ -165,7 +165,7 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
             regionNameTextView.setText(selectedRegion.getName());
             regionDescriptionTextView.setText(selectedRegion.getDescription());
             imageView.setDefaultImageResId(R.drawable.anonymous_pp);
-            imageView.setImageUrl(RegionImageUrlFactory.createFromRegion(selectedRegion).toString(), RequestQueueSingleton.getInstance().getImageLoader());
+//            imageView.setImageUrl(RegionImageUrlFactory.createFromRegion(selectedRegion).toString(), RequestQueueSingleton.getInstance().getImageLoader());
             final ImageView toggleSubscribedImage = (ImageView) rowView.findViewById(R.id.subscribeToRegionToggleButton);
             if(!selectedRegion.canUnsubscribe()) {
                 toggleSubscribedImage.setImageDrawable(null);
@@ -200,10 +200,17 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
                 @Override
                 public void onClick(View v)
                 {
-                    //TODO: only fetch names and ids in the array of rgions call and then get
-                    //TODO: more details in the next activity. This requires moving region static maps api call until later
+                    int rId = -1;
+                    if(selectedTab == TabType.SUBSCRIBED)
+                    {
+                        rId = Reverb.getInstance().getRegionManager().getSubscribedRegions().get(position).getRegionId();
+                    }
+                    else
+                    {
+                        rId = Reverb.getInstance().getRegionManager().getNearbyRegions().get(position).getRegionId();
+                    }
                     Intent intent = new Intent(getActivity(), CreateRegionActivity.class);
-                    intent.putExtra("SELECTED_REGION_ID", position);
+                    intent.putExtra("SELECTED_REGION_ID", rId);
                     startActivity(intent);
                 }
             });

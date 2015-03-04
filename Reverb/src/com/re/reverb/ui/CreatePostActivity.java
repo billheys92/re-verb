@@ -92,6 +92,7 @@ public class CreatePostActivity extends Activity {
                     anonymous,
                     location.getLatitude(),
                     location.getLongitude(),
+                    Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(),
                     //new StandardPostContentDto(text));
                     text);
         } catch (NotSignedInException e)

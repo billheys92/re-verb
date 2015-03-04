@@ -4,7 +4,8 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:descendantFocusability="blocksDescendants"
-                android:padding="5dip">
+                android:padding="5dip"
+    >
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/regionThumbnail"
@@ -14,39 +15,45 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="false"/>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Region "
-        android:focusable="false"
-        android:id="@+id/regionName"
-        android:layout_alignTop="@+id/regionThumbnail"
-        android:layout_alignParentLeft="false"
-        android:layout_toRightOf="@+id/regionThumbnail"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description"
-        android:focusable="false"
-        android:id="@+id/regionDescriptionTextView"
-        android:layout_below="@+id/regionName"
         android:layout_toRightOf="@+id/regionThumbnail"
-        android:maxWidth="200dp"
-        android:maxLines="3"/>
+        android:layout_toLeftOf="@+id/subscribeToRegionToggleButton"
+        >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="0 Followers | 0 Posts"
-        android:focusable="false"
-        android:id="@+id/regionStatsTextView"
-        android:layout_below="@+id/regionDescriptionTextView"
-        android:layout_alignLeft="@+id/regionDescriptionTextView"
-        android:layout_alignStart="@+id/regionDescriptionTextView"
-        android:textColor="@color/dark_grey"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Region "
+            android:focusable="false"
+            android:id="@+id/regionName"
+            android:ellipsize="end"
+            android:singleLine="true"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:focusable="false"
+            android:id="@+id/regionDescriptionTextView"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:maxWidth="200dp"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0 Followers | 0 Posts"
+            android:focusable="false"
+            android:id="@+id/regionStatsTextView"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/dark_grey"/>
+    </LinearLayout>
 
     <ImageButton
         android:layout_width="50dp"
@@ -64,7 +71,7 @@
         android:layout_alignParentTop="true"/>
 
     <ImageView
-        android:layout_width="25dp"
+        android:layout_width="30dp"
         android:layout_height="75dp"
         android:src="@drawable/details_arrow_icon"
         android:layout_gravity="center|right"

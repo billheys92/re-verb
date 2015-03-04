@@ -19,6 +19,10 @@ public interface RegionManager
 
     public ArrayList<Region> getSubscribedRegions();
 
+    public void setNearbyRegions(ArrayList<Region> regions);
+
+    public void setSubscribedRegions(ArrayList<Region> regions);
+
     public void updateRegionLists();
 
     public ArrayList<String> getNearbyRegionNames();
@@ -29,13 +33,11 @@ public interface RegionManager
 
     public void subscribeToRegion(Region region);
 
-    public void getRegionById(int regionId);
-
     /**
      *
      * @param region
      * @return true if region unsubscribed from, false if it was never subscribed to
      */
-    public boolean unsubscribeFromRegion(Region region);
+    public void unsubscribeFromRegion(Region region);
 
 }

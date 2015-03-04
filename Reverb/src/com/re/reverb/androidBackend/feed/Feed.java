@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.post.Post;
 
@@ -30,13 +31,13 @@ public interface Feed<T extends Post>
      * Clears the post list and re-populates it. When posts are re-set, setPosts must be called
      * @throws UnsuccessfulRefreshException
      */
-	public void refreshPosts() throws UnsuccessfulRefreshException;
+	public void refreshPosts() throws UnsuccessfulRefreshException, NotSignedInException;
 
     /**
      *
      * @return true if more posts were fetched, false if no more were available
      * @throws java.lang.Exception
      **/
-	public boolean fetchMore() throws Exception;
+	public boolean fetchMore() throws Exception, NotSignedInException;
 
 }

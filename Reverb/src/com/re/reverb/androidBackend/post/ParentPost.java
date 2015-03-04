@@ -6,7 +6,7 @@ import com.re.reverb.androidBackend.post.content.PostContent;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ParentPost extends Post
+public class ParentPost extends Post implements Comparable<ParentPost>
 {
     private final int regionId;
     private int numReplys;
@@ -52,5 +52,19 @@ public class ParentPost extends Post
     public void setChildPosts(ArrayList<ChildPost> childPosts)
     {
         this.childPosts = childPosts;
+    }
+
+    @Override
+    public int compareTo(ParentPost another)
+    {
+        boolean test = true;
+        if(this.getTimeCreated() != null && this.getTimeCreated().before(another.getTimeCreated()))
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
     }
 }

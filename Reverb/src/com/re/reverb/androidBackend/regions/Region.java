@@ -7,6 +7,7 @@ import com.re.reverb.androidBackend.utils.SuccessStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -26,9 +27,11 @@ public class Region
     protected List<RegionShape> shapes = new ArrayList<RegionShape>();
     protected String name;
     protected String description;
+    protected Date creationTime;
+    protected Date updateTime;
 
     public Region(){
-        this.regionId = r.nextInt();
+
     }
 
     public Region(Region r){
@@ -114,6 +117,41 @@ public class Region
     public String getDescription()
     {
         return description;
+    }
+
+    public Date getCreationTime()
+    {
+        return creationTime;
+    }
+
+    public void setCreationTime(Date creationTime)
+    {
+        this.creationTime = creationTime;
+    }
+
+    public Date getUpdateTime()
+    {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime)
+    {
+        this.updateTime = updateTime;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public void setShapes(ArrayList<RegionShape> shapes)
+    {
+        this.shapes = shapes;
     }
 
     public void subscribe()
@@ -236,7 +274,7 @@ public class Region
      * Only works if called after beginEditing and before saveRegion or discardChanges
      * @param shapes
      */
-    public void setShapes(List<RegionShape> shapes) {
+    public void editShapes(List<RegionShape> shapes) {
         if(this.editing)
         {
             this.shapes = shapes;
@@ -247,7 +285,7 @@ public class Region
      * Only works if called after beginEditing and before saveRegion or discardChanges
      *
      */
-    public void setName(String name)
+    public void editName(String name)
     {
         if(this.editing)
         {
@@ -257,7 +295,7 @@ public class Region
     /**
      * Only works if called after beginEditing and before saveRegion or discardChanges
      */
-    public void setDescription(String description)
+    public void editDescription(String description)
     {
         if(this.editing)
         {

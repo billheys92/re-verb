@@ -17,105 +17,96 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.feed.AbstractFeed;
 import com.re.reverb.androidBackend.feed.DummyNetworkFeed;
 import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
+import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.network.RequestQueueSingleton;
 
 
-public class FeedFragment extends Fragment implements OnRefreshListener, OnFeedDataChangedListener
+public abstract class FeedFragment extends Fragment implements OnRefreshListener, OnFeedDataChangedListener
 {
-	SparseArray<Post> posts = new SparseArray<Post>();
-	Feed dataFeed = new DummyNetworkFeed();
-	SwipeRefreshLayout swipeRefreshLayout;
-	FeedListViewAdapter adapter;	
+    AbstractFeed dataFeed;
+    SwipeRefreshLayout swipeRefreshLayout;
+    NewFeedListViewAdapter adapter;
 
-	public FeedFragment(){}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-			
-		View rootView = inflater.inflate(R.layout.fragment_main_feed, container, false);
-		swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
-		swipeRefreshLayout.setOnRefreshListener(this);
-		swipeRefreshLayout.setColorScheme(R.color.reverb_blue_1, 
-				R.color.reverb_blue_2, 
-				R.color.reverb_blue_3, 
-				R.color.reverb_blue_4);
-		ExpandableListView elv = (ExpandableListView) rootView.findViewById(R.id.feedListView);
-		
-		
-	    adapter = new FeedListViewAdapter(getActivity(), dataFeed);
-		elv.setAdapter(adapter);
-		elv.setOnScrollListener(new FeedScrollListener());
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+    }
+
+    protected View setupDataFeed(View rootView, AbstractFeed dataFeed)
+    {
+        this.dataFeed = dataFeed;
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorScheme(R.color.reverb_blue_1,
+                R.color.reverb_blue_2,
+                R.color.reverb_blue_3,
+                R.color.reverb_blue_4);
+        ExpandableListView elv = (ExpandableListView) rootView.findViewById(R.id.newFeedListView);
+        elv.setGroupIndicator(null);
+
+        RequestQueueSingleton.getInstance(getActivity().getApplicationContext());
+
+
+        adapter = new NewFeedListViewAdapter(getActivity(), dataFeed);
+        elv.setAdapter(adapter);
+        elv.setOnScrollListener(new FeedScrollListener());
 
         dataFeed.setOnDataChangedListener(this);
 
-		return rootView;
-	}
-	
+        return rootView;
+    }
 
-	@Override
-	public void onRefresh()
-	{
-		try
-		{
-			dataFeed.refreshPosts();
-            adapter.notifyDataSetChanged();
-		} catch (UnsuccessfulRefreshException e)
-		{
-			Toast.makeText(getActivity(), R.string.refresh_error_toast_message, Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-		}
-        new Handler().postDelayed(new Runnable() {
-                @Override public void run() {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }, 3000);
-	}
 
     @Override
-    public void onDataChanged() {
+    public void onDataChanged()
+    {
         adapter.notifyDataSetChanged();
     }
 
-    private class FeedScrollListener implements AbsListView.OnScrollListener
-	{
-		
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState)
-		{
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-		{
-			if(view.getLastVisiblePosition() == view.getAdapter().getCount()-1)
-			{
-				try
-				{
-					if(dataFeed.fetchMore()){
+
+    protected class FeedScrollListener implements AbsListView.OnScrollListener
+    {
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState)
+        {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+        {
+            if(view.getLastVisiblePosition() == view.getAdapter().getCount()-1)
+            {
+                try
+                {
+                    if(dataFeed.fetchMore()){
                         ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
                     }
 
-				} catch (Exception e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				Log.d("Reverb","Scrolled to the bottom");
-			}
-			
-		}
-	}
+                } catch (Exception e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (NotSignedInException e)
+                {
+                    Toast.makeText(getActivity(), R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                Log.d("Reverb","Scrolled to the bottom");
+            }
 
-	
-	
+        }
+    }
 }
 
