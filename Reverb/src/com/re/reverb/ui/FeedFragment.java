@@ -1,5 +1,6 @@
 package com.re.reverb.ui;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.re.reverb.R;
@@ -26,14 +28,16 @@ import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.androidBackend.utils.MessageOverlay;
 import com.re.reverb.network.RequestQueueSingleton;
 
 
-public abstract class FeedFragment extends Fragment implements OnRefreshListener, OnFeedDataChangedListener
+public abstract class FeedFragment extends Fragment implements OnRefreshListener, OnFeedDataChangedListener, MessageOverlay
 {
     AbstractFeed dataFeed;
     SwipeRefreshLayout swipeRefreshLayout;
     NewFeedListViewAdapter adapter;
+    View currentOverlay;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -56,7 +60,7 @@ public abstract class FeedFragment extends Fragment implements OnRefreshListener
         RequestQueueSingleton.getInstance(getActivity().getApplicationContext());
 
 
-        adapter = new NewFeedListViewAdapter(getActivity(), dataFeed);
+        adapter = new NewFeedListViewAdapter(getActivity(), dataFeed, this);
         elv.setAdapter(adapter);
         elv.setOnScrollListener(new FeedScrollListener());
 
@@ -106,6 +110,31 @@ public abstract class FeedFragment extends Fragment implements OnRefreshListener
                 Log.d("Reverb","Scrolled to the bottom");
             }
 
+        }
+    }
+
+    public abstract void onOpenOverlayClick(final int messageId);
+
+    public View displayOverlay(int layoutResource, int containerId)
+    {
+        removeOverlays();
+        LayoutInflater vi = (LayoutInflater) this.getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = vi.inflate(layoutResource, null);
+        this.currentOverlay = v;
+
+        FrameLayout myLayout = (FrameLayout) this.getActivity().findViewById(containerId);
+        myLayout.addView(v);
+        return v;
+
+    }
+
+    public void removeOverlays()
+    {
+        if(this.currentOverlay != null)
+        {
+            ViewGroup parent = (ViewGroup) this.currentOverlay.getParent();
+            parent.removeView(this.currentOverlay);
+            this.currentOverlay = null;
         }
     }
 }

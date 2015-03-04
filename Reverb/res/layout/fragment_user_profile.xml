@@ -113,11 +113,11 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/overlayMainFeedLayoutContainer">
-        </FrameLayout>
-
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/overlayUserFeedLayoutContainer">
+    </FrameLayout>
 </FrameLayout>
