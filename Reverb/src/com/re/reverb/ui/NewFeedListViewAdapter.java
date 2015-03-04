@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.AbstractFeed;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
@@ -19,6 +21,7 @@ import com.re.reverb.androidBackend.post.ChildPost;
 import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.post.content.PostContent;
 import com.re.reverb.androidBackend.post.content.StandardPostContent;
+import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.network.PostManagerImpl;
 import com.re.reverb.network.RequestQueueSingleton;
 
@@ -272,7 +275,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         }
     }
 
-    private void setSharedPostParameters(View convertView, StandardPostContent postContent, final int postId)
+    private void setSharedPostParameters(View convertView, final StandardPostContent postContent, final int postId)
     {
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
         netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
@@ -285,8 +288,31 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         ((TextView) convertView.findViewById(R.id.username)).setText(postContent.getUsername());
         ((TextView) convertView.findViewById(R.id.handle)).setText(postContent.getHandle());
 
-        ((ImageView) convertView.findViewById(R.id.voteIcon)).setImageResource(R.drawable.votes_icon);
-        ((TextView) convertView.findViewById(R.id.voteCount)).setText(postContent.getNumVotes().toString());
+        final ImageView voteImage = ((ImageView) convertView.findViewById(R.id.voteIcon));
+        voteImage.setImageResource(R.drawable.votes_icon);
+        final TextView voteCount = ((TextView) convertView.findViewById(R.id.voteCount));
+        voteImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(activity instanceof MainViewPagerActivity)
+                {
+                    try
+                    {
+                        PostManagerImpl.submitFavoritePost(new PostActionDto(postId, Reverb.getInstance().getCurrentUserId()), postContent, voteCount);
+                    } catch (NotSignedInException e)
+                    {
+                        Toast.makeText(activity.getApplicationContext(), R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    System.out.println("Wrong activity for favorite icon");
+                }
+            }
+        });
+        voteCount.setText(postContent.getNumVotes().toString().equals("0") ? " " : postContent.getNumVotes().toString());
 
         final ImageView moreImage = ((ImageView) convertView.findViewById(R.id.moreIcon));
         moreImage.setImageResource(R.mipmap.more_icon);
