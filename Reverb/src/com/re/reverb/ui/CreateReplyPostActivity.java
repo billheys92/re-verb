@@ -63,7 +63,7 @@ public class CreateReplyPostActivity extends CreatePostActivity
         {
             replyPostDto = new CreateReplyPostDto(Reverb.getInstance().getCurrentUserId(),
                     postId,
-                    anonymous,
+                    Reverb.getInstance().isAnonymous(),
                     location.getLatitude(),
                     location.getLongitude(),
                     Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(),

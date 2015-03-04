@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class CreateRegionActivity extends ActionBarActivity
+public class CreateRegionActivity extends ReverbActivity
 {
 
     private enum ShapeType{
@@ -75,7 +75,7 @@ public class CreateRegionActivity extends ActionBarActivity
     private boolean editingToolsOpen = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_region);
         setUpMapIfNeeded();
@@ -474,8 +474,7 @@ public class CreateRegionActivity extends ActionBarActivity
                 region = RegionFactory.createRegionFromDto(regionDto);
                 if(region != null)
                 {
-                    ActionBar actionBar = getSupportActionBar();
-                    actionBar.setTitle(region.getName());
+                    setActionBarTitle(region.getName());
                     for (RegionShape shape : region.getShapes())
                     {
                         regionShapes.add(shape);
@@ -494,8 +493,7 @@ public class CreateRegionActivity extends ActionBarActivity
         else if (regionId == 0)
         {
             region = new CommonsRegion(Reverb.getInstance().getCurrentLocation());
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle(region.getName());
+            setActionBarTitle(region.getName());
             for (RegionShape shape : region.getShapes())
             {
                 regionShapes.add(shape);

@@ -28,6 +28,7 @@ public class Reverb {
     private RegionManager regionManager;
     private Settings settings = Settings.getInstance();
     public LocationManager locationManager;
+    private boolean anonymous = false;
 
     private Reverb()
     {
@@ -70,6 +71,16 @@ public class Reverb {
             throw new NotSignedInException("Get User ID");
         }
         return currentUser;
+    }
+
+    public boolean isAnonymous()
+    {
+        return anonymous;
+    }
+
+    public void toggleAnonymity()
+    {
+        anonymous = !anonymous;
     }
 
     public Settings getSettings() {
