@@ -65,27 +65,7 @@ public class CreatePostActivity extends Activity {
             CreatePostDto postDto = buildPost();
             if(attachedPhoto.getDrawable() != null)
             {
-                File f = new File(getCacheDir(), "testImage");
-                //Convert bitmap to byte array
-                Bitmap bitmap = ((BitmapDrawable)attachedPhoto.getDrawable()).getBitmap();
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-                byte[] bitmapdata = bos.toByteArray();
-
-                //write the bytes in file
-                FileOutputStream fos = null;
-                try {
-                    fos = new FileOutputStream(f);
-                    try {
-                        fos.write(bitmapdata);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                Reverb.getInstance().submitPost(postDto, f);
+                Reverb.getInstance().submitPost(postDto, attachPhoto());
             }
             else
             {
@@ -171,5 +151,29 @@ public class CreatePostActivity extends Activity {
         resultIntent.putExtra("postSubmitted", postSubmitted);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
+    }
+
+    protected File attachPhoto()
+    {
+        File f = new File(getCacheDir(), "testImage");
+        //Convert bitmap to byte array
+        Bitmap bitmap = ((BitmapDrawable)attachedPhoto.getDrawable()).getBitmap();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        //write the bytes in file
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(f);
+            try {
+                fos.write(bitmapdata);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 }

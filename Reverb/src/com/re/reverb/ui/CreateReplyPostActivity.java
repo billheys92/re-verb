@@ -34,7 +34,14 @@ public class CreateReplyPostActivity extends CreatePostActivity
         if(validatePost())
         {
             CreateReplyPostDto replyPostDto = buildPost();
-            PostManagerImpl.submitReplyPost(replyPostDto);
+            if(attachedPhoto.getDrawable() != null)
+            {
+                PostManagerImpl.submitReplyPost(replyPostDto, attachPhoto());
+            }
+            else
+            {
+                PostManagerImpl.submitReplyPost(replyPostDto);
+            }
             postSubmitted = true;
             finishActivity();
         }

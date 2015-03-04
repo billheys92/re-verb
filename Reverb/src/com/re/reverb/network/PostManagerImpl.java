@@ -24,11 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class PostManagerImpl extends PersistenceManagerImpl implements PostManager
 {
@@ -181,6 +178,34 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     {
         String params = "?commandtype=post&command=postMessageReplyText";
         requestJson(replyPostDto, Request.Method.POST, baseURL + params);
+    }
+
+    public static void submitReplyPost(final CreateReplyPostDto replyPostDto, File image)
+    {
+        RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
+
+        MultipartRequest multiRequest = new MultipartRequest("http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php", image, "", new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                // public void onResponse(String response) {
+                // Display the response string.
+                System.out.println("Picture Response is: "+ response);
+                replyPostDto.Picture_name = response;
+                String params = "?commandtype=post&command=postMessageReplyText";
+                requestJson(replyPostDto, Request.Method.PUT, baseURL + params);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                System.out.println("Error Sending Picture Message");
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(multiRequest);
     }
 
     public static void submitFavoritePost(FavoritePostDto favoritePostDto)
