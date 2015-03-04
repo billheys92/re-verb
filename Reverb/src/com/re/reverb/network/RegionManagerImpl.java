@@ -80,7 +80,7 @@ public class RegionManagerImpl extends PersistenceManagerImpl
 
     public static void unfollowRegion(Response.Listener<JSONObject> listener, UnfollowRegionDto unfollowRegionDto)
     {
-        String params = "?commandtype=post&command=deleteRegion2Users";
+        String params = "?commandtype=delete&command=deleteRegion2Users";
         requestJson(listener, unfollowRegionDto, Request.Method.PUT, baseURL + params);
     }
 }
