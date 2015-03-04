@@ -78,10 +78,11 @@
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/messageImage"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/postMessage"
-            android:layout_marginTop="0dp"/>
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="74dip"/>
     </RelativeLayout>
     <RelativeLayout android:paddingTop="8dip"
                     android:layout_marginBottom="6dp"
