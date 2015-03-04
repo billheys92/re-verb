@@ -1,15 +1,12 @@
 package com.re.reverb.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
@@ -22,8 +19,6 @@ import com.re.reverb.network.PostManagerImpl;
 
 public class NewFeedFragment extends FeedFragment
 {
-    private View currentOverlay = null;
-
     public NewFeedFragment(){}
 
     @Override
@@ -61,11 +56,11 @@ public class NewFeedFragment extends FeedFragment
         }, 3000);
     }
 
-    public void onMoreInfoClick(final int messageId)
+    @Override
+    public void onOpenOverlayClick(final int messageId)
     {
-        //CHANGE TO OVERLAY VIEW
         final Activity activity = this.getActivity();
-        displayOverlay(R.layout.overlay_more_options);
+        displayOverlay(R.layout.overlay_more_options_main, R.id.overlayMainFeedLayoutContainer);
         RelativeLayout reportPostRow = (RelativeLayout)activity.findViewById(R.id.reportPostRow);
         View.OnClickListener listener = new View.OnClickListener()
         {
@@ -93,29 +88,8 @@ public class NewFeedFragment extends FeedFragment
                 removeOverlays();
             }
         };
-        ((FrameLayout) activity.findViewById(R.id.mainFeedOverlayLayout)).setOnClickListener(exitListener);
+        (activity.findViewById(R.id.mainFeedOverlayLayout)).setOnClickListener(exitListener);
     }
 
-    private View displayOverlay(int resource)
-    {
-        removeOverlays();
-        LayoutInflater vi = (LayoutInflater) this.getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = vi.inflate(resource, null);
-        this.currentOverlay = v;
 
-        FrameLayout myLayout = (FrameLayout) this.getActivity().findViewById(R.id.overlayMainFeedLayoutContainer);
-        myLayout.addView(v);
-        return v;
-
-    }
-
-    public void removeOverlays()
-    {
-        if(this.currentOverlay != null)
-        {
-            ViewGroup parent = (ViewGroup) this.currentOverlay.getParent();
-            parent.removeView(this.currentOverlay);
-            this.currentOverlay = null;
-        }
-    }
 }

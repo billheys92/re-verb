@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/userFeedOverlayLayout"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:background="@color/overlay_background"
+             android:padding="25dp"
+             android:clickable="true">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/deletePostRow"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_bg_layout"
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Delete Post"
+            android:id="@+id/reportPost"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/main_font"/>
+
+    </RelativeLayout>
+</FrameLayout>

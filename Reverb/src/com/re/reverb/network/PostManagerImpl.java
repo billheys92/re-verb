@@ -332,4 +332,9 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         queue.add(multiRequest);
 
     }
+
+    public static void deletePost(final PostActionDto postActionDto, Activity activity)
+    {
+        //TODO:
+    }
 }

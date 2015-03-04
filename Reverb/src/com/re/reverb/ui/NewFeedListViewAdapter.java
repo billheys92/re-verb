@@ -34,11 +34,13 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 {
 
     private AbstractFeed feed;
+    private FeedFragment feedFragment;
     public LayoutInflater inflater;
     public Activity activity;
 
     public NewFeedListViewAdapter(Activity act,
-                                  AbstractFeed feed)
+                                  AbstractFeed feed,
+                                  FeedFragment feedFragment)
     {
         activity = act;
         try
@@ -51,6 +53,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             e.printStackTrace();
         }
         inflater = act.getLayoutInflater();
+        this.feedFragment = feedFragment;
     }
 
     String getMonthForInt(int num) {
@@ -321,14 +324,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             @Override
             public void onClick(View v)
             {
-                if(activity instanceof MainViewPagerActivity)
-                {
-                    ((MainViewPagerActivity) activity).getNewFeedFragment().onMoreInfoClick(postId);
-                }
-                else
-                {
-                    System.out.println("Wrong activity for more icon");
-                }
+                feedFragment.onOpenOverlayClick(postId);
             }
         });
     }

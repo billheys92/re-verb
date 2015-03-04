@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.UserPostFeed;
+import com.re.reverb.androidBackend.post.dto.PostActionDto;
+import com.re.reverb.network.PostManagerImpl;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -191,4 +194,38 @@ public class UserProfileFragment extends FeedFragment
         return bmp;
     }
 
+    @Override
+    public void onOpenOverlayClick(final int messageId)
+    {
+        final Activity activity = this.getActivity();
+        displayOverlay(R.layout.overlay_more_options_user, R.id.overlayUserFeedLayoutContainer);
+        RelativeLayout deletePostRow = (RelativeLayout)activity.findViewById(R.id.deletePostRow);
+        View.OnClickListener listener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try
+                {
+                    PostActionDto postActionDto = new PostActionDto(messageId, Reverb.getInstance().getCurrentUserId());
+                    PostManagerImpl.deletePost(postActionDto, activity);
+                } catch (NotSignedInException e)
+                {
+                    e.printStackTrace();
+                }
+                removeOverlays();
+            }
+        };
+        deletePostRow.setOnClickListener(listener);
+
+        View.OnClickListener exitListener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                removeOverlays();
+            }
+        };
+        (activity.findViewById(R.id.userFeedOverlayLayout)).setOnClickListener(exitListener);
+    }
 }
