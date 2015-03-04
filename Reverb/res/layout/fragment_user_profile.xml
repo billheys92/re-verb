@@ -9,8 +9,12 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:id="@+id/relativeLayout"
-        android:layout_gravity="center_horizontal|bottom">
+        android:layout_gravity="center_horizontal|bottom|right">
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_grey"/>
 
         <FrameLayout
             android:layout_width="fill_parent"
@@ -20,7 +24,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/user_profile_header_height"
                 android:id="@+id/userinfo"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:alpha=".80"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -86,6 +91,11 @@
 
         </FrameLayout>
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_grey"/>
+
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                       android:id="@+id/swipeContainer"
                                                       android:layout_width="match_parent"
@@ -110,5 +120,4 @@
         </FrameLayout>
 
     </LinearLayout>
-
 </FrameLayout>
