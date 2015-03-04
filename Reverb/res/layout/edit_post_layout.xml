@@ -62,10 +62,11 @@
 
             <ImageView
                 android:layout_width="fill_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/editPostIncludedImageView"
                 android:layout_below="@+id/editPostTextContentView"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="top"/>
 
         </LinearLayout>
     </ScrollView>
