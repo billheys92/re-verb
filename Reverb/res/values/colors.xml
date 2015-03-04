@@ -9,6 +9,7 @@
     <color name="reverb_blue_2">#ffe36640</color>
     <color name="reverb_blue_3">#fff16943</color>
     <color name="reverb_blue_4">#fffc6a44</color>
+    <color name="anonymous_background">#ff3be2</color>
     <color name="reply_background">#DEDEDE</color>
     <color name="main_font">#404040</color>
     <color name="dark_grey">#505050</color>

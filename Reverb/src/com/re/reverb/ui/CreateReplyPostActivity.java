@@ -21,6 +21,7 @@ public class CreateReplyPostActivity extends CreatePostActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setActionBarTitle("Replying to post");
         Bundle extras = getIntent().getExtras();
         if(extras != null && extras.getInt(POST_ID_EXTRA) > -1)
         {
@@ -63,7 +64,7 @@ public class CreateReplyPostActivity extends CreatePostActivity
         {
             replyPostDto = new CreateReplyPostDto(Reverb.getInstance().getCurrentUserId(),
                     postId,
-                    anonymous,
+                    Reverb.getInstance().isAnonymous(),
                     location.getLatitude(),
                     location.getLongitude(),
                     Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(),

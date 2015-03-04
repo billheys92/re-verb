@@ -34,7 +34,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CreatePostActivity extends Activity {
+public class CreatePostActivity extends ReverbActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int CHARACTER_LIMIT = 1024;
@@ -44,7 +44,6 @@ public class CreatePostActivity extends Activity {
     //UserProfile user;
 
     Post post;
-    protected boolean anonymous = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +52,7 @@ public class CreatePostActivity extends Activity {
         setContentView(R.layout.activity_create_post);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         attachedPhoto = (ImageView) findViewById(R.id.editPostIncludedImageView);
+        setActionBarTitle("Posting to " + Reverb.getInstance().getRegionManager().getCurrentRegion().getName());
     }
 
     @Override
@@ -98,7 +98,7 @@ public class CreatePostActivity extends Activity {
         try
         {
             postDto = new CreatePostDto(Reverb.getInstance().getCurrentUserId(),
-                    anonymous,
+                    Reverb.getInstance().isAnonymous(),
                     location.getLatitude(),
                     location.getLongitude(),
                     Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(),
@@ -121,22 +121,6 @@ public class CreatePostActivity extends Activity {
             return false;
         }
         return true;
-    }
-
-    public void toggleAnonymity(View view)
-    {
-        CheckBox anonymousCheckbox = (CheckBox)findViewById(R.id.anonymousCheckbox);
-        anonymous = anonymousCheckbox.isChecked();
-
-        if(anonymous)
-        {
-//            ((ImageView) findViewById(R.id.editPostProfilePicThumbnail)).setImageResource(R.drawable.anonymous_pp);
-        }
-        else
-        {
-            //TODO: Get profile picture from current user
-//            ((ImageView) findViewById(R.id.editPostProfilePicThumbnail)).setImageResource(R.drawable.chris_pp);
-        }
     }
 
     public void includePhoto(View view)
