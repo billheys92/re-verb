@@ -13,6 +13,7 @@ import android.widget.ExpandableListView;
 
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.feed.DummyNetworkFeed;
 import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.post.Post;
@@ -68,6 +69,9 @@ public class PostListFragment extends Fragment implements OnFeedDataChangedListe
                 } catch (Exception e)
                 {
                     // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (NotSignedInException e)
+                {
                     e.printStackTrace();
                 }
                 Log.d("Reverb", "Scrolled to the bottom of posts list");

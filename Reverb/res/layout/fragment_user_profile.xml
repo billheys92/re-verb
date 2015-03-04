@@ -86,14 +86,28 @@
 
         </FrameLayout>
 
-        <fragment
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:name="com.re.reverb.ui.PostListFragment"
-            android:id="@+id/userProfilePostListFragment"
-            android:layout_below="@+id/userinfo"
-            android:layout_centerHorizontal="true"
-            tools:layout="@layout/post_list_fragment" />
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                      android:id="@+id/swipeContainer"
+                                                      android:layout_width="match_parent"
+                                                      android:layout_height="wrap_content">
+
+            <ExpandableListView
+                android:id="@+id/newFeedListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:childDivider="@color/light_grey"
+                android:divider="@color/light_grey"
+                android:dividerHeight="1sp"
+                >
+            </ExpandableListView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/overlayMainFeedLayoutContainer">
+        </FrameLayout>
 
     </LinearLayout>
 

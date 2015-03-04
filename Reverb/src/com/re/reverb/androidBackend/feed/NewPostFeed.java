@@ -17,13 +17,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
+public class NewPostFeed extends AbstractFeed implements LocationUpdateListener
 {
-    private List<OnFeedDataChangedListener> onDataChangedListeners = new ArrayList<OnFeedDataChangedListener>();
-    protected ArrayList<ParentPost> posts = new ArrayList<ParentPost>();
+
     private Context context;
-    private Date latestPostTime;
-    private Date earliestPostTime;
 
     public NewPostFeed(Context context)
     {
@@ -34,84 +31,6 @@ public class NewPostFeed implements Feed<ParentPost>, LocationUpdateListener
     public void init() throws UnsuccessfulRefreshException
     {
         Reverb.getInstance().attachLocationListener(this);
-    }
-
-    @Override
-    public ArrayList<ParentPost> getPosts()
-    {
-        return posts;
-    }
-
-    @Override
-    public boolean setPosts(ArrayList<ParentPost> posts){
-        if(posts != null && posts.size() != 0) {
-            this.posts = posts;
-            Collections.reverse(posts);
-            notifyListenersOfDataChange();
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    @Override
-    public void setLastPostTime(Date timestamp)
-    {
-        this.latestPostTime = timestamp;
-    }
-
-    @Override
-    public String getLastPostTime()
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        if(latestPostTime != null)
-        {
-            return sdf.format(latestPostTime);
-        }
-        else
-        {
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Date now = new Date();
-            return sdf.format(now);
-        }
-    }
-
-    @Override
-    public void setEarliestPostTime(Date timestamp)
-    {
-        this.earliestPostTime = timestamp;
-    }
-
-    @Override
-    public String getEarliestPostTime()
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
-        if(earliestPostTime != null)
-        {
-            return sdf.format(earliestPostTime);
-        }
-        else
-        {
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Date now = new Date();
-            return sdf.format(now);
-        }
-    }
-
-
-    public void notifyListenersOfDataChange()
-    {
-        for(OnFeedDataChangedListener l : onDataChangedListeners) {
-            l.onDataChanged();
-        }
-    }
-
-    @Override
-    public void setOnDataChangedListener(OnFeedDataChangedListener listener)
-    {
-        this.onDataChangedListeners.add(listener);
     }
 
     @Override

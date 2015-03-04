@@ -12,6 +12,7 @@
     <string name="swipe_right">Swipe Right</string>
     <string name="swipe_left">Swipe Left</string>
     <string name="refresh_error_toast_message">Can\'t refresh posts</string>
+    <string name="not_signed_in_message">You must sign in to use re:verb</string>
     <string name="title_activity_create_post">Create New Post</string>
     <string name="title_activity_create_post_reply">Reply To Post</string>
     <string name="no_network_toast">Sorry, you must be connected to the internet to use re:verb!</string>

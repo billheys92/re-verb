@@ -8,8 +8,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -17,12 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.androidBackend.feed.UserPostFeed;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -33,7 +36,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class UserProfileFragment extends Fragment
+public class UserProfileFragment extends FeedFragment
 {
 
     private static final int SELECT_PHOTO = 100;
@@ -42,13 +45,6 @@ public class UserProfileFragment extends Fragment
     UserProfile profile = new UserProfile("test@test.com","bheys","Bill Heys","description", "token", 1);
     private ImageView backgroundMapImageView;
     NetworkImageView profilePic;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,10 +66,7 @@ public class UserProfileFragment extends Fragment
         } catch (InflateException e) {
             /* fragment is already there, just return view as it is */
         }
-        /*Fragment postListFragment = new PostListFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.userProfilePostListFragment, postListFragment).commit();
-*/
+
 		TextView nameText = (TextView) view.findViewById(R.id.nameTextView);
         nameText.setText(profile.Name);
 		TextView handleText = (TextView) view.findViewById(R.id.handleTextView);
@@ -95,8 +88,12 @@ public class UserProfileFragment extends Fragment
         backgroundMapImageView = (ImageView) view.findViewById(R.id.userinfo);
         new SendTask().execute();
 
+        view = setupDataFeed(view, new UserPostFeed());
+
         return view;
 	}
+
+
 
     private void choosePictureFromGallery() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -121,6 +118,32 @@ public class UserProfileFragment extends Fragment
                     profilePic.setImageBitmap(BitmapFactory.decodeStream(imageStream));
                 }
         }
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        try
+        {
+            dataFeed.refreshPosts();
+            adapter.notifyDataSetChanged();
+        } catch (UnsuccessfulRefreshException e)
+        {
+            Toast.makeText(getActivity(), R.string.refresh_error_toast_message, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } catch (NotSignedInException e)
+        {
+            Toast.makeText(getActivity(), R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 3000);
     }
 
     private class SendTask extends AsyncTask<Bitmap, String, Bitmap> {

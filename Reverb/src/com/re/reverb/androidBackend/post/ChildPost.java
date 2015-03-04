@@ -5,7 +5,7 @@ import com.re.reverb.androidBackend.post.content.PostContent;
 
 import java.util.Date;
 
-public class ChildPost extends Post
+public class ChildPost extends Post implements Comparable<ChildPost>
 {
     private final int parentId;
 
@@ -24,5 +24,18 @@ public class ChildPost extends Post
 
     public int getParentId() {
         return parentId;
+    }
+
+    @Override
+    public int compareTo(ChildPost another)
+    {
+        if(this.getTimeCreated() != null && this.getTimeCreated().before(another.getTimeCreated()))
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
     }
 }

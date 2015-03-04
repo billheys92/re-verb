@@ -95,12 +95,12 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                 System.out.println("Response is: "+ response);
 
 
-                ArrayList<Post> returnedPosts = new ArrayList<Post>();
+                ArrayList<ParentPost> returnedPosts = new ArrayList<ParentPost>();
                 for(int i = 0; i < response.length(); i++){
                     try {
                         Gson gson = new Gson();
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
-                        Post p = PostFactory.createParentPost(postDto);
+                        ParentPost p = PostFactory.createParentPost(postDto);
 
                         if(!feed.getPosts().contains(p))
                         {
@@ -108,7 +108,11 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                         }
                         else
                         {
-                            //TODO: update values inside post if needed
+                            //remove old copy and add new
+                            if(feed.getPosts().remove(p))
+                            {
+                                returnedPosts.add(p);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -147,11 +151,11 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                     try {
                         Gson gson = new Gson();
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
-                        Post p = PostFactory.createChildPost(postDto);
+                        ChildPost p = PostFactory.createChildPost(postDto);
 
                         if(!post.getChildPosts().contains(p))
                         {
-                            post.getChildPosts().add((ChildPost) p);
+                            post.getChildPosts().add(p);
                         }
                         else
                         {
