@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,7 +66,7 @@ public class NewFeedFragment extends FeedFragment
         //CHANGE TO OVERLAY VIEW
         final Activity activity = this.getActivity();
         displayOverlay(R.layout.overlay_more_options);
-        TextView reportText = (TextView)activity.findViewById(R.id.reportPost);
+        RelativeLayout reportPostRow = (RelativeLayout)activity.findViewById(R.id.reportPostRow);
         View.OnClickListener listener = new View.OnClickListener()
         {
             @Override
@@ -74,7 +75,7 @@ public class NewFeedFragment extends FeedFragment
                 try
                 {
                     PostActionDto postActionDto = new PostActionDto(messageId, Reverb.getInstance().getCurrentUserId());
-                    PostManagerImpl.submitReportPost(postActionDto);
+                    PostManagerImpl.submitReportPost(postActionDto, activity);
                 } catch (NotSignedInException e)
                 {
                     e.printStackTrace();
@@ -82,7 +83,7 @@ public class NewFeedFragment extends FeedFragment
                 removeOverlays();
             }
         };
-        reportText.setOnClickListener(listener);
+        reportPostRow.setOnClickListener(listener);
 
         View.OnClickListener exitListener = new View.OnClickListener()
         {

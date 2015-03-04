@@ -1,6 +1,9 @@
 package com.re.reverb.network;
 
+import android.app.Activity;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -8,15 +11,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
-import com.re.reverb.androidBackend.feed.Feed;
-import com.re.reverb.androidBackend.feed.NewPostFeed;
+import com.re.reverb.androidBackend.feed.AbstractFeed;
+import com.re.reverb.androidBackend.feed.UserPostFeed;
 import com.re.reverb.androidBackend.post.ChildPost;
 import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
+import com.re.reverb.androidBackend.post.content.PostContent;
+import com.re.reverb.androidBackend.post.content.StandardPostContent;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.CreateReplyPostDto;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
+import com.re.reverb.androidBackend.post.dto.PostActionResponseDto;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 
 import org.json.JSONArray;
@@ -27,43 +33,87 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class PostManagerImpl extends PersistenceManagerImpl implements PostManager
 {
     //TODO: introduce concept of paging for post retrieval
 
-    public static void getPosts(final Feed feed)
+    public static void getPosts(final AbstractFeed feed)
     {
         String lastUpdate = feed.getLastPostTime();
         String params = String.format("?commandtype=get&command=getAllMessages&lastupdate='%s'",lastUpdate);
         getPosts(feed, params);
     }
 
-    public static void getPosts(double latitude, double longitude, float range, final Feed feed)
+    public static void getPosts(double latitude, double longitude, float range, final AbstractFeed feed)
     {
         String lastUpdate = feed.getEarliestPostTime();
         String params = String.format("?commandtype=get&command=getMessagesByLocationPaging&lat=%s&lon=%s&range=%s&lastupdate='%s'",Double.toString(latitude), Double.toString(longitude), range, lastUpdate);
         getPosts(feed, params);
     }
 
-    public static void getRefreshPosts(double latitude, double longitude, float range, final Feed feed)
+    public static void getRefreshPosts(double latitude, double longitude, float range, final AbstractFeed feed)
     {
         String lastUpdate = feed.getLastPostTime();
         String params = String.format("?commandtype=get&command=getMessagesByLocationUpdateToLatest&lat=%s&lon=%s&range=%s&lastupdate='%s'",Double.toString(latitude), Double.toString(longitude), range, lastUpdate);
         getPosts(feed, params);
     }
 
-    public static void getPostsForRegion(int regionId, final Feed feed)
+    public static void getPostsForRegion(int regionId, final AbstractFeed feed)
     {
         String params = String.format("?commandtype=get&command=getMessagesByRegion&region=%s",Integer.toString(regionId));
         getPosts(feed, params);
     }
 
-    public static void getPostsForUser(int userId, final Feed feed)
+    public static void getPostsForUser(int userId, final UserPostFeed feed)
     {
+        String params = String.format("?commandtype=get&command=getMessagesByUser&user=%s", Integer.toString(userId));
+        String url = baseURL + params;
 
+        Response.Listener<JSONArray> listener = new Response.Listener<JSONArray>()
+        {
+            @Override
+            public void onResponse(JSONArray response)
+            {
+                System.out.println("Response is: "+ response);
+                ArrayList<ParentPost> returnedPosts = new ArrayList<ParentPost>();
+                for(int i = 0; i < response.length(); i++){
+                    try {
+                        Gson gson = new Gson();
+                        ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
+                        ParentPost p = PostFactory.createParentPost(postDto);
+
+                        if(!feed.getPosts().contains(p))
+                        {
+                            returnedPosts.add(p);
+                        }
+                        else
+                        {
+                            //remove old copy and add new
+                            if(feed.getPosts().remove(p))
+                            {
+                                returnedPosts.add(p);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (InvalidPostException e) {
+                        e.printStackTrace();
+                    }
+                }
+                feed.getPosts().addAll(0, returnedPosts);
+                Collections.sort(feed.getPosts());
+                feed.notifyListenersOfDataChange();
+                if(feed.getPosts().get(0) != null) {
+                    feed.setLastPostTime((feed.getPosts().get(0)).getLatestTime());
+                }
+                if(feed.getPosts().size() > 0) {
+                    feed.setEarliestPostTime((feed.getPosts().get(feed.getPosts().size()-1)).getLatestTime());
+                }
+            }
+        };
+
+        requestJsonArray(listener, url);
     }
 
     public static boolean getNumNewPosts(double latitude, double longitude, float range, String lastUpdateTime) {
@@ -83,7 +133,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         return true;
     }
 
-    public static void getPosts(final Feed feed, final String params)
+    public static void getPosts(final AbstractFeed feed, final String params)
     {
         String url = baseURL + params;
 
@@ -122,7 +172,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                 }
                 feed.getPosts().addAll(0, returnedPosts);
                 Collections.sort(feed.getPosts());
-                ((NewPostFeed)feed).notifyListenersOfDataChange();
+                feed.notifyListenersOfDataChange();
                 if(feed.getPosts().get(0) != null) {
                     feed.setLastPostTime(((Post)feed.getPosts().get(0)).getLatestTime());
                 }
@@ -136,7 +186,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         requestJsonArray(listener, url);
     }
 
-    public static void getPostReplies(final Feed feed, final ParentPost post, final
+    public static void getPostReplies(final AbstractFeed feed, final ParentPost post, final
                                       ExpandableListView listView, final int groupPosition)
     {
         String params = String.format("?commandtype=get&command=getMessageReplies&message=%s", Integer.toString(post.getPostId()));
@@ -168,7 +218,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                     }
                 }
                 Collections.sort(post.getChildPosts());
-                ((NewPostFeed)feed).notifyListenersOfDataChange();
+                feed.notifyListenersOfDataChange();
                 listView.expandGroup(groupPosition);
             }
         };
@@ -188,17 +238,43 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         requestJson(replyPostDto, Request.Method.POST, baseURL + params);
     }
 
-    public static void submitFavoritePost(PostActionDto postActionDto)
+    public static void submitFavoritePost(PostActionDto postActionDto, final StandardPostContent postContent, final TextView voteCount)
     {
     
         String params = "?commandtype=put&command=updateMessageUpVote";
-        requestJson(postActionDto, Request.Method.PUT, baseURL + params);
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                Gson gson = new Gson();
+                PostActionResponseDto postActionResponse = gson.fromJson(response.toString(), PostActionResponseDto.class);
+                postContent.setNumVotes(postContent.getNumVotes() + postActionResponse.increment);
+                voteCount.setText(postContent.getNumVotes().toString().equals("0") ? " " : postContent.getNumVotes().toString());
+            }
+        };
+
+        requestJson(listener, postActionDto, Request.Method.PUT, baseURL + params);
     }
 
-    public static void submitReportPost(PostActionDto postActionDto)
+    public static void submitReportPost(PostActionDto postActionDto, final Activity activity)
     {
-        String params = "?commandtype=put&command=updateMessageReport"; //or spam or something
-        requestJson(postActionDto, Request.Method.PUT, baseURL + params);
+        String params = "?commandtype=put&command=updateMessageSpam";
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                Gson gson = new Gson();
+                PostActionResponseDto postActionResponse = gson.fromJson(response.toString(), PostActionResponseDto.class);
+                if(postActionResponse.db_response == 100)
+                {
+                    Toast.makeText(activity.getApplicationContext(), "Message Reported", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        requestJson(listener, postActionDto, Request.Method.PUT, baseURL + params);
     }
 
     public static void submitPost(final CreatePostDto postDto, File image)
