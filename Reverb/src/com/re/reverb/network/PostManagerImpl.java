@@ -247,10 +247,16 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
             public void onResponse(String response) {
                 // public void onResponse(String response) {
                 // Display the response string.
-                System.out.println("Picture Response is: "+ response);
-                replyPostDto.Picture_name = response;
-                String params = "?commandtype=post&command=postMessageReplyText";
-                requestJson(replyPostDto, Request.Method.PUT, baseURL + params);
+                if (response.contains("Error"))
+                {
+                    System.out.println("Picture Response Error is: "+ response);
+                }
+                else
+                {
+                    replyPostDto.Picture_name = response;
+                    String params = "?commandtype=post&command=postMessageReplyText";
+                    requestJson(replyPostDto, Request.Method.PUT, baseURL + params);
+                }
 
             }
         }, new Response.ErrorListener() {
@@ -314,10 +320,17 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
             public void onResponse(String response) {
                 // public void onResponse(String response) {
                 // Display the response string.
-                System.out.println("Picture Response is: "+ response);
-                postDto.Picture_name = response;
-                String params = "?commandtype=post&command=postMessagePicture";
-                requestJson(postDto, Request.Method.PUT, baseURL + params);
+                System.out.println("Picture Sent!");
+                if (response.contains("Error"))
+                {
+                    System.out.println("Picture Response Error is: "+ response);
+                }
+                else
+                {
+                    postDto.Picture_name = response;
+                    String params = "?commandtype=post&command=postMessagePicture";
+                    requestJson(postDto, Request.Method.PUT, baseURL + params);
+                }
 
             }
         }, new Response.ErrorListener() {

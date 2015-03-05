@@ -130,9 +130,19 @@ public class StandardPostContent implements PostContent
         this.profilePictureURL = profilePictureURL;
     }
 
+    public String getProfilePictureName()
+    {
+        return  profilePictureURL;
+    }
+
     public String getMessageImage()
     {
         return messageImageBaseURL + messageImage;
+    }
+
+    public String getMessageImageName()
+    {
+        return messageImage;
     }
 
     public void setMessageImage(String messageImage)

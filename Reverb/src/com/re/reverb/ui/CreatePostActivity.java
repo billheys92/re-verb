@@ -26,11 +26,9 @@ import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -211,24 +209,32 @@ public class CreatePostActivity extends ReverbActivity {
 
     protected File attachPhoto()
     {
-        File f = new File(getCacheDir(), "testImage");
-        //Convert bitmap to byte array
-        Bitmap bitmap = ((BitmapDrawable)attachedPhoto.getDrawable()).getBitmap();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-        byte[] bitmapdata = bos.toByteArray();
+        File f = new File(currentPhotoPath);
+        if(f != null && f.length() > 1000000)
+        {
+            new File(getCacheDir(), "testImage");
+            //Convert bitmap to byte array
+            Bitmap bitmap = ((BitmapDrawable) attachedPhoto.getDrawable()).getBitmap();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80 /*ignored for PNG*/, bos);
+            byte[] bitmapdata = bos.toByteArray();
 
-        //write the bytes in file
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(f);
-            try {
-                fos.write(bitmapdata);
-            } catch (IOException e) {
+            //write the bytes in file
+            FileOutputStream fos = null;
+            try
+            {
+                fos = new FileOutputStream(f);
+                try
+                {
+                    fos.write(bitmapdata);
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            } catch (FileNotFoundException e)
+            {
                 e.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
         return f;
     }
