@@ -286,11 +286,18 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         {
             netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
         }
-
+        else
+        {
+            netProfilePicture.setImageUrl(null,RequestQueueSingleton.getInstance().getImageLoader());
+        }
+        NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
         if( postContent.getMessageImageName() != null && postContent.getMessageImageName() != "" && postContent.getMessageImageName() != "null")
         {
-            NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
             netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
+        }
+        else
+        {
+            netMessageImage.setImageUrl(null,RequestQueueSingleton.getInstance().getImageLoader());
         }
 
         ((TextView) convertView.findViewById(R.id.postMessage)).setText(postContent.getPostBody());
