@@ -3,7 +3,12 @@ package com.re.reverb.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
@@ -53,6 +58,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -150,16 +164,7 @@ public class CreateRegionActivity extends ReverbActivity
 
     public void onSaveRegionClick(View view) {
         region.editShapes(regionShapes);
-        SuccessStatus status = region.saveRegion();
-//        RegionImageUrlFactory.createFromRegion(region);
-        if(!status.success()) {
-            Toast.makeText(this, status.reason(), Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            Toast.makeText(this, "Region \""+region.getName()+"\" created.", Toast.LENGTH_SHORT).show();
-        }
-        Log.d("Reverb",status.reason());
+        new DownloadThumbnailTask().execute(region);
     }
 
 
@@ -500,6 +505,86 @@ public class CreateRegionActivity extends ReverbActivity
             }
             drawMapShapes();
         }
+
+    }
+
+
+    private File attachRegionThumbnail(Bitmap bitmap)
+    {
+        File f = new File(getCacheDir(), "region"+region.getRegionId()+"Thumbnail");
+        //Convert bitmap to byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        //write the bytes in file
+        FileOutputStream fos = null;
+        try
+        {
+            fos = new FileOutputStream(f);
+            try
+            {
+                fos.write(bitmapdata);
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        return f;
+    }
+
+    public void showCreateRegionToast(String message)
+    {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private class DownloadThumbnailTask extends AsyncTask<Region, Void, Bitmap>
+    {
+
+        @Override
+        protected Bitmap doInBackground(Region... regions) {
+            return download_Image(RegionImageUrlFactory.createFromRegion(regions[0]));
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+
+            File thumbnailFile = attachRegionThumbnail(result);
+            region.setThumbnail(thumbnailFile);
+            SuccessStatus status = region.saveRegion();
+            if(!status.success()) {
+                showCreateRegionToast(status.reason());
+            }
+            else
+            {
+                showCreateRegionToast("Region \""+region.getName()+"\" created.");
+            }
+            Log.d("Reverb",status.reason());
+        }
+
+
+        private Bitmap download_Image(String url) {
+            //---------------------------------------------------
+            Bitmap bm = null;
+            try {
+                URL aURL = new URL(url);
+                URLConnection conn = aURL.openConnection();
+                conn.connect();
+                InputStream is = conn.getInputStream();
+                BufferedInputStream bis = new BufferedInputStream(is);
+                bm = BitmapFactory.decodeStream(bis);
+                bis.close();
+                is.close();
+            } catch (IOException e) {
+                Log.e("Hub","Error getting the image from server : " + e.getMessage().toString());
+            }
+            return bm;
+            //---------------------------------------------------
+        }
+
 
     }
 }

@@ -1,7 +1,9 @@
 package com.re.reverb.network;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
@@ -25,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class RegionManagerImpl extends PersistenceManagerImpl
@@ -70,6 +73,40 @@ public class RegionManagerImpl extends PersistenceManagerImpl
     {
         String params = "?commandtype=post&command=postRegion";
         requestJson(regionDto, Request.Method.PUT, baseURL + params);
+    }
+
+    public static void submitNewRegion(final CreateRegionDto regionDto, File thumbnail)
+    {
+        RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
+
+        MultipartRequest multiRequest = new MultipartRequest("http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php", thumbnail, "", new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                // public void onResponse(String response) {
+                // Display the response string.
+                if (response.contains("Error"))
+                {
+                    System.out.println("Picture Response Error is: "+ response);
+                }
+                else
+                {
+                    regionDto.Picture_name = response;
+                    String params = "?commandtype=post&command=postRegion";
+                    requestJson(regionDto, Request.Method.PUT, baseURL + params);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                System.out.println("Error Sending Picture Message");
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(multiRequest);
     }
 
     public static void followRegion(Response.Listener<JSONObject> listener, FollowRegionDto followRegionDto)
