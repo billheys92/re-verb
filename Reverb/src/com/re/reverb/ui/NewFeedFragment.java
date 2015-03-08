@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.re.reverb.R;
@@ -91,5 +92,15 @@ public class NewFeedFragment extends FeedFragment
         (activity.findViewById(R.id.mainFeedOverlayLayout)).setOnClickListener(exitListener);
     }
 
+    @Override
+    public void onOpenLogoutEditOverlayClick()
+    {
+        standardOnOpenLogoutEditOverlayClick(R.id.overlayMainFeedLayoutContainer);
+    }
 
+    @Override
+    public void onEditUserInfoOverlayClick()
+    {
+        standardOnEditUserInfoOverlayClick(R.id.overlayMainFeedLayoutContainer);
+    }
 }

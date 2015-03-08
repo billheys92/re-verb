@@ -28,11 +28,12 @@ import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
+import com.re.reverb.androidBackend.utils.GenericOverLay;
 import com.re.reverb.androidBackend.utils.MessageOverlay;
 import com.re.reverb.network.RequestQueueSingleton;
 
 
-public abstract class FeedFragment extends Fragment implements OnRefreshListener, OnFeedDataChangedListener, MessageOverlay
+public abstract class FeedFragment extends OverlayFragment implements OnRefreshListener, OnFeedDataChangedListener, MessageOverlay
 {
     AbstractFeed dataFeed;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -42,6 +43,8 @@ public abstract class FeedFragment extends Fragment implements OnRefreshListener
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        this.logoutEditOverlay = new GenericOverLay(this.getActivity());
+        this.editUserInfoOverlay = new GenericOverLay(this.getActivity());
         super.onCreate(savedInstanceState);
     }
 

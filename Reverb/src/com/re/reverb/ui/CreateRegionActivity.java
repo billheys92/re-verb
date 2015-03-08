@@ -108,6 +108,12 @@ public class CreateRegionActivity extends ReverbActivity
     }
 
     @Override
+    public OverlayFragment getCurrentFragmentOverlay()
+    {
+        return null;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();

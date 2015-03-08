@@ -152,6 +152,12 @@ public class CreatePostActivity extends ReverbActivity {
         }
     }
 
+    @Override
+    public OverlayFragment getCurrentFragmentOverlay()
+    {
+        return null;
+    }
+
     private void setPic() {
         // Get the dimensions of the View
         int targetW = attachedPhoto.getWidth();

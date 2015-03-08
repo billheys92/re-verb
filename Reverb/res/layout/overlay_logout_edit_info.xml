@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/logoutEditOverlay"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:background="@color/overlay_background"
+             android:padding="25dp"
+             android:clickable="true">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/reportPostRow"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_bg_layout"
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Logout"
+            android:id="@+id/logoutUser"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/main_font"/>
+
+        <View
+            android:layout_below="@id/logoutUser"
+            android:id="@+id/optionDivider"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_grey"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Edit Info"
+            android:id="@+id/editUserInfo"
+            android:textAlignment="center"
+            android:layout_below="@id/optionDivider"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/main_font"/>
+
+    </RelativeLayout>
+</FrameLayout>

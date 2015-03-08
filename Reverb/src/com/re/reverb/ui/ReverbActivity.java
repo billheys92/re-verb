@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,8 +28,9 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.utils.GenericOverLay;
 
-public class ReverbActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
+public abstract class ReverbActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
 {
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000; //for checking playservices
 
@@ -35,6 +38,8 @@ public class ReverbActivity extends ActionBarActivity implements GooglePlayServi
     protected SharedPreferences mPrefs;
     protected SharedPreferences.Editor mEditor;
     private ActionBar actionBar;
+    private GenericOverLay logoutEditOverlay;
+    private GenericOverLay editUserInfoOverlay;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +54,9 @@ public class ReverbActivity extends ActionBarActivity implements GooglePlayServi
         mEditor = mPrefs.edit();
 
         actionBar =  getSupportActionBar();
+
+        logoutEditOverlay = new GenericOverLay(this);
+        editUserInfoOverlay = new GenericOverLay(this);
         setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
 
     }
@@ -240,10 +248,15 @@ public class ReverbActivity extends ActionBarActivity implements GooglePlayServi
             case R.id.action_anonymous:
                 toggleAnonymity();
                 return true;
+            case R.id.action_logout_and_edit:
+                getCurrentFragmentOverlay().onOpenLogoutEditOverlayClick();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public abstract OverlayFragment getCurrentFragmentOverlay();
 
     private void toggleAnonymity()
     {

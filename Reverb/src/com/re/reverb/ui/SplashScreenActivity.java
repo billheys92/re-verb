@@ -24,7 +24,9 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.account.CreateUserDto;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.network.AccountManagerImpl;
 import com.re.reverb.network.RequestQueueSingleton;
 
@@ -36,8 +38,8 @@ public class SplashScreenActivity extends Activity
     String mEmail; // Received from newChooseAccountIntent(); passed to getToken()
     private View currentOverlay = null;
 
-    static final String USER_EMAIL = "userEmail";
-    static final String NO_SAVED_EMAIL = "no saved email";
+    public static final String USER_EMAIL = "userEmail";
+    public static final String NO_SAVED_EMAIL = "no saved email";
     static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
     static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
     static final int REQUEST_CODE_RECOVER_FROM_AUTH_ERROR = 1002;
@@ -65,7 +67,7 @@ public class SplashScreenActivity extends Activity
             {
                 mEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                 // Save the shared preference
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(USER_EMAIL, mEmail);
                 editor.apply();
@@ -150,9 +152,13 @@ public class SplashScreenActivity extends Activity
         }
 
         RequestQueueSingleton.getInstance(this.getApplicationContext());
+    }
 
-        //Check if we have a saved email, otherwise call up user picker
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         String userEmail = sharedPreferences.getString(USER_EMAIL, NO_SAVED_EMAIL);
         if(userEmail.equals(NO_SAVED_EMAIL))
         {
@@ -163,6 +169,7 @@ public class SplashScreenActivity extends Activity
             mEmail = userEmail;
             getUsername();
         }
+
     }
 
     public void onUserDoesNotExist(final String email, final String token)
@@ -226,15 +233,26 @@ public class SplashScreenActivity extends Activity
         }
     }
 
-
-    public void onScreenClick(View view){
-        if(testInternetConnection()) {
-            Intent intent = new Intent(this, MainViewPagerActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.fade_in_activity, R.anim.fade_out_activity);
-        }
-        else {
-            makeNoConnectionToast();
+    public void onScreenClick(View view)
+    {
+        try
+        {
+            if(Reverb.getInstance().getCurrentUser() != null)
+            {
+                if (testInternetConnection())
+                {
+                    Intent intent = new Intent(this, MainViewPagerActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in_activity, R.anim.fade_out_activity);
+                }
+                else
+                {
+                    makeNoConnectionToast();
+                }
+            }
+        } catch (NotSignedInException e)
+        {
+            Toast.makeText(this, R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -246,5 +264,10 @@ public class SplashScreenActivity extends Activity
 
     private void makeNoConnectionToast() {
         Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onExit()
+    {
+        finish();
     }
 }

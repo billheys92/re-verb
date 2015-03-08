@@ -1,5 +1,8 @@
 package com.re.reverb.network;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -14,7 +17,7 @@ import org.json.JSONObject;
 
 public class AccountManagerImpl extends PersistenceManagerImpl
 {
-    private static final String profilePictureURL = "https://www.googleapis.com/plus/v1/people/me?fields=image&key=";
+    private static final String profilePictureURL = "https://www.googleapis.com/plus/v1/people/christopher.howse@gmail.com?fields=image&key=";
 
     private static final String key = "AIzaSyCAxP36YmffW458--oYRGzeTNExcUwNOb4";
 
@@ -123,6 +126,15 @@ public class AccountManagerImpl extends PersistenceManagerImpl
             this.Email = Email;
             this.Token = Token;
         }
+    }
+
+    public static void logoutUser(final Activity activity)
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(SplashScreenActivity.USER_EMAIL, SplashScreenActivity.NO_SAVED_EMAIL);
+        editor.apply();
+        activity.finish();
     }
 
     public static void getUserProfilePicture()

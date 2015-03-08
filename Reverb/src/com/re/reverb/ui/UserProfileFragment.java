@@ -228,4 +228,16 @@ public class UserProfileFragment extends FeedFragment
         };
         (activity.findViewById(R.id.userFeedOverlayLayout)).setOnClickListener(exitListener);
     }
+
+    @Override
+    public void onOpenLogoutEditOverlayClick()
+    {
+        standardOnOpenLogoutEditOverlayClick(R.id.overlayUserFeedLayoutContainer);
+    }
+
+    @Override
+    public void onEditUserInfoOverlayClick()
+    {
+        standardOnEditUserInfoOverlayClick(R.id.overlayUserFeedLayoutContainer);
+    }
 }
