@@ -7,17 +7,10 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
-import com.re.reverb.androidBackend.feed.Feed;
-import com.re.reverb.androidBackend.post.Post;
-import com.re.reverb.androidBackend.post.PostFactory;
-import com.re.reverb.androidBackend.post.dto.CreatePostDto;
-import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionFactory;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
-import com.re.reverb.androidBackend.regions.dto.GetNearbyRegionsDto;
 import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
 import com.re.reverb.androidBackend.regions.dto.GetSubscribedRegionsDto;
 import com.re.reverb.androidBackend.regions.dto.ReceiveRegionSummaryDto;
@@ -79,7 +72,7 @@ public class RegionManagerImpl extends PersistenceManagerImpl
     {
         RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
-        MultipartRequest multiRequest = new MultipartRequest("http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php", thumbnail, "", new Response.Listener<String>() {
+        MultipartRequest multiRequest = new MultipartRequest(uploadImageURL, thumbnail, "", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
