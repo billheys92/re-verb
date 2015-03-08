@@ -33,7 +33,7 @@
                     android:hint="Username"
                     android:textColorHint="@color/light_grey"
                     android:textColor="@color/main_font"
-                    android:id="@+id/username"/>
+                    android:id="@+id/edit_username"/>
 
 
                 <EditText
@@ -42,7 +42,7 @@
                     android:hint="Handle"
                     android:textColorHint="@color/light_grey"
                     android:textColor="@color/main_font"
-                    android:id="@+id/handle"/>
+                    android:id="@+id/edit_handle"/>
 
                 <EditText
                     android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                     android:hint="About Me"
                     android:textColorHint="@color/light_grey"
                     android:textColor="@color/main_font"
-                    android:id="@+id/aboutMe"
+                    android:id="@+id/edit_aboutMe"
                     android:minLines="3"/>
 
 

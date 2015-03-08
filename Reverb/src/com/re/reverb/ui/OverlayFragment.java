@@ -7,9 +7,16 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.account.UpdateAboutMeDto;
+import com.re.reverb.androidBackend.account.UpdateHandleDto;
+import com.re.reverb.androidBackend.account.UpdateUsernameDto;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.utils.GenericOverLay;
 import com.re.reverb.network.AccountManagerImpl;
 
@@ -76,7 +83,38 @@ public abstract class OverlayFragment extends ListFragment
         editUserInfoOverlay.displayOverlay(R.layout.overlay_edit_user_info, containerId);
 
 
-        //Onclick listener for save user info button here
+        View.OnClickListener listener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try
+                {
+                    int userId = Reverb.getInstance().getCurrentUserId();
+
+                    if(!(((EditText)activity.findViewById(R.id.edit_username)).getText().toString() == null || ((EditText)activity.findViewById(R.id.edit_username)).getText().toString().isEmpty()))
+                    {
+                        UpdateUsernameDto updateUsernameDto = new UpdateUsernameDto(userId, ((EditText)activity.findViewById(R.id.edit_username)).getText().toString());
+                        AccountManagerImpl.updateUsername(updateUsernameDto);
+                    }
+                    if(!(((EditText)activity.findViewById(R.id.edit_handle)).getText().toString() == null || ((EditText)activity.findViewById(R.id.edit_handle)).getText().toString().isEmpty()))
+                    {
+                        UpdateHandleDto updateHandleDto = new UpdateHandleDto(userId, ((EditText)activity.findViewById(R.id.edit_handle)).getText().toString());
+                        AccountManagerImpl.updateHandle(activity, updateHandleDto);
+                    }
+                    if(!(((EditText)activity.findViewById(R.id.edit_aboutMe)).getText().toString() == null || ((EditText)activity.findViewById(R.id.edit_aboutMe)).getText().toString().isEmpty()))
+                    {
+                        UpdateAboutMeDto updateAboutMeDto = new UpdateAboutMeDto(userId, ((EditText)activity.findViewById(R.id.edit_aboutMe)).getText().toString());
+                        AccountManagerImpl.updateAboutMe(updateAboutMeDto);
+                    }
+                    editUserInfoOverlay.removeOverlays();
+                } catch (NotSignedInException e)
+                {
+                    Toast.makeText(activity, R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        (activity.findViewById(R.id.saveUserInfoButton)).setOnClickListener(listener);
 
         View.OnClickListener exitListener = new View.OnClickListener()
         {

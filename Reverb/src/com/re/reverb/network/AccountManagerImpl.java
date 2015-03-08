@@ -10,6 +10,9 @@ import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.account.CreateUserDto;
+import com.re.reverb.androidBackend.account.UpdateAboutMeDto;
+import com.re.reverb.androidBackend.account.UpdateHandleDto;
+import com.re.reverb.androidBackend.account.UpdateUsernameDto;
 import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.ui.SplashScreenActivity;
 
@@ -128,15 +131,6 @@ public class AccountManagerImpl extends PersistenceManagerImpl
         }
     }
 
-    public static void logoutUser(final Activity activity)
-    {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(SplashScreenActivity.USER_EMAIL, SplashScreenActivity.NO_SAVED_EMAIL);
-        editor.apply();
-        activity.finish();
-    }
-
     public static void getUserProfilePicture()
     {
         final String url = profilePictureURL + key;
@@ -154,5 +148,23 @@ public class AccountManagerImpl extends PersistenceManagerImpl
         };
 
         requestJson(listener, null, Request.Method.GET, url);
+    }
+
+    public static void updateUsername(UpdateUsernameDto updateUsernameDto)
+    {
+        final String url = baseURL + "?commandtype=put&command=updateUserName";
+        requestJson(updateUsernameDto, Request.Method.PUT, url);
+    }
+
+    public static void updateHandle(final Activity activity, UpdateHandleDto updateHandleDto)
+    {
+        final String url = baseURL + "?commandtype=put&command=updateUserHandle";
+        requestJson(updateHandleDto, Request.Method.PUT, url);
+    }
+
+    public static void updateAboutMe(UpdateAboutMeDto updateAboutMeDto)
+    {
+        final String url = baseURL + "?commandtype=put&command=updateUserAboutMe";
+        requestJson(updateAboutMeDto, Request.Method.PUT, url);
     }
 }
