@@ -5,6 +5,7 @@ import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.utils.GeographyUtils;
 import com.re.reverb.androidBackend.utils.SuccessStatus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -29,6 +30,7 @@ public class Region
     protected String description;
     protected Date creationTime;
     protected Date updateTime;
+    protected File thumbnail;
 
     public Region(){
 
@@ -303,4 +305,13 @@ public class Region
         }
     }
 
+    public void setThumbnail(File thumbnailFile)
+    {
+        this.thumbnail = thumbnailFile;
+    }
+
+    public File getThumbnail()
+    {
+        return thumbnail;
+    }
 }

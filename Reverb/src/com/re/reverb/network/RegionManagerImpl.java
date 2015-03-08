@@ -1,21 +1,16 @@
 package com.re.reverb.network;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
-import com.re.reverb.androidBackend.feed.Feed;
-import com.re.reverb.androidBackend.post.Post;
-import com.re.reverb.androidBackend.post.PostFactory;
-import com.re.reverb.androidBackend.post.dto.CreatePostDto;
-import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionFactory;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
-import com.re.reverb.androidBackend.regions.dto.GetNearbyRegionsDto;
 import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
 import com.re.reverb.androidBackend.regions.dto.GetSubscribedRegionsDto;
 import com.re.reverb.androidBackend.regions.dto.ReceiveRegionSummaryDto;
@@ -25,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class RegionManagerImpl extends PersistenceManagerImpl
@@ -72,6 +68,40 @@ public class RegionManagerImpl extends PersistenceManagerImpl
         requestJson(regionDto, Request.Method.PUT, baseURL + params);
     }
 
+    public static void submitNewRegion(final CreateRegionDto regionDto, File thumbnail)
+    {
+        RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
+
+        MultipartRequest multiRequest = new MultipartRequest(uploadImageURL, thumbnail, "", new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                // public void onResponse(String response) {
+                // Display the response string.
+                if (response.contains("Error"))
+                {
+                    System.out.println("Picture Response Error is: "+ response);
+                }
+                else
+                {
+                    regionDto.Picture_name = response;
+                    String params = "?commandtype=post&command=postRegion";
+                    requestJson(regionDto, Request.Method.PUT, baseURL + params);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                System.out.println("Error Sending Picture Message");
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(multiRequest);
+    }
+
     public static void followRegion(Response.Listener<JSONObject> listener, FollowRegionDto followRegionDto)
     {
         String params = "?commandtype=post&command=postRegion2Users";
@@ -80,7 +110,7 @@ public class RegionManagerImpl extends PersistenceManagerImpl
 
     public static void unfollowRegion(Response.Listener<JSONObject> listener, UnfollowRegionDto unfollowRegionDto)
     {
-        String params = "?commandtype=post&command=deleteRegion2Users";
+        String params = "?commandtype=delete&command=deleteRegion2Users";
         requestJson(listener, unfollowRegionDto, Request.Method.PUT, baseURL + params);
     }
 }

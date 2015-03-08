@@ -19,7 +19,6 @@ import com.re.reverb.androidBackend.post.ChildPost;
 import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
-import com.re.reverb.androidBackend.post.content.PostContent;
 import com.re.reverb.androidBackend.post.content.StandardPostContent;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.CreateReplyPostDto;
@@ -243,16 +242,22 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     {
         RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
-        MultipartRequest multiRequest = new MultipartRequest("http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php", image, "", new Response.Listener<String>() {
+        MultipartRequest multiRequest = new MultipartRequest(uploadImageURL, image, "", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 // public void onResponse(String response) {
                 // Display the response string.
-                System.out.println("Picture Response is: "+ response);
-                replyPostDto.Picture_name = response;
-                String params = "?commandtype=post&command=postMessageReplyText";
-                requestJson(replyPostDto, Request.Method.PUT, baseURL + params);
+                if (response.contains("Error"))
+                {
+                    System.out.println("Picture Response Error is: "+ response);
+                }
+                else
+                {
+                    replyPostDto.Picture_name = response;
+                    String params = "?commandtype=post&command=postMessageReplyText";
+                    requestJson(replyPostDto, Request.Method.PUT, baseURL + params);
+                }
 
             }
         }, new Response.ErrorListener() {
@@ -310,16 +315,23 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     {
         RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
-        MultipartRequest multiRequest = new MultipartRequest("http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php", image, "", new Response.Listener<String>() {
+        MultipartRequest multiRequest = new MultipartRequest(uploadImageURL, image, "", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 // public void onResponse(String response) {
                 // Display the response string.
-                System.out.println("Picture Response is: "+ response);
-                postDto.Picture_name = response;
-                String params = "?commandtype=post&command=postMessagePicture";
-                requestJson(postDto, Request.Method.PUT, baseURL + params);
+                System.out.println("Picture Sent!");
+                if (response.contains("Error"))
+                {
+                    System.out.println("Picture Response Error is: "+ response);
+                }
+                else
+                {
+                    postDto.Picture_name = response;
+                    String params = "?commandtype=post&command=postMessagePicture";
+                    requestJson(postDto, Request.Method.PUT, baseURL + params);
+                }
 
             }
         }, new Response.ErrorListener() {

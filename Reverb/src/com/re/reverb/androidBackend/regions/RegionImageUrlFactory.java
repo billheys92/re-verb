@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class RegionImageUrlFactory
 {
-    public static URL createFromRegion(Region r){
+    public static String createFromRegion(Region r){
         DecimalFormat df = new DecimalFormat("###.####");
         String urlBase = "http://maps.googleapis.com/maps/api/staticmap?";
         String centreLat = ""+r.getCentre().getLatitude();
@@ -41,14 +41,6 @@ public class RegionImageUrlFactory
             }
         }
         String url = urlBase;
-        System.out.println(url);
-        try
-        {
-            return new URL(url);
-        } catch (MalformedURLException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+        return url;
     }
 }

@@ -16,6 +16,7 @@ public class CreateRegionDto
     public String Description;
     public ArrayList<RegionCircleDto> Circles = new ArrayList<RegionCircleDto>();
     public ArrayList<RegionRectangleDto> Rectangles = new ArrayList<RegionRectangleDto>();
+    public String Picture_name;
 
     public CreateRegionDto(int userId,
                          String name,
