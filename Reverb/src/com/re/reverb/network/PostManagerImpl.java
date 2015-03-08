@@ -17,7 +17,6 @@ import com.re.reverb.androidBackend.post.ChildPost;
 import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.PostFactory;
-import com.re.reverb.androidBackend.post.content.PostContent;
 import com.re.reverb.androidBackend.post.content.StandardPostContent;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.CreateReplyPostDto;
@@ -241,7 +240,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     {
         RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
-        MultipartRequest multiRequest = new MultipartRequest("http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php", image, "", new Response.Listener<String>() {
+        MultipartRequest multiRequest = new MultipartRequest(uploadImageURL, image, "", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -314,7 +313,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     {
         RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
-        MultipartRequest multiRequest = new MultipartRequest("http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php", image, "", new Response.Listener<String>() {
+        MultipartRequest multiRequest = new MultipartRequest(uploadImageURL, image, "", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

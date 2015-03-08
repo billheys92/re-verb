@@ -8,7 +8,7 @@ import com.re.reverb.androidBackend.errorHandling.InvalidPostDataTypeException;
 public class StandardPostContent implements PostContent
 {
     private static final String profilePictureBaseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/test/";
-    private static final String messageImageBaseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/";
+    private static final String messageImageBaseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/";
     private String username;
     private String handle;
     private String postBody;
