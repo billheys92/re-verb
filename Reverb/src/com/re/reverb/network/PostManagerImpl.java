@@ -10,6 +10,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.re.reverb.androidBackend.DatabaseResponse;
+import com.re.reverb.androidBackend.DatabaseResponseDto;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.feed.AbstractFeed;
 import com.re.reverb.androidBackend.feed.UserPostFeed;
@@ -333,8 +335,27 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
     }
 
-    public static void deletePost(final PostActionDto postActionDto, Activity activity)
+    public static void deletePost(final PostActionDto postActionDto, final Activity activity)
     {
-        //TODO:
+        String params = "?commandtype=delete&command=deleteMessage";
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                Gson gson = new Gson();
+                DatabaseResponseDto databaseResponse = gson.fromJson(response.toString(), DatabaseResponseDto.class);
+                if(databaseResponse.db_response == DatabaseResponse.SUCCESS.value)
+                {
+                    Toast.makeText(activity.getApplicationContext(), "Message Deleted", Toast.LENGTH_SHORT).show();
+                }
+                else if(databaseResponse.db_response == DatabaseResponse.FAILURE.value)
+                {
+                    Toast.makeText(activity.getApplicationContext(), "Delete Unsuccessful", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        requestJson(listener, postActionDto, Request.Method.POST, baseURL + params);
     }
 }

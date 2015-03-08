@@ -59,33 +59,83 @@ public class MainViewPagerActivity extends ReverbActivity
         mViewPager = (ViewPager) findViewById(R.id.mainViewPager);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(defaultPage);
+
+        ViewPager.OnPageChangeListener mViewPageChangeListener = new ViewPager.OnPageChangeListener()
+        {
+            @Override
+            public void onPageScrolled(int position,
+                                       float positionOffset,
+                                       int positionOffsetPixels)
+            {
+
+            }
+
+            @Override
+            public void onPageSelected(int position)
+            {
+                mPagerAdapter.setCurrentFragment(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state)
+            {
+
+            }
+        };
+
+        mViewPager.setOnPageChangeListener(mViewPageChangeListener);
     }
 
     public void returnToDefaultPage() {
         mViewPager.setCurrentItem(defaultPage);
     }
     
-    public class MainViewPagerAdapter extends FragmentPagerAdapter {
-    	 
-    	public MainViewPagerAdapter(FragmentManager fm) {
+    public class MainViewPagerAdapter extends FragmentPagerAdapter
+    {
+    	private int currentFragment = 1;
+
+        public void setCurrentFragment(int currentFragment)
+        {
+            this.currentFragment = currentFragment;
+        }
+
+        public int getCurrentFragment()
+        {
+            return currentFragment;
+        }
+
+    	public MainViewPagerAdapter(FragmentManager fm)
+        {
     	     super(fm);
-    	 }
-    	 
-    	 @Override
-    	 public Fragment getItem(int i) {
-    	     switch(i){
-    	     	case 0: return userProfileFragment;
-    	     	case 1: return newFeedFragment;
-    	     	case 2: return regionsFragment;
-    	     	default: //TODO throw an error
-    	    	 	return null;
-    	     }
-    	 }
+    	}
+
+    	@Override
+    	public OverlayFragment getItem(int i) {
+    	    switch(i){
+    	    	case 0:
+                    currentFragment = 0;
+                    return userProfileFragment;
+    	    	case 1:
+                    currentFragment = 1;
+                    return newFeedFragment;
+    	    	case 2:
+                    currentFragment = 2;
+                    return regionsFragment;
+    	    	default: //TODO throw an error
+    	   	 	return null;
+    	    }
+    	}
 
     	 @Override
     	 public int getCount() {
     	     return NUM_PAGES;
     	 }
+    }
+
+    @Override
+    public OverlayFragment getCurrentFragmentOverlay()
+    {
+        return mPagerAdapter.getItem(mPagerAdapter.getCurrentFragment());
     }
 
     public void startCreatePostActivity(View view){

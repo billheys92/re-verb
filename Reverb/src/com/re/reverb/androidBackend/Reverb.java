@@ -24,7 +24,7 @@ public class Reverb {
     private static Collection<AvailableRegionsUpdateRegion> availableRegionsUpdateListeners;
 
     //private UserProfile currentUser;
-    private UserProfile currentUser = new UserProfile("test", "test", "test", "test", "test", 8);
+    private UserProfile currentUser;
     private RegionManager regionManager;
     private Settings settings = Settings.getInstance();
     public LocationManager locationManager;

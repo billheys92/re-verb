@@ -23,11 +23,12 @@ import com.re.reverb.androidBackend.AvailableRegionsUpdateRegion;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionImageUrlFactory;
+import com.re.reverb.androidBackend.utils.GenericOverLay;
 import com.re.reverb.network.RequestQueueSingleton;
 
 import java.util.ArrayList;
 
-public class RegionsFragment extends ListFragment implements AvailableRegionsUpdateRegion
+public class RegionsFragment extends OverlayFragment implements AvailableRegionsUpdateRegion
 {
 
     private static enum TabType {
@@ -43,6 +44,8 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+        this.logoutEditOverlay = new GenericOverLay(this.getActivity());
+        this.editUserInfoOverlay = new GenericOverLay(this.getActivity());
 		super.onCreate(savedInstanceState);
         this.regionsList = new ArrayList<Region>();
         Reverb.attachAvailableRegionsUpdateListener(this);
@@ -216,5 +219,17 @@ public class RegionsFragment extends ListFragment implements AvailableRegionsUpd
             });
             return rowView;
         }
+    }
+
+    @Override
+    public void onOpenLogoutEditOverlayClick()
+    {
+        standardOnOpenLogoutEditOverlayClick(R.id.overlayRegionFeedLayoutContainer);
+    }
+
+    @Override
+    public void onEditUserInfoOverlayClick()
+    {
+        standardOnEditUserInfoOverlayClick(R.id.overlayRegionFeedLayoutContainer);
     }
 }
