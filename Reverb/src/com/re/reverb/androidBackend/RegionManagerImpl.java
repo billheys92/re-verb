@@ -1,5 +1,8 @@
 package com.re.reverb.androidBackend;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -12,6 +15,7 @@ import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
 import com.re.reverb.androidBackend.regions.CommonsRegion;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionFactory;
+import com.re.reverb.androidBackend.regions.RegionImageUrlFactory;
 import com.re.reverb.androidBackend.regions.dto.CreateRegionDto;
 import com.re.reverb.androidBackend.regions.dto.FollowRegionDto;
 import com.re.reverb.androidBackend.regions.dto.GetRegionByIdDto;
@@ -25,7 +29,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -174,13 +185,20 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
         if(region != null)
         {
             CreateRegionDto regionDto = buildRegionDto(region);
-
-            com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto);
-                //TODO: add next two lines to listener for submitNewRegion if we want it upon success
-                this.nearbyRegions.add(region);
-                Reverb.notifyAvailableRegionsUpdateListeners();
+            if(region.getThumbnail() != null)
+            {
+                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region.getThumbnail());
+            }
+            else
+            {
+                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto);
+            }
+            //TODO: add next two lines to listener for submitNewRegion if we want it upon success
+            this.nearbyRegions.add(region);
+            Reverb.notifyAvailableRegionsUpdateListeners();
         }
     }
+
 
     private CreateRegionDto buildRegionDto(Region region) {
         CreateRegionDto regionDto;
@@ -295,4 +313,6 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
         Reverb.notifyAvailableRegionsUpdateListeners();
 //        Log.d("Reverb", "Current region is at location"+newLocation.getLatitude()+", "+newLocation.getLongitude());
     }
+
+
 }
