@@ -18,7 +18,7 @@
     <style name="Widget.Styled.ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar">
         <!-- Setting values in the android namespace affects API levels 14+ -->
         <item name="android:background">@color/reverb_blue_1</item>
-
+        <item name="android:titleTextStyle">@style/TitleColor</item>
     </style>
 
 </resources>

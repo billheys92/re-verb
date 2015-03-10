@@ -8,4 +8,10 @@
         <!-- API 11 theme customizations can go here. -->
     </style>
 
+    <style name="Theme.CustomActionBar" parent="@style/Theme.AppCompat.Light">
+        <!-- Setting values in the default namespace affects API levels 7-13 -->
+        <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="android:titleTextStyle">@style/TitleColor</item>
+    </style>
+
 </resources>

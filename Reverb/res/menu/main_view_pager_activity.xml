@@ -3,7 +3,7 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.re.reverb.ui.ReverbActivity" >
     <item android:id="@+id/action_anonymous"
-          android:icon="@drawable/anonymous_pp"
+          android:icon="@mipmap/action_bar_anon"
           android:title="Anonymous"
           android:visible="true"
           android:enabled="true"

@@ -167,7 +167,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             NetworkImageView imageView = (NetworkImageView) rowView.findViewById(R.id.regionThumbnail);
             regionNameTextView.setText(selectedRegion.getName());
             regionDescriptionTextView.setText(selectedRegion.getDescription());
-            imageView.setDefaultImageResId(R.drawable.anonymous_pp);
+            imageView.setDefaultImageResId(R.mipmap.anonymous_pp);
 //            imageView.setImageUrl(RegionImageUrlFactory.createFromRegion(selectedRegion).toString(), RequestQueueSingleton.getInstance().getImageLoader());
             final ImageView toggleSubscribedImage = (ImageView) rowView.findViewById(R.id.subscribeToRegionToggleButton);
             if(!selectedRegion.canUnsubscribe()) {

@@ -5,11 +5,11 @@
     <color name="reverb_blue_2">#7de6c8</color>
     <color name="reverb_blue_3">#64cdb7</color>
     <color name="reverb_blue_4">#51b7ac</color>-->
-    <color name="reverb_blue_1">#ffcc653f</color>
-    <color name="reverb_blue_2">#ffe36640</color>
-    <color name="reverb_blue_3">#fff16943</color>
-    <color name="reverb_blue_4">#fffc6a44</color>
-    <color name="anonymous_background">#ff3be2</color>
+    <color name="reverb_blue_1">#ff00695D</color>
+    <color name="reverb_blue_2">#ff228c81</color>
+    <color name="reverb_blue_3">#ff0b7c70</color>
+    <color name="reverb_blue_4">#ff00554c</color>
+    <color name="anonymous_background">#ff696969</color>
     <color name="reply_background">#DEDEDE</color>
     <color name="main_font">#404040</color>
     <color name="dark_grey">#505050</color>

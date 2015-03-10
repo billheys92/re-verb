@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:layout_marginLeft="8dp"
-    android:drawableRight="@drawable/ic_launcher"
+    android:drawableRight="@mipmap/ic_launcher"
     android:gravity="left"
     android:paddingLeft="32dp"
     android:paddingTop="8dp"

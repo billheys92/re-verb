@@ -281,7 +281,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
     private void setSharedPostParameters(View convertView, final StandardPostContent postContent, final int postId)
     {
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
-        netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
+        netProfilePicture.setDefaultImageResId(R.mipmap.anonymous_pp);
         if(postContent.getProfilePictureName() != null && postContent.getProfilePictureName() != "null" && postContent.getProfilePictureName() != "")
         {
             netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
