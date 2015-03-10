@@ -16,14 +16,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:20.0.0'
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.google.android.gms:play-services:6.1.11'
-    compile ('org.apache.httpcomponents:httpcore:4.3.2')
-            {
-                exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-            }
-    compile ('org.apache.httpcomponents:httpmime:4.3.5')
-            {
-                exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-            }
+    compile('org.apache.httpcomponents:httpcore:4.3.2') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+    compile('org.apache.httpcomponents:httpmime:4.3.5') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
 }
 
 android {
@@ -32,7 +30,7 @@ android {
 
     defaultConfig {
         applicationId "com.re.reverb"
-        minSdkVersion 10
+        minSdkVersion 11
         targetSdkVersion 20
         versionCode 1
         versionName "1.0"
