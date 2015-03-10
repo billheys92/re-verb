@@ -18,6 +18,7 @@ public class ReceiveRegionDto
     String Description;
     String Create_time;
     String Update_time;
+    String Picture_name;
     ArrayList<ReceiveRegionCircleDto> circles;
     ArrayList<ReceiveRegionRectangleDto> rectangles;
 
@@ -25,13 +26,15 @@ public class ReceiveRegionDto
                    String Region_name,
                    String Description,
                    String Create_time,
-                   String Update_time)
+                   String Update_time,
+                   String Picture_name)
     {
         this.Region_id = Region_id;
         this.Region_name = Region_name;
         this.Description = Description;
         this.Create_time = Create_time;
         this.Update_time = Update_time;
+        this.Picture_name = Picture_name;
     }
 
     public void setCirclesDto(ArrayList<ReceiveRegionCircleDto> circlesDto)
@@ -67,6 +70,11 @@ public class ReceiveRegionDto
     public String getUpdate_time()
     {
         return Update_time;
+    }
+
+    public String getPicture_name()
+    {
+        return Picture_name;
     }
 
     public ArrayList<ReceiveRegionCircleDto> getCircles()

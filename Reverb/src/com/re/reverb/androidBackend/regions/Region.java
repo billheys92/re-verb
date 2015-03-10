@@ -31,6 +31,7 @@ public class Region
     protected Date creationTime;
     protected Date updateTime;
     protected File thumbnail;
+    protected String thumbnailUrl;
 
     public Region(){
 
@@ -314,4 +315,16 @@ public class Region
     {
         return thumbnail;
     }
+
+
+    public String getThumbnailUrl()
+    {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl)
+    {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
 }

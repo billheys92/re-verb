@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
@@ -221,7 +222,8 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     public void subscribeToRegion(Region region)
     {
         final Region r = region;
-        if(region != null) {
+        if (region != null)
+        {
             FollowRegionDto followRegionDto;
             Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
             {

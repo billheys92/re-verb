@@ -19,8 +19,9 @@ public class RegionImageUrlFactory
         String centreLat = ""+r.getCentre().getLatitude();
         String centreLong = ""+r.getCentre().getLongitude();
         urlBase += "center=" + centreLat + "," + centreLong;
-        urlBase  += r.getShapes().size() <= 3 ? "&zoom=15" : "&zoom=10";
-        urlBase += "&size=600x600";
+//        urlBase  += r.getShapes().size() <= 3 ? "&zoom=15" : "&zoom=10";
+        urlBase  += "&zoom=14";
+        urlBase += "&size=256x256";
         urlBase += "&maptype=road";
         urlBase += "&sensor=false";
         for (RegionShape shape : r.getShapes())

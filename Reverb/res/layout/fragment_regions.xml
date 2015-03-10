@@ -30,6 +30,14 @@
             android:background="@color/reverb_blue_1"/>
     </LinearLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                  android:id="@+id/swipeContainer"
+                                                  android:layout_width="match_parent"
+                                                  android:layout_height="wrap_content"
+                                                  android:layout_weight=".90"
+                                                  android:layout_marginTop="@dimen/bottom_toolbar_height"
+        >
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,6 +49,9 @@
         android:focusable="true"
         android:footerDividersEnabled="false"
         android:focusableInTouchMode="true"/>
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
     <ImageButton

@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,8 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.AvailableRegionsUpdateRegion;
 import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionImageUrlFactory;
 import com.re.reverb.androidBackend.utils.GenericOverLay;
@@ -28,7 +33,7 @@ import com.re.reverb.network.RequestQueueSingleton;
 
 import java.util.ArrayList;
 
-public class RegionsFragment extends OverlayFragment implements AvailableRegionsUpdateRegion
+public class RegionsFragment extends OverlayFragment implements AvailableRegionsUpdateRegion, SwipeRefreshLayout.OnRefreshListener
 {
 
     private static enum TabType {
@@ -40,6 +45,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
     private ArrayList<Region> regionsList;
     private ArrayAdapter<Region> adapter;
     private TabType selectedTab = TabType.SUBSCRIBED;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -65,6 +71,14 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             view = inflater.inflate(R.layout.fragment_regions, container, false);
             adapter = new RegionsArrayAdapter(getActivity(), regionsList);
             setListAdapter(adapter);
+
+
+            swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+            swipeRefreshLayout.setOnRefreshListener(this);
+            swipeRefreshLayout.setColorScheme(R.color.reverb_blue_1,
+                    R.color.reverb_blue_2,
+                    R.color.reverb_blue_3,
+                    R.color.reverb_blue_4);
 
 
             final Button subscribedTab = (Button)view.findViewById(R.id.subscribedRegionsTabButton);
@@ -151,7 +165,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             View rowView = inflater.inflate(R.layout.region_list_row, parent, false);
             rowView.setClickable(true);
             if(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId() == selectedRegion.getRegionId()) {
-                rowView.setBackgroundResource(R.drawable.horizontal_reverb_themed_bg_gradient);
+                rowView.setBackgroundColor(getResources().getColor(R.color.light_grey));
             }
             rowView.setOnClickListener(new View.OnClickListener()
             {
@@ -168,7 +182,10 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             regionNameTextView.setText(selectedRegion.getName());
             regionDescriptionTextView.setText(selectedRegion.getDescription());
             imageView.setDefaultImageResId(R.drawable.anonymous_pp);
-//            imageView.setImageUrl(RegionImageUrlFactory.createFromRegion(selectedRegion).toString(), RequestQueueSingleton.getInstance().getImageLoader());
+            if(selectedRegion.getThumbnailUrl() != null && selectedRegion.getThumbnailUrl() != "null" && selectedRegion.getThumbnailUrl() != "")
+            {
+                imageView.setImageUrl(selectedRegion.getThumbnailUrl(), RequestQueueSingleton.getInstance().getImageLoader());
+            }
             final ImageView toggleSubscribedImage = (ImageView) rowView.findViewById(R.id.subscribeToRegionToggleButton);
             if(!selectedRegion.canUnsubscribe()) {
                 toggleSubscribedImage.setImageDrawable(null);
@@ -231,5 +248,23 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
     public void onEditUserInfoOverlayClick()
     {
         standardOnEditUserInfoOverlayClick(R.id.overlayRegionFeedLayoutContainer);
+    }
+
+
+    @Override
+    public void onRefresh()
+    {
+        Reverb.getInstance().getRegionManager().updateRegionLists();
+        adapter.notifyDataSetChanged();
+        Log.d("Reverb","Regions refresh");
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 3000);
+
     }
 }

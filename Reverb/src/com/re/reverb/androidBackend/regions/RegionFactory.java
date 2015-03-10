@@ -24,6 +24,7 @@ public class RegionFactory
         r.setRegionId(dto.getRegion_id());
         r.setName(dto.getRegion_name());
         r.setDescription(dto.getDescription());
+        r.setThumbnailUrl(dto.getPicture_name());
         Date createTime = null;
         Date updateTime = null;
         try {
@@ -59,6 +60,7 @@ public class RegionFactory
             r.setRegionId(dto.getRegion_id());
             r.setName(dto.getRegion_name());
             r.setDescription(dto.getDescription());
+            r.setThumbnailUrl(dto.getPicture_name());
             Date createTime = null;
             Date updateTime = null;
             try {
