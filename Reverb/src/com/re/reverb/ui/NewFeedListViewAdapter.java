@@ -293,10 +293,12 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
         if( postContent.getMessageImageName() != null && postContent.getMessageImageName() != "" && postContent.getMessageImageName() != "null")
         {
+            netMessageImage.setDefaultImageResId(R.drawable.default_image);
             netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
         }
         else
         {
+            netMessageImage.setDefaultImageResId(android.R.color.transparent);
             netMessageImage.setImageUrl(null,RequestQueueSingleton.getInstance().getImageLoader());
         }
 
