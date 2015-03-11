@@ -343,4 +343,14 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             }
         });
     }
+
+    public void switchUIToAnonymous()
+    {
+
+    }
+
+    public void switchUIToPublic()
+    {
+
+    }
 } 

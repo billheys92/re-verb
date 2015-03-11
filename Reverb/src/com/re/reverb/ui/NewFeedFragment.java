@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,12 +21,17 @@ import com.re.reverb.network.PostManagerImpl;
 
 public class NewFeedFragment extends FeedFragment
 {
+
+    ImageButton createPostButton;
+
     public NewFeedFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_new_main_feed, container, false);
+
+        createPostButton = (ImageButton) rootView.findViewById(R.id.buttonPost);
 
         return setupDataFeed(rootView, new NewPostFeed(this.getActivity().getApplicationContext()));
     }
@@ -102,5 +108,21 @@ public class NewFeedFragment extends FeedFragment
     public void onEditUserInfoOverlayClick()
     {
         standardOnEditUserInfoOverlayClick(R.id.overlayMainFeedLayoutContainer);
+    }
+
+    public void switchUIToAnonymous()
+    {
+        if (createPostButton != null)
+        {
+            createPostButton.setImageResource(R.drawable.compose_image_dark);
+        }
+    }
+
+    public void switchUIToPublic()
+    {
+        if (createPostButton != null)
+        {
+            createPostButton.setImageResource(R.drawable.compose_image);
+        }
     }
 }
