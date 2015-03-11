@@ -9,7 +9,7 @@
         android:layout_width="75dip"
         android:layout_height="75dip"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="false"/>
+        android:layout_alignParentRight="false"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
         android:layout_gravity="center|right"
         android:clickable="true"
         android:scaleType="centerCrop"
-        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
         android:padding="20dp"
         android:background="?android:selectableItemBackground"
         android:layout_toLeftOf="@+id/regionViewInfoButton"/>
@@ -63,7 +63,7 @@
         android:padding="15dp"
         android:id="@+id/regionViewInfoButton"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:background="?android:selectableItemBackground"/>
 
 </RelativeLayout>
