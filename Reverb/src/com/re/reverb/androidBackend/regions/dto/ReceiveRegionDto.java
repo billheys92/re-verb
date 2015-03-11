@@ -19,6 +19,8 @@ public class ReceiveRegionDto
     String Create_time;
     String Update_time;
     String Picture_name;
+    int Num_members;
+    int Num_posts;
     ArrayList<ReceiveRegionCircleDto> circles;
     ArrayList<ReceiveRegionRectangleDto> rectangles;
 
@@ -85,6 +87,15 @@ public class ReceiveRegionDto
     public ArrayList<ReceiveRegionRectangleDto> getRectangles()
     {
         return rectangles;
+    }
+
+    public int getNum_members() {
+        return Num_members;
+    }
+
+    public int getNum_posts()
+    {
+        return Num_posts;
     }
 
 }

@@ -32,6 +32,8 @@ public class Region
     protected Date updateTime;
     protected File thumbnail;
     protected String thumbnailUrl;
+    protected int numMembers;
+    protected int numPosts;
 
     public Region(){
 
@@ -161,6 +163,27 @@ public class Region
     {
         this.subscribedTo = true;
     }
+
+    public int getNumMembers()
+    {
+        return numMembers;
+    }
+
+    public void setNumMembers(int numMembers)
+    {
+        this.numMembers = numMembers;
+    }
+
+    public int getNumPosts()
+    {
+        return numPosts;
+    }
+
+    public void setNumPosts(int numPosts)
+    {
+        this.numPosts = numPosts;
+    }
+
 
     public void unsubscribe()
     {

@@ -178,9 +178,11 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             });
             TextView regionNameTextView = (TextView) rowView.findViewById(R.id.regionName);
             TextView regionDescriptionTextView = (TextView) rowView.findViewById(R.id.regionDescriptionTextView);
+            TextView regionStatsTextView = (TextView) rowView.findViewById(R.id.regionStatsTextView);
             NetworkImageView imageView = (NetworkImageView) rowView.findViewById(R.id.regionThumbnail);
             regionNameTextView.setText(selectedRegion.getName());
             regionDescriptionTextView.setText(selectedRegion.getDescription());
+            regionStatsTextView.setText(selectedRegion.getNumMembers()+" Followers | "+selectedRegion.getNumPosts()+" Posts");
             imageView.setDefaultImageResId(R.mipmap.anonymous_pp);
             if(selectedRegion.getThumbnailUrl() != null && selectedRegion.getThumbnailUrl() != "null" && selectedRegion.getThumbnailUrl() != "")
             {
