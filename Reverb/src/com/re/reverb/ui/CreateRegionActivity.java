@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +88,8 @@ public class CreateRegionActivity extends ReverbActivity
     private View currentOverlay = null;
     private Region region;
     private boolean editingToolsOpen = false;
+    private ImageButton infoButton;
+    private LinearLayout editingToolsLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,12 +108,43 @@ public class CreateRegionActivity extends ReverbActivity
             showEditRegionDetailsOverlay();
             Toast.makeText(this, "Creating new region", Toast.LENGTH_SHORT).show();
         }
+        infoButton = (ImageButton) findViewById(R.id.showInfoButton);
+        editingToolsLayout = (LinearLayout) findViewById(R.id.editingToolsLayout);
+        super.setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
+
     }
 
     @Override
     public OverlayFragment getCurrentFragmentOverlay()
     {
         return null;
+    }
+
+    @Override
+    protected void switchUIToAnonymousMode()
+    {
+        if(infoButton != null)
+        {
+            infoButton.setImageResource(R.drawable.info_icon_dark);
+        }
+        if(editingToolsLayout != null)
+        {
+            editingToolsLayout.setBackgroundResource(R.color.anonymous_background);
+        }
+    }
+
+    @Override
+    protected void switchUIToPublicMode()
+    {
+
+        if(infoButton != null)
+        {
+            infoButton.setImageResource(R.drawable.info_icon);
+        }
+        if(editingToolsLayout != null)
+        {
+            editingToolsLayout.setBackgroundResource(R.color.reverb_blue_1);
+        }
     }
 
     @Override

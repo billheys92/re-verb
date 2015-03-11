@@ -41,7 +41,11 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
     private ArrayAdapter<Region> adapter;
     private TabType selectedTab = TabType.SUBSCRIBED;
 
-	@Override
+    private ImageButton createRegionButton;
+    private Button subscribedTab;
+    private Button nearbyTab;
+
+    @Override
 	public void onCreate(Bundle savedInstanceState)
 	{
         this.logoutEditOverlay = new GenericOverLay(this.getActivity());
@@ -66,9 +70,9 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             adapter = new RegionsArrayAdapter(getActivity(), regionsList);
             setListAdapter(adapter);
 
-
-            final Button subscribedTab = (Button)view.findViewById(R.id.subscribedRegionsTabButton);
-            final Button nearbyTab = (Button)view.findViewById(R.id.nearbyRegionsTabButton);
+            createRegionButton = (ImageButton) view.findViewById(R.id.createRegionButton);
+            subscribedTab = (Button)view.findViewById(R.id.subscribedRegionsTabButton);
+            nearbyTab = (Button)view.findViewById(R.id.nearbyRegionsTabButton);
             subscribedTab.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -77,8 +81,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
                     if(selectedTab != TabType.SUBSCRIBED) {
                         selectedTab = TabType.SUBSCRIBED;
                         Reverb.notifyAvailableRegionsUpdateListeners();
-                        subscribedTab.setBackgroundResource(R.drawable.selected_tab);
-                        nearbyTab.setBackgroundColor(getResources().getColor(R.color.reverb_blue_1));
+                        setTabUI(Reverb.getInstance().isAnonymous());
                     }
                 }
             });
@@ -90,8 +93,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
                     if(selectedTab != TabType.NEARBY) {
                         selectedTab = TabType.NEARBY;
                         Reverb.notifyAvailableRegionsUpdateListeners();
-                        nearbyTab.setBackgroundResource(R.drawable.selected_tab);
-                        subscribedTab.setBackgroundColor(getResources().getColor(R.color.reverb_blue_1));
+                        setTabUI(Reverb.getInstance().isAnonymous());
                     }
                 }
             });
@@ -231,5 +233,56 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
     public void onEditUserInfoOverlayClick()
     {
         standardOnEditUserInfoOverlayClick(R.id.overlayRegionFeedLayoutContainer);
+    }
+
+
+    public void switchUIToAnonymous()
+    {
+        if (createRegionButton != null)
+        {
+            createRegionButton.setImageResource(R.drawable.create_region_image_dark);
+        }
+        setTabUI(true);
+
+    }
+
+    public void switchUIToPublic()
+    {
+        if (createRegionButton != null)
+        {
+            createRegionButton.setImageResource(R.drawable.create_region_image);
+        }
+        setTabUI(false);
+    }
+
+    private void setTabUI(boolean anon)
+    {
+
+        if(subscribedTab!=null && nearbyTab != null)
+        {
+            if (selectedTab == TabType.SUBSCRIBED)
+            {
+                if (!anon)
+                {
+                    subscribedTab.setBackgroundResource(R.drawable.selected_tab);
+                    nearbyTab.setBackgroundColor(getResources().getColor(R.color.reverb_blue_1));
+                } else
+                {
+                    subscribedTab.setBackgroundResource(R.drawable.selected_tab_anon);
+                    nearbyTab.setBackgroundColor(getResources().getColor(R.color.anonymous_background));
+                }
+            } else if (selectedTab == TabType.NEARBY)
+            {
+                if (!anon)
+                {
+                    nearbyTab.setBackgroundResource(R.drawable.selected_tab);
+                    subscribedTab.setBackgroundColor(getResources().getColor(R.color.reverb_blue_1));
+                } else
+                {
+                    nearbyTab.setBackgroundResource(R.drawable.selected_tab_anon);
+                    subscribedTab.setBackgroundColor(getResources().getColor(R.color.anonymous_background));
+                }
+            }
+        }
     }
 }

@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -136,6 +137,20 @@ public class MainViewPagerActivity extends ReverbActivity
     public OverlayFragment getCurrentFragmentOverlay()
     {
         return mPagerAdapter.getItem(mPagerAdapter.getCurrentFragment());
+    }
+
+    @Override
+    protected void switchUIToAnonymousMode()
+    {
+        newFeedFragment.switchUIToAnonymous();
+        regionsFragment.switchUIToAnonymous();
+    }
+
+    @Override
+    protected void switchUIToPublicMode()
+    {
+        newFeedFragment.switchUIToPublic();
+        regionsFragment.switchUIToPublic();
     }
 
     public void startCreatePostActivity(View view){
