@@ -143,7 +143,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
     public void onListItemClick(ListView parent, View v, int position, long id)
     {
         super.onListItemClick(parent, v, position, id);
-           v.setBackgroundResource(R.drawable.horizontal_reverb_themed_bg_gradient);
+           v.setBackgroundColor(getResources().getColor(R.color.light_grey));
 //        Intent intent = new Intent(this.getActivity(), CreateRegionActivity.class);
 //        intent.putExtra("SELECTED_REGION_ID", position);
 //        startActivity(intent);
@@ -183,7 +183,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             NetworkImageView imageView = (NetworkImageView) rowView.findViewById(R.id.regionThumbnail);
             regionNameTextView.setText(selectedRegion.getName());
             regionDescriptionTextView.setText(selectedRegion.getDescription());
-            imageView.setDefaultImageResId(R.drawable.anonymous_pp);
+            imageView.setDefaultImageResId(R.mipmap.anonymous_pp);
             if(selectedRegion.getThumbnailUrl() != null && selectedRegion.getThumbnailUrl() != "null" && selectedRegion.getThumbnailUrl() != "")
             {
                 imageView.setImageUrl(selectedRegion.getThumbnailUrl(), RequestQueueSingleton.getInstance().getImageLoader());
