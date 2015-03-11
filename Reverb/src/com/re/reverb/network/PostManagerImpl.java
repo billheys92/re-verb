@@ -53,10 +53,10 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         getPosts(feed, params);
     }
 
-    public static void getReposts(JSONArray messageIds)
+    public static void getRepost(Integer messageIds, final AbstractFeed feed)
     {
-        String params = "?commandtype=get&command=getMessagesById";
-        
+        String params = String.format("?commandtype=get&command=getMessage&message=%s",messageIds);
+        getPosts(feed, params);
     }
 
     public static void getRefreshPosts(double latitude, double longitude, float range, final AbstractFeed feed)
@@ -178,8 +178,10 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                                 }
                             }
                         }
-                        JSONArray jsonReposts = new JSONArray(reposts);
-                        getReposts(jsonReposts);
+                        for(int j = 0; j < reposts.size(); j++)
+                        {
+                            getRepost(reposts.get(j), feed);
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
