@@ -110,7 +110,7 @@ public class NewFeedFragment extends FeedFragment
         standardOnEditUserInfoOverlayClick(R.id.overlayMainFeedLayoutContainer);
     }
 
-    public void switchUIToAnonymous()
+    protected void extraAnonymousUISetup()
     {
         if (createPostButton != null)
         {
@@ -118,7 +118,7 @@ public class NewFeedFragment extends FeedFragment
         }
     }
 
-    public void switchUIToPublic()
+    public void extraPublicUISetup()
     {
         if (createPostButton != null)
         {

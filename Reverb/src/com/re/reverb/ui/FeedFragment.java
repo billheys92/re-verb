@@ -1,14 +1,10 @@
 package com.re.reverb.ui;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +17,7 @@ import android.widget.Toast;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.feed.AbstractFeed;
-import com.re.reverb.androidBackend.feed.DummyNetworkFeed;
-import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
-import com.re.reverb.androidBackend.feed.NewPostFeed;
-import com.re.reverb.androidBackend.post.Post;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.utils.GenericOverLay;
 import com.re.reverb.androidBackend.utils.MessageOverlay;
 import com.re.reverb.network.RequestQueueSingleton;
@@ -138,6 +128,28 @@ public abstract class FeedFragment extends OverlayFragment implements OnRefreshL
             ViewGroup parent = (ViewGroup) this.currentOverlay.getParent();
             parent.removeView(this.currentOverlay);
             this.currentOverlay = null;
+        }
+    }
+
+    protected abstract void extraAnonymousUISetup();
+
+    public void switchUIToAnonymous()
+    {
+        extraAnonymousUISetup();
+        if(adapter != null)
+        {
+            adapter.switchUIToAnonymous();
+        }
+    }
+
+    protected abstract void extraPublicUISetup();
+
+    public void switchUIToPublic()
+    {
+        extraPublicUISetup();
+        if(adapter != null)
+        {
+            adapter.switchUIToPublic();
         }
     }
 }

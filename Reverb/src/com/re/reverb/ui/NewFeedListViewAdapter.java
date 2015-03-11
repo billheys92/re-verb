@@ -37,6 +37,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
     private FeedFragment feedFragment;
     public LayoutInflater inflater;
     public Activity activity;
+    public int defaultProfPicResource;
 
     public NewFeedListViewAdapter(Activity act,
                                   AbstractFeed feed,
@@ -53,6 +54,14 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             e.printStackTrace();
         }
         inflater = act.getLayoutInflater();
+        if(Reverb.getInstance().isAnonymous())
+        {
+            defaultProfPicResource = R.mipmap.anonymous_pp_dark;
+        }
+        else
+        {
+            defaultProfPicResource = R.mipmap.anonymous_pp;
+        }
         this.feedFragment = feedFragment;
     }
 
@@ -281,7 +290,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
     private void setSharedPostParameters(View convertView, final StandardPostContent postContent, final int postId)
     {
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
-        netProfilePicture.setDefaultImageResId(R.mipmap.anonymous_pp);
+        netProfilePicture.setDefaultImageResId(defaultProfPicResource);
         if(postContent.getProfilePictureName() != null && postContent.getProfilePictureName() != "null" && postContent.getProfilePictureName() != "")
         {
             netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
@@ -346,11 +355,13 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 
     public void switchUIToAnonymous()
     {
-
+        this.defaultProfPicResource = R.mipmap.anonymous_pp_dark;
+        notifyDataSetChanged();
     }
 
     public void switchUIToPublic()
     {
-
+        this.defaultProfPicResource = R.mipmap.anonymous_pp;
+        notifyDataSetChanged();
     }
 } 
