@@ -281,7 +281,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
     private void setSharedPostParameters(View convertView, final StandardPostContent postContent, final int postId)
     {
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
-        netProfilePicture.setDefaultImageResId(R.drawable.anonymous_pp);
+        netProfilePicture.setDefaultImageResId(R.mipmap.anonymous_pp);
         if(postContent.getProfilePictureName() != null && postContent.getProfilePictureName() != "null" && postContent.getProfilePictureName() != "")
         {
             netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
@@ -293,10 +293,12 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
         if( postContent.getMessageImageName() != null && postContent.getMessageImageName() != "" && postContent.getMessageImageName() != "null")
         {
+            netMessageImage.setDefaultImageResId(R.drawable.default_image);
             netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
         }
         else
         {
+            netMessageImage.setDefaultImageResId(android.R.color.transparent);
             netMessageImage.setImageUrl(null,RequestQueueSingleton.getInstance().getImageLoader());
         }
 
@@ -340,5 +342,15 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
                 feedFragment.onOpenOverlayClick(postId);
             }
         });
+    }
+
+    public void switchUIToAnonymous()
+    {
+
+    }
+
+    public void switchUIToPublic()
+    {
+
     }
 } 

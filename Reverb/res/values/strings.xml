@@ -2,7 +2,7 @@
 <resources>
 
     <string name="text_str">Test Value</string>
-    <string name="app_name">Reverb</string>
+    <string name="app_name">verb</string>
     <string name="edit_main_feed_message">What\'s up?</string>
     <string name="button_create_post">Post</string>
     <string name="action_settings">Cool Settings</string>

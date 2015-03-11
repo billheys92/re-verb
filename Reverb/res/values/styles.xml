@@ -28,11 +28,20 @@
     <style name="Theme.CustomActionBar" parent="@style/Theme.AppCompat.Light">
         <!-- Setting values in the default namespace affects API levels 7-13 -->
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="android:titleTextStyle">@style/TitleColor</item>
     </style>
 
     <style name="Widget.Styled.ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar">
         <!-- Setting values in the default namespace affects API levels 7-13 -->
         <item name="background">@color/reverb_blue_1</item>
+        <item name="android:titleTextStyle">@style/TitleColor</item>
+    </style>
+
+    <style name="TitleColor" parent="@style/Theme.AppCompat.Light">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:labelTextSize">20dp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
 </resources>

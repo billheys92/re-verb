@@ -265,15 +265,21 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
         setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
     }
 
-    private void setupUIBasedOnAnonymity(boolean anon)
+    protected abstract void switchUIToAnonymousMode();
+
+    protected abstract void switchUIToPublicMode();
+
+    protected void setupUIBasedOnAnonymity(boolean anon)
     {
         if(!anon)
         {
             setActionBarBackground(R.color.reverb_blue_1);
+            switchUIToPublicMode();
         }
         else
         {
             setActionBarBackground(R.color.anonymous_background);
+            switchUIToAnonymousMode();
         }
 
     }

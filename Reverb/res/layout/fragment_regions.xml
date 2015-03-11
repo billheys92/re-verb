@@ -10,6 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/bottom_toolbar_height"
         android:focusable="true"
+        android:background="@color/dark_grey"
         android:clickable="false"
         >
 
@@ -27,7 +28,8 @@
             android:text="Nearby"
             android:id="@+id/nearbyRegionsTabButton"
             android:layout_weight="1"
-            android:background="@color/reverb_blue_1"/>
+            android:background="@color/reverb_blue_1"
+            android:layout_marginLeft="1dp"/>
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -45,6 +47,8 @@
         android:layout_alignParentTop="false"
         android:layout_weight="1"
         android:layout_marginTop="@dimen/bottom_toolbar_height"
+        android:divider="@color/light_grey"
+        android:dividerHeight="1sp"
         android:clickable="true"
         android:focusable="true"
         android:footerDividersEnabled="false"
@@ -55,7 +59,7 @@
 
 
     <ImageButton
-        android:id="@+id/editRegionSquare"
+        android:id="@+id/createRegionButton"
         android:layout_width="@dimen/bottom_toolbar_height"
         android:layout_height="@dimen/bottom_toolbar_height"
         android:src="@drawable/create_region_image"

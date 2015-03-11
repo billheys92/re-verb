@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,8 @@ public class CreatePostActivity extends ReverbActivity {
     protected ImageView attachedPhoto;
     protected boolean postSubmitted = false;
     protected  String currentPhotoPath;
+    private ImageButton cameraButton;
+    private ImageButton sendButton;
     //UserProfile user;
 
     Post post;
@@ -50,7 +53,10 @@ public class CreatePostActivity extends ReverbActivity {
         setContentView(R.layout.activity_create_post);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         attachedPhoto = (ImageView) findViewById(R.id.editPostIncludedImageView);
+        cameraButton = (ImageButton) findViewById(R.id.cameraButton);
+        sendButton = (ImageButton) findViewById(R.id.sendButton);
         setActionBarTitle("Posting to " + Reverb.getInstance().getRegionManager().getCurrentRegion().getName());
+        super.setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
     }
 
     @Override
@@ -156,6 +162,32 @@ public class CreatePostActivity extends ReverbActivity {
     public OverlayFragment getCurrentFragmentOverlay()
     {
         return null;
+    }
+
+    @Override
+    protected void switchUIToAnonymousMode()
+    {
+        if(cameraButton != null)
+        {
+            cameraButton.setImageResource(R.drawable.camera_icon_dark);
+        }
+        if(sendButton != null)
+        {
+            sendButton.setImageResource(R.drawable.send_icon_dark);
+        }
+    }
+
+    @Override
+    protected void switchUIToPublicMode()
+    {
+        if(cameraButton != null)
+        {
+            cameraButton.setImageResource(R.drawable.camera_icon);
+        }
+        if(sendButton != null)
+        {
+            sendButton.setImageResource(R.drawable.send_icon);
+        }
     }
 
     private void setPic() {
