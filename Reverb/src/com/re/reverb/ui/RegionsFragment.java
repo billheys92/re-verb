@@ -114,6 +114,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
         } catch (InflateException e) {
             e.printStackTrace();
         }
+        ((ReverbActivity) getActivity()).setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
 
         return view;
 	}
@@ -143,10 +144,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
     public void onListItemClick(ListView parent, View v, int position, long id)
     {
         super.onListItemClick(parent, v, position, id);
-           v.setBackgroundColor(getResources().getColor(R.color.light_grey));
-//        Intent intent = new Intent(this.getActivity(), CreateRegionActivity.class);
-//        intent.putExtra("SELECTED_REGION_ID", position);
-//        startActivity(intent);
+           v.setBackgroundColor(getResources().getColor(R.color.very_light_grey));
     }
 
     private class RegionsArrayAdapter extends ArrayAdapter<Region> {
@@ -167,7 +165,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             View rowView = inflater.inflate(R.layout.region_list_row, parent, false);
             rowView.setClickable(true);
             if(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId() == selectedRegion.getRegionId()) {
-                rowView.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                rowView.setBackgroundColor(getResources().getColor(R.color.very_light_grey));
             }
             rowView.setOnClickListener(new View.OnClickListener()
             {
@@ -193,8 +191,9 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
                 toggleSubscribedImage.setImageDrawable(null);
                 toggleSubscribedImage.setClickable(false);
             }
-            else if(selectedRegion.isSubscribedTo())
+            else if(Reverb.getInstance().getRegionManager().isRegionSubscribed(selectedRegion.getRegionId()))
             {
+                selectedRegion.subscribe();
                 toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.checkmark ));
             }
             toggleSubscribedImage.setOnClickListener(new View.OnClickListener()

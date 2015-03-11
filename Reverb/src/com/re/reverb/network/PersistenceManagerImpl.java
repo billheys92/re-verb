@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 public class PersistenceManagerImpl implements PersistenceManager
 {
-    protected static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/chris_test/Reverb.php";
+    protected static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/jacob_test/Reverb.php";
     protected static final String uploadImageURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php";
 
     private static final RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
@@ -88,13 +88,14 @@ public class PersistenceManagerImpl implements PersistenceManager
 
     public static boolean requestJsonArray(Response.Listener<JSONArray> listener, String url)
     {
+        final String urll = url;
         JsonArrayRequest jsonRequest = new JsonArrayRequest(url, listener, new Response.ErrorListener()
         {
             @Override
             public void onErrorResponse(VolleyError error)
             {
                 error.printStackTrace();
-                System.out.println("Error Getting Message");
+                System.out.println("Error Getting Message at URL: "+urll);
             }
         });
 

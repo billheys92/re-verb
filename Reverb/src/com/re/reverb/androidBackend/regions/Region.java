@@ -171,6 +171,11 @@ public class Region
         return true;
     }
 
+    public boolean canSubscribe()
+    {
+        return !Reverb.getInstance().getRegionManager().isRegionSubscribed(this.regionId);
+    }
+
     public boolean isSubscribedTo() {
         return this.subscribedTo;
     }

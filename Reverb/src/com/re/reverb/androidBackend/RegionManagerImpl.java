@@ -134,6 +134,18 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
         return this.currentRegion;
     }
 
+    public boolean isRegionSubscribed(int regionId)
+    {
+        for(Region r: Reverb.getInstance().getRegionManager().getSubscribedRegions())
+        {
+            if(regionId == r.getRegionId())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public ArrayList<Region> getNearbyRegions()
     {

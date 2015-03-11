@@ -67,12 +67,14 @@ public class RegionManagerImpl extends PersistenceManagerImpl
                     try {
                         Gson gson = new Gson();
                         ReceiveRegionSummaryDto regionSummaryDto = gson.fromJson(response.get(i).toString(), ReceiveRegionSummaryDto.class);
-                        returnedRegions.add(RegionFactory.createRegionFromSummary(regionSummaryDto));
+                        Region region = RegionFactory.createRegionFromSummary(regionSummaryDto);
+                        region.subscribe();
+                        returnedRegions.add(region);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                Reverb.getInstance().getRegionManager().setNearbyRegions(returnedRegions);
+                Reverb.getInstance().getRegionManager().setSubscribedRegions(returnedRegions);
             }
         };
         requestJsonArray(listener, baseURL + params);
