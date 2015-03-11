@@ -71,7 +71,7 @@
         android:layout_alignParentTop="true"/>
 
     <ImageView
-        android:layout_width="30dp"
+        android:layout_width="50dp"
         android:layout_height="75dp"
         android:src="@drawable/details_arrow_icon"
         android:layout_gravity="center|right"

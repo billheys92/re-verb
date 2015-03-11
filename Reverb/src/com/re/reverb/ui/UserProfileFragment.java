@@ -92,6 +92,7 @@ public class UserProfileFragment extends FeedFragment
         new SendTask().execute();
 
         view = setupDataFeed(view, new UserPostFeed());
+        ((ReverbActivity) getActivity()).setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
 
         return view;
 	}

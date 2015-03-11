@@ -33,6 +33,8 @@ public interface RegionManager
 
     public void subscribeToRegion(Region region);
 
+    public boolean isRegionSubscribed(int regionId);
+
     /**
      *
      * @param region
