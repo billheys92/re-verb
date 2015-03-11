@@ -39,12 +39,12 @@ public class AccountManagerImpl extends PersistenceManagerImpl
                 if(userExists.user_exists)
                 {
                     System.out.println("User Exists:" + userExists.toString());
-                    loginUser(email, token, activity);
+                    loginUser(email, "", activity);
                 }
                 else
                 {
                     System.out.println("User Exists:" + userExists.toString());
-                    activity.onUserDoesNotExist(email, token);
+                    activity.onUserDoesNotExist(email, "");
                     //TODO: prompt for user info
                         //Activity with form for inputing user info
                             //username, handle, description, picture?
@@ -83,7 +83,7 @@ public class AccountManagerImpl extends PersistenceManagerImpl
                 UserExistsDto successfulCreated = gson.fromJson(response.toString(), UserExistsDto.class);
                 if(successfulCreated.user_exists)
                 {
-                    loginUser(createUserDto.Email, createUserDto.Token, activity);
+                    loginUser(createUserDto.Email, "", activity);
                     activity.removeOverlays();
                 }
                 else
@@ -116,7 +116,7 @@ public class AccountManagerImpl extends PersistenceManagerImpl
             }
         };
 
-        requestJson(listener, new LoginUserDto(email,token), Request.Method.POST, url);
+        requestJson(listener, new LoginUserDto(email,""), Request.Method.POST, url);
     }
 
     public static class LoginUserDto
