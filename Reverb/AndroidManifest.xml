@@ -19,14 +19,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher_web"
-        android:logo="@drawable/ic_launcher_web"
+        android:icon="@mipmap/ic_launcher"
+        android:logo="@mipmap/reverb_icon_text"
         android:label="@string/app_name"
         android:theme="@style/Theme.CustomActionBar" >
         <activity
             android:name="com.re.reverb.ui.MainViewPagerActivity"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/Theme.CustomActionBar">
         </activity>
         <activity
             android:name="com.re.reverb.ui.CreatePostActivity"
