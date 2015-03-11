@@ -143,6 +143,7 @@ public class MainViewPagerActivity extends ReverbActivity
     protected void switchUIToAnonymousMode()
     {
         newFeedFragment.switchUIToAnonymous();
+        userProfileFragment.switchUIToAnonymous();
         regionsFragment.switchUIToAnonymous();
     }
 
@@ -150,6 +151,7 @@ public class MainViewPagerActivity extends ReverbActivity
     protected void switchUIToPublicMode()
     {
         newFeedFragment.switchUIToPublic();
+        userProfileFragment.switchUIToPublic();
         regionsFragment.switchUIToPublic();
     }
 
