@@ -10,6 +10,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.re.reverb.androidBackend.Feed;
 import com.re.reverb.androidBackend.errorHandling.InvalidPostException;
 import com.re.reverb.androidBackend.feed.AbstractFeed;
 import com.re.reverb.androidBackend.feed.UserPostFeed;
@@ -21,6 +22,7 @@ import com.re.reverb.androidBackend.post.content.PostContent;
 import com.re.reverb.androidBackend.post.content.StandardPostContent;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
 import com.re.reverb.androidBackend.post.dto.CreateReplyPostDto;
+import com.re.reverb.androidBackend.post.dto.CreateRepostDto;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.androidBackend.post.dto.PostActionResponseDto;
 import com.re.reverb.androidBackend.post.dto.ReceivePostDto;
@@ -49,6 +51,12 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         String lastUpdate = feed.getEarliestPostTime();
         String params = String.format("?commandtype=get&command=getMessagesByLocationPaging&lat=%s&lon=%s&range=%s&lastupdate='%s'",Double.toString(latitude), Double.toString(longitude), range, lastUpdate);
         getPosts(feed, params);
+    }
+
+    public static void getReposts(JSONArray messageIds)
+    {
+        String params = "?commandtype=get&command=getMessagesById";
+        
     }
 
     public static void getRefreshPosts(double latitude, double longitude, float range, final AbstractFeed feed)
@@ -145,24 +153,34 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
 
                 ArrayList<ParentPost> returnedPosts = new ArrayList<ParentPost>();
+                ArrayList<Integer> reposts = new ArrayList<Integer>();
                 for(int i = 0; i < response.length(); i++){
                     try {
                         Gson gson = new Gson();
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
-                        ParentPost p = PostFactory.createParentPost(postDto);
-
-                        if(!feed.getPosts().contains(p))
+                        if(postDto.getRepost_link() != 0)
                         {
-                            returnedPosts.add(p);
+                            reposts.add(postDto.getRepost_link());
                         }
                         else
                         {
-                            //remove old copy and add new
-                            if(feed.getPosts().remove(p))
+                            ParentPost p = PostFactory.createParentPost(postDto);
+
+                            if (!feed.getPosts().contains(p))
                             {
                                 returnedPosts.add(p);
+                            } else
+                            {
+                                //remove old copy and add new
+                                if (feed.getPosts().remove(p))
+                                {
+                                    returnedPosts.add(p);
+                                }
                             }
                         }
+                        JSONArray jsonReposts = new JSONArray(reposts);
+                        getReposts(jsonReposts);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (InvalidPostException e) {
@@ -235,6 +253,12 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     {
         String params = "?commandtype=post&command=postMessageReplyText";
         requestJson(replyPostDto, Request.Method.POST, baseURL + params);
+    }
+
+    public static void submitRepost(CreateRepostDto repostDto)
+    {
+        String params = "?commandtype=post&command=postMessageRepost";
+        requestJson(repostDto, Request.Method.POST, baseURL + params);
     }
 
     public static void submitReplyPost(final CreateReplyPostDto replyPostDto, File image)
