@@ -90,16 +90,6 @@
         <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/editRegionSave"
-            android:scaleType="centerInside"
-            android:src="@drawable/save_icon"
-            android:background="@android:color/transparent"
-            android:onClick="onSaveRegionClick"
-            android:layout_weight="0.1"/>
-
-        <ImageButton
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
             android:id="@+id/undoButton"
             android:src="@drawable/undo_icon"
             android:scaleType="centerInside"
@@ -115,6 +105,16 @@
             android:scaleType="centerInside"
             android:onClick="onClearRegionClick"
             android:background="@android:color/transparent"
+            android:layout_weight="0.1"/>
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/editRegionSave"
+            android:scaleType="centerInside"
+            android:src="@drawable/save_icon"
+            android:background="@android:color/transparent"
+            android:onClick="onSaveRegionClick"
             android:layout_weight="0.1"/>
 
     </LinearLayout>

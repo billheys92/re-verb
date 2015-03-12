@@ -268,6 +268,11 @@ public class Region
         return this.canEdit();
     }
 
+    public void disableEditing()
+    {
+        this.canEdit = false;
+    }
+
     public void discardChanges(){
         this.name = regionCopy.getName();
         this.description = regionCopy.getDescription();
