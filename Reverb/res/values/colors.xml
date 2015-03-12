@@ -17,5 +17,5 @@
     <color name="very_light_grey">#ffbbbbbb</color>
     <color name="overlay_background">#AA000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="map_shape_color">#00000000</color>
+    <color name="map_shape_color">#66929292</color>
 </resources>

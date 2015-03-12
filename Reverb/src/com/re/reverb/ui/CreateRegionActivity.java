@@ -445,8 +445,11 @@ public class CreateRegionActivity extends ReverbActivity
 
     public void undoAddShape(View view)
     {
-        this.regionShapes.pop();
-        drawMapShapes();
+        if(!this.regionShapes.empty())
+        {
+            this.regionShapes.pop();
+            drawMapShapes();
+        }
     }
 
     public void toggleEditingToolsLayout(View view) {
