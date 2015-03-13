@@ -173,6 +173,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
                 public void onClick(View v)
                 {
                    Reverb.getInstance().getRegionManager().setCurrentRegion(selectedRegion);
+//                   ((ReverbActivity) getActivity()).setActionBarTitle(selectedRegion.getName());
                     notifyDataSetChanged();
                 }
             });
