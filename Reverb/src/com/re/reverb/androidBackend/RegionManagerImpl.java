@@ -62,6 +62,8 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     {
         this.currentRegion = region;
         fetchCurrentRegionDetails();
+        Reverb.getInstance().notifyRegionChangedListeners();
+
     }
 
     public void fetchCurrentRegionDetails()
@@ -162,6 +164,7 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     public void setNearbyRegions(ArrayList<Region> regions)
     {
         this.nearbyRegions = regions;
+        this.nearbyRegions.add(0,new CommonsRegion(Reverb.getInstance().getCurrentLocation()));
         Reverb.notifyAvailableRegionsUpdateListeners();
     }
 
@@ -169,6 +172,7 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     public void setSubscribedRegions(ArrayList<Region> regions)
     {
         this.subscribedRegions = regions;
+        this.subscribedRegions.add(0,new CommonsRegion(Reverb.getInstance().getCurrentLocation()));
         Reverb.notifyAvailableRegionsUpdateListeners();
     }
 
@@ -314,7 +318,7 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
 //        this.update();
         if(this.currentRegion == null)
         {
-            this.currentRegion = new CommonsRegion(newLocation);
+            setCurrentRegion(new CommonsRegion(newLocation));
             this.nearbyRegions.add(this.currentRegion);
             this.subscribedRegions.add(this.currentRegion);
         }
