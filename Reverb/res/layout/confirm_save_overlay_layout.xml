@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/confirmSaveOverlayLayout"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:background="@color/overlay_background"
+             android:padding="25dp">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_bg_layout"
+                    android:layout_gravity="center"
+                    android:padding="10dp">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:id="@+id/closeConfirmSaveRegionOverlayButton"
+            android:layout_gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:onClick="onCancelSaveRegionClick"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/confirmSaveMessageTextView"
+            android:text="@string/confirm_save_message"
+            android:textColor="@color/dark_grey"
+            android:layout_margin="10dp"
+            android:layout_alignParentStart="true"
+            android:textIsSelectable="false"
+            android:layout_toLeftOf="@+id/closeConfirmSaveRegionOverlayButton"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentBottom="false"
+            android:layout_below="@+id/confirmSaveMessageTextView"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/cancelSaveRegionButton"
+                android:layout_alignParentBottom="false"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/scrollView"
+                android:layout_marginRight="5dp"
+                android:onClick="onCancelSaveRegionClick"/>
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:id="@+id/confirmSaveRegionButton"
+                android:layout_alignParentBottom="false"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/scrollView"
+                android:layout_marginLeft="5dp"
+                android:onClick="onConfirmSaveRegionClick"/>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</FrameLayout>

@@ -31,8 +31,8 @@ public class DrawMapCircleOverlayView extends DrawMapShapeOverlayView
     {
         if(this.currentShape == null) {
             this.currentShape = new CircleShape();
-            this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
         }
+        this.currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
         currentShape.getShapeDrawable().setBounds(0, 0, 0, 0);
     }
 
@@ -50,8 +50,10 @@ public class DrawMapCircleOverlayView extends DrawMapShapeOverlayView
     }
 
     private void resetCurrentShape(){
-        currentShape = new CircleShape();
-        currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
+        currentShape = null;
+//        currentShape = new CircleShape();
+//        currentShape.getShapeDrawable().getPaint().setColor(getResources().getColor(R.color.map_shape_color));
+//        currentShape.getShapeDrawable().setBounds(0, 0, 0, 0);
         this.touchDownPointX = 0;
         this.touchDownPointY = 0;
     }

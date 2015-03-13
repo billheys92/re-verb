@@ -25,5 +25,6 @@
     <string name="title_settings_activity">Settings</string>
     <string name="title_activity_create_region">New Region</string>
     <string name="title_activity_create_user">Create User</string>
+    <string name="confirm_save_message">Are you sure you\'re ready to save? \nOnce you save this region can not be edited again.</string>
 
 </resources>
