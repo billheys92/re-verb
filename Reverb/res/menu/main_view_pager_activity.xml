@@ -9,7 +9,7 @@
           android:enabled="true"
           reverb:showAsAction="always"/>
     <item android:id="@+id/action_logout_and_edit"
-          android:icon="@mipmap/more_icon"
+          android:icon="@drawable/more_action_bar"
           android:title="More Actions"
           android:visible="true"
           android:enabled="true"
