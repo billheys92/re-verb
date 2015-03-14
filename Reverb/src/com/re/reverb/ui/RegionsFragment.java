@@ -1,11 +1,9 @@
 package com.re.reverb.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.InflateException;
@@ -24,10 +22,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.AvailableRegionsUpdateRegion;
 import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.regions.Region;
-import com.re.reverb.androidBackend.regions.RegionImageUrlFactory;
 import com.re.reverb.androidBackend.utils.GenericOverLay;
 import com.re.reverb.network.RequestQueueSingleton;
 
@@ -150,6 +145,7 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
     private class RegionsArrayAdapter extends ArrayAdapter<Region> {
         private final Context context;
         private final ArrayList<Region> values;
+        private int defaultRegionThumbnail = R.drawable.default_region_thumbnail;
 
         public RegionsArrayAdapter(Context context, ArrayList<Region> values) {
             super(context, R.layout.region_list_row, values);
@@ -184,10 +180,10 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             regionNameTextView.setText(selectedRegion.getName());
             regionDescriptionTextView.setText(selectedRegion.getDescription());
             regionStatsTextView.setText(selectedRegion.getNumMembers()+" Followers | "+selectedRegion.getNumPosts()+" Posts");
-            imageView.setDefaultImageResId(R.mipmap.anonymous_pp);
+            imageView.setDefaultImageResId(this.defaultRegionThumbnail);
             if(selectedRegion.getThumbnailUrl() != null && selectedRegion.getThumbnailUrl() != "null" && selectedRegion.getThumbnailUrl() != "")
             {
-                imageView.setImageUrl(selectedRegion.getThumbnailUrl(), RequestQueueSingleton.getInstance().getImageLoader());
+                imageView.setImageUrl("http://ec2-54-209-100-107.compute-1.amazonaws.com/"+selectedRegion.getThumbnailUrl(), RequestQueueSingleton.getInstance().getImageLoader());
             }
             final ImageView toggleSubscribedImage = (ImageView) rowView.findViewById(R.id.subscribeToRegionToggleButton);
             if(!selectedRegion.canUnsubscribe()) {
@@ -240,6 +236,18 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
             });
             return rowView;
         }
+
+        public void switchUIToAnonymous()
+        {
+            this.defaultRegionThumbnail = R.drawable.default_region_thumbnail_dark;
+            notifyDataSetChanged();
+        }
+
+        public void switchUIToPublic()
+        {
+            this.defaultRegionThumbnail = R.drawable.default_region_thumbnail;
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -279,6 +287,10 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
         {
             createRegionButton.setImageResource(R.drawable.create_region_image_dark);
         }
+        if(adapter != null)
+        {
+            ((RegionsArrayAdapter)adapter).switchUIToAnonymous();
+        }
         setTabUI(true);
 
     }
@@ -288,6 +300,10 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
         if (createRegionButton != null)
         {
             createRegionButton.setImageResource(R.drawable.create_region_image);
+        }
+        if(adapter != null)
+        {
+            ((RegionsArrayAdapter)adapter).switchUIToPublic();
         }
         setTabUI(false);
     }
