@@ -92,6 +92,7 @@ public class UserProfileFragment extends FeedFragment
         new SendTask().execute();
 
         view = setupDataFeed(view, new UserPostFeed());
+        ((ReverbActivity) getActivity()).setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
 
         return view;
 	}
@@ -167,9 +168,7 @@ public class UserProfileFragment extends FeedFragment
 
     public Bitmap getGoogleMapThumbnail(double latitude, double longitude){
 
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String mapType = sharedPrefs.getString("pref_map_type","roadmap");
-        String URL = "http://maps.google.com/maps/api/staticmap?center=" +latitude + "," + longitude + "&zoom=13&size=600x600&sensor=false&maptype="+mapType;
+        String URL = "http://maps.google.com/maps/api/staticmap?center=" +latitude + "," + longitude + "&zoom=13&size=600x600&sensor=false&maptype=roadmap";
 
         Bitmap bmp = null;
         HttpClient httpclient = new DefaultHttpClient();
@@ -230,6 +229,18 @@ public class UserProfileFragment extends FeedFragment
     }
 
     @Override
+    protected void extraAnonymousUISetup()
+    {
+
+    }
+
+    @Override
+    protected void extraPublicUISetup()
+    {
+
+    }
+
+    @Override
     public void onOpenLogoutEditOverlayClick()
     {
         standardOnOpenLogoutEditOverlayClick(R.id.overlayUserFeedLayoutContainer);
@@ -240,4 +251,5 @@ public class UserProfileFragment extends FeedFragment
     {
         standardOnEditUserInfoOverlayClick(R.id.overlayUserFeedLayoutContainer);
     }
+
 }

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="confirm_save_message">Are you sure you\'re ready to save? \nOnce you save this region can not be edited again.</string>
+</resources>

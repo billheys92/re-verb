@@ -32,7 +32,7 @@ public class NewFeedFragment extends FeedFragment
         View rootView = inflater.inflate(R.layout.fragment_new_main_feed, container, false);
 
         createPostButton = (ImageButton) rootView.findViewById(R.id.buttonPost);
-
+        ((ReverbActivity) getActivity()).setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
         return setupDataFeed(rootView, new NewPostFeed(this.getActivity().getApplicationContext()));
     }
 
@@ -110,7 +110,7 @@ public class NewFeedFragment extends FeedFragment
         standardOnEditUserInfoOverlayClick(R.id.overlayMainFeedLayoutContainer);
     }
 
-    public void switchUIToAnonymous()
+    protected void extraAnonymousUISetup()
     {
         if (createPostButton != null)
         {
@@ -118,7 +118,7 @@ public class NewFeedFragment extends FeedFragment
         }
     }
 
-    public void switchUIToPublic()
+    public void extraPublicUISetup()
     {
         if (createPostButton != null)
         {

@@ -31,6 +31,9 @@ public class Region
     protected Date creationTime;
     protected Date updateTime;
     protected File thumbnail;
+    protected String thumbnailUrl;
+    protected int numMembers;
+    protected int numPosts;
 
     public Region(){
 
@@ -161,6 +164,27 @@ public class Region
         this.subscribedTo = true;
     }
 
+    public int getNumMembers()
+    {
+        return numMembers;
+    }
+
+    public void setNumMembers(int numMembers)
+    {
+        this.numMembers = numMembers;
+    }
+
+    public int getNumPosts()
+    {
+        return numPosts;
+    }
+
+    public void setNumPosts(int numPosts)
+    {
+        this.numPosts = numPosts;
+    }
+
+
     public void unsubscribe()
     {
         this.subscribedTo = false;
@@ -168,6 +192,11 @@ public class Region
 
     public boolean canUnsubscribe(){
         return true;
+    }
+
+    public boolean canSubscribe()
+    {
+        return !Reverb.getInstance().getRegionManager().isRegionSubscribed(this.regionId);
     }
 
     public boolean isSubscribedTo() {
@@ -237,6 +266,11 @@ public class Region
             return validation;
         }
         return this.canEdit();
+    }
+
+    public void disableEditing()
+    {
+        this.canEdit = false;
     }
 
     public void discardChanges(){
@@ -314,4 +348,16 @@ public class Region
     {
         return thumbnail;
     }
+
+
+    public String getThumbnailUrl()
+    {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl)
+    {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
 }

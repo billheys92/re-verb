@@ -71,7 +71,11 @@ public abstract class DrawMapShapeOverlayView extends View
 //        for(Shape shape: shapeStack) {
 //            shape.getShapeDrawable().draw(canvas);
 //        }
-        currentShape.getShapeDrawable().draw(canvas);
+
+        if(currentShape != null)
+        {
+            currentShape.getShapeDrawable().draw(canvas);
+        }
     }
 
     public void attachShapeAddedToOverlayListener(ShapeAddedToOverlayListener listener) {

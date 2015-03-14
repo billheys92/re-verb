@@ -54,6 +54,30 @@ public class RegionManagerImpl extends PersistenceManagerImpl
     {
 //        String params = "?commandtype=get&command=getRegions";
 //        requestJson(dto ,Request.Method.GET, baseURL + params);
+
+        String params = String.format("?commandtype=get&command=getRegionsByUser&user=%s",dto.getPoster_id());
+        Response.Listener<JSONArray> listener = new Response.Listener<JSONArray>()
+        {
+            @Override
+            public void onResponse(JSONArray response)
+            {
+                System.out.println("Response is: " + response.toString());
+                ArrayList<Region> returnedRegions = new ArrayList<Region>();
+                for(int i = 0; i < response.length(); i++){
+                    try {
+                        Gson gson = new Gson();
+                        ReceiveRegionSummaryDto regionSummaryDto = gson.fromJson(response.get(i).toString(), ReceiveRegionSummaryDto.class);
+                        Region region = RegionFactory.createRegionFromSummary(regionSummaryDto);
+                        region.subscribe();
+                        returnedRegions.add(region);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Reverb.getInstance().getRegionManager().setSubscribedRegions(returnedRegions);
+            }
+        };
+        requestJsonArray(listener, baseURL + params);
     }
 
     public static void getRegionById(Response.Listener<JSONObject> listener, GetRegionByIdDto getRegionByIdDto)

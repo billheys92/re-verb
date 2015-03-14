@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Location;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
@@ -21,6 +22,7 @@ import com.re.reverb.androidBackend.post.ChildPost;
 import com.re.reverb.androidBackend.post.ParentPost;
 import com.re.reverb.androidBackend.post.content.PostContent;
 import com.re.reverb.androidBackend.post.content.StandardPostContent;
+import com.re.reverb.androidBackend.post.dto.CreateRepostDto;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.network.PostManagerImpl;
 import com.re.reverb.network.RequestQueueSingleton;
@@ -37,6 +39,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
     private FeedFragment feedFragment;
     public LayoutInflater inflater;
     public Activity activity;
+    public int defaultProfPicResource;
 
     public NewFeedListViewAdapter(Activity act,
                                   AbstractFeed feed,
@@ -53,6 +56,14 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             e.printStackTrace();
         }
         inflater = act.getLayoutInflater();
+        if(Reverb.getInstance().isAnonymous())
+        {
+            defaultProfPicResource = R.mipmap.anonymous_pp_dark;
+        }
+        else
+        {
+            defaultProfPicResource = R.mipmap.anonymous_pp;
+        }
         this.feedFragment = feedFragment;
     }
 
@@ -227,7 +238,30 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         });
         ((TextView) convertView.findViewById(R.id.replyCount)).setText(parentPost.getNumReplys().toString().equals("0") ? "" : parentPost.getNumReplys().toString());
 
-        ((ImageView) convertView.findViewById(R.id.repostIcon)).setImageResource(R.mipmap.repost_icon);
+        final ImageView repostImage =  (ImageView) convertView.findViewById(R.id.repostIcon);
+        repostImage.setImageResource(R.mipmap.repost_icon);
+        repostImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(activity instanceof MainViewPagerActivity)
+                {
+                        Location location = Reverb.getInstance().getCurrentLocation();
+                        PostManagerImpl.submitRepost(new CreateRepostDto(parentPost.getUserId(),
+                                parentPost.getPostId(),
+                                Reverb.getInstance().isAnonymous(),
+                                location.getLatitude(),
+                                location.getLongitude(),
+                                Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(),
+                                parentPost.getContent().getMessageString()));
+                }
+                else
+                {
+                    System.out.println("Wrong activity for Repost icon");
+                }
+            }
+        });
 
         Calendar now = GregorianCalendar.getInstance();
         now.setTime(new Date());
@@ -281,7 +315,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
     private void setSharedPostParameters(View convertView, final StandardPostContent postContent, final int postId)
     {
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
-        netProfilePicture.setDefaultImageResId(R.mipmap.anonymous_pp);
+        netProfilePicture.setDefaultImageResId(defaultProfPicResource);
         if(postContent.getProfilePictureName() != null && postContent.getProfilePictureName() != "null" && postContent.getProfilePictureName() != "")
         {
             netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
@@ -346,11 +380,13 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 
     public void switchUIToAnonymous()
     {
-
+        this.defaultProfPicResource = R.mipmap.anonymous_pp_dark;
+        notifyDataSetChanged();
     }
 
     public void switchUIToPublic()
     {
-
+        this.defaultProfPicResource = R.mipmap.anonymous_pp;
+        notifyDataSetChanged();
     }
 } 

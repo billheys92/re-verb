@@ -32,8 +32,10 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
+import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.androidBackend.regions.RegionChangeListener;
 
-public class MainViewPagerActivity extends ReverbActivity
+public class MainViewPagerActivity extends ReverbActivity implements RegionChangeListener
 {
 
     static final int CREATE_POST_REQUEST = 1;  // The request code for creating a post activity
@@ -84,13 +86,23 @@ public class MainViewPagerActivity extends ReverbActivity
             }
         };
 
+        Reverb.getInstance().attachRegionChangedListener(this);
         mViewPager.setOnPageChangeListener(mViewPageChangeListener);
     }
 
     public void returnToDefaultPage() {
         mViewPager.setCurrentItem(defaultPage);
     }
-    
+
+    @Override
+    public void onRegionChanged(Region region)
+    {
+        if(region != null && region.getName() != null)
+        {
+            setActionBarTitle(region.getName());
+        }
+    }
+
     public class MainViewPagerAdapter extends FragmentPagerAdapter
     {
     	private int currentFragment = 1;
@@ -143,6 +155,7 @@ public class MainViewPagerActivity extends ReverbActivity
     protected void switchUIToAnonymousMode()
     {
         newFeedFragment.switchUIToAnonymous();
+        userProfileFragment.switchUIToAnonymous();
         regionsFragment.switchUIToAnonymous();
     }
 
@@ -150,6 +163,7 @@ public class MainViewPagerActivity extends ReverbActivity
     protected void switchUIToPublicMode()
     {
         newFeedFragment.switchUIToPublic();
+        userProfileFragment.switchUIToPublic();
         regionsFragment.switchUIToPublic();
     }
 

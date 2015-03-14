@@ -11,15 +11,12 @@ import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -293,5 +290,11 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
     protected void setActionBarBackground(int colourResource)
     {
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(colourResource)));
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk <= android.os.Build.VERSION_CODES.JELLY_BEAN)
+        {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayShowTitleEnabled(true);
+        }
     }
 }
