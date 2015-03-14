@@ -155,7 +155,8 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
                 ArrayList<ParentPost> returnedPosts = new ArrayList<ParentPost>();
                 ArrayList<Integer> reposts = new ArrayList<Integer>();
-                for(int i = 0; i < response.length(); i++){
+                for(int i = 0; i < response.length(); i++)
+                {
                     try {
                         Gson gson = new Gson();
                         ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
@@ -179,10 +180,6 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                                 }
                             }
                         }
-                        for(int j = 0; j < reposts.size(); j++)
-                        {
-                            getRepost(reposts.get(j), feed);
-                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -198,6 +195,11 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                 }
                 if(feed.getPosts().size() > 0) {
                     feed.setEarliestPostTime(((Post)feed.getPosts().get(feed.getPosts().size()-1)).getLatestTime());
+                }
+
+                for(int j = 0; j < reposts.size(); j++)
+                {
+                    getRepost(reposts.get(j), feed);
                 }
 
             }
