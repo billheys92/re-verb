@@ -25,6 +25,12 @@ public abstract class AbstractFeed implements Feed<ParentPost>
     }
 
     @Override
+    public void clearPosts()
+    {
+        this.posts.clear();
+    }
+
+    @Override
     public ArrayList<ParentPost> getPosts()
     {
         return posts;

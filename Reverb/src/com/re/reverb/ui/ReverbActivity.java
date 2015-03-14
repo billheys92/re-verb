@@ -241,14 +241,14 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
         mEditor.putFloat("LAST_KNOWN_LAT", (float) Reverb.getInstance().getCurrentLocation().getLatitude());
         mEditor.putFloat("LAST_KNOWN_LONG", (float) Reverb.getInstance().getCurrentLocation().getLatitude());
         mEditor.commit();
-        startAlarmManager();
+//        startAlarmManager();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        cancelAlarmManager();
+//        cancelAlarmManager();
     }
 
 
@@ -322,6 +322,7 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
     }
 
     public void startAlarmManager() {
+        cancelAlarmManager();
         Calendar cur_cal = Calendar.getInstance();
         cur_cal.setTimeInMillis(System.currentTimeMillis());
 

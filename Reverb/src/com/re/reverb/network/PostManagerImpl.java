@@ -73,6 +73,20 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         getPosts(feed, params);
     }
 
+    public static void getPostsForRegionPaging(int regionId, final AbstractFeed feed)
+    {
+        String lastUpdate = feed.getEarliestPostTime();
+        String params = String.format("?commandtype=get&command=getMessagesByRegionPaging&region=%s&lastupdate='%s'",Integer.toString(regionId),lastUpdate);
+        getPosts(feed, params);
+    }
+
+    public static void getRefreshPostsForRegion(int regionId, final AbstractFeed feed)
+    {
+        String lastUpdate = feed.getLastPostTime();
+        String params = String.format("?commandtype=get&command=getMessagesByRegionUpdateToLatest&region=%s&lastupdate='%s'",Integer.toString(regionId), lastUpdate);
+        getPosts(feed, params);
+    }
+
     public static void getPostsForUser(int userId, final UserPostFeed feed)
     {
         String params = String.format("?commandtype=get&command=getMessagesByUser&user=%s", Integer.toString(userId));
