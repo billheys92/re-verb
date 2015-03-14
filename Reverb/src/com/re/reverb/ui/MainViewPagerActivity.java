@@ -165,15 +165,32 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
     }
 
     public void startCreatePostActivity(View view){
-        Intent intent = new Intent(this, CreatePostActivity.class);
-        startActivityForResult(intent, CREATE_POST_REQUEST);
+        boolean canWriteToRegion = Reverb.getInstance().getRegionManager().insideRegion(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId());
+        if(canWriteToRegion)
+        {
+            Intent intent = new Intent(this, CreatePostActivity.class);
+            startActivityForResult(intent, CREATE_POST_REQUEST);
+        }
+        else
+        {
+            Toast.makeText(this, "You must be inside a region to post to it!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void startCreateReplyPostActivity(View view, int postId)
     {
-        Intent intent = new Intent(this, CreateReplyPostActivity.class);
-        intent.putExtra(CreateReplyPostActivity.POST_ID_EXTRA, postId);
-        startActivityForResult(intent, CREATE_REPLY_POST_REQUEST);
+        boolean canWriteToRegion = Reverb.getInstance().getRegionManager().insideRegion(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId());
+        if(canWriteToRegion)
+        {
+
+            Intent intent = new Intent(this, CreateReplyPostActivity.class);
+            intent.putExtra(CreateReplyPostActivity.POST_ID_EXTRA, postId);
+            startActivityForResult(intent, CREATE_REPLY_POST_REQUEST);
+        }
+        else
+        {
+            Toast.makeText(this, "You must be inside a region to post to it!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void startCreateRegionActivity(View view) {

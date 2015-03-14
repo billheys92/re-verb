@@ -42,16 +42,25 @@ public class NewPostFeed extends AbstractFeed implements LocationUpdateListener
         }
         else
         {
-            PostManagerImpl.getPostsForRegion(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(), this);
+            PostManagerImpl.getRefreshPostsForRegion(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(), this);
         }
     }
 
     @Override
     public boolean fetchMore() throws Exception
     {
-        Location location = Reverb.getInstance().getCurrentLocation();
-        PostManagerImpl.getPosts(location.getLatitude(), location.getLongitude(), 2, this);
-        return false;
+        int regionId = Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId();
+        if(regionId == 0)
+        {
+            Location location = Reverb.getInstance().getCurrentLocation();
+            PostManagerImpl.getPosts(location.getLatitude(), location.getLongitude(), 2, this);
+            return false;
+        }
+        else
+        {
+            PostManagerImpl.getPostsForRegionPaging(regionId, this);
+            return false;
+        }
     }
 
     @Override

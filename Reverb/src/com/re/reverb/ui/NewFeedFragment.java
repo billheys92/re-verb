@@ -17,9 +17,11 @@ import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
+import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.androidBackend.regions.RegionChangeListener;
 import com.re.reverb.network.PostManagerImpl;
 
-public class NewFeedFragment extends FeedFragment
+public class NewFeedFragment extends FeedFragment implements RegionChangeListener
 {
 
     ImageButton createPostButton;
@@ -33,6 +35,7 @@ public class NewFeedFragment extends FeedFragment
 
         createPostButton = (ImageButton) rootView.findViewById(R.id.buttonPost);
         ((ReverbActivity) getActivity()).setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
+        Reverb.getInstance().attachRegionChangedListener(this);
         return setupDataFeed(rootView, new NewPostFeed(this.getActivity().getApplicationContext()));
     }
 
@@ -124,5 +127,12 @@ public class NewFeedFragment extends FeedFragment
         {
             createPostButton.setImageResource(R.drawable.compose_image);
         }
+    }
+
+    @Override
+    public void onRegionChanged(Region newRegion)
+    {
+        this.dataFeed.clearPosts();
+        onRefresh();
     }
 }
