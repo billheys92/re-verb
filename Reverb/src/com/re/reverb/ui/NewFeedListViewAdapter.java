@@ -239,6 +239,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         ((TextView) convertView.findViewById(R.id.replyCount)).setText(parentPost.getNumReplys().toString().equals("0") ? "" : parentPost.getNumReplys().toString());
 
         final ImageView repostImage =  (ImageView) convertView.findViewById(R.id.repostIcon);
+        final TextView repostCount = ((TextView) convertView.findViewById(R.id.repostCount));
         repostImage.setImageResource(R.mipmap.repost_icon);
         repostImage.setOnClickListener(new View.OnClickListener()
         {
@@ -254,7 +255,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
                                 location.getLatitude(),
                                 location.getLongitude(),
                                 Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId(),
-                                parentPost.getContent().getMessageString()));
+                                parentPost.getContent().getMessageString()), parentPost, repostCount);
                 }
                 else
                 {

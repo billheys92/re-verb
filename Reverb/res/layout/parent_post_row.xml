@@ -108,13 +108,21 @@
                    android:layout_width="22dip"
                    android:layout_height="22dip"
                    android:layout_toRightOf="@id/voteCount"
-                   android:layout_marginRight="@dimen/post_action_margin"
                    android:layout_marginLeft="@dimen/post_action_margin"/>
+        <TextView
+            android:id="@+id/repostCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/repostIcon"
+            android:textColor="@color/main_font"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_marginRight="@dimen/post_action_margin"/>
         <ImageView android:id="@+id/replyIcon"
                    android:layout_width="22dip"
                    android:layout_height="22dip"
                    android:onClick="startCreatePostActivity"
-                   android:layout_toRightOf="@id/repostIcon"
+                   android:layout_toRightOf="@id/repostCount"
                    android:layout_marginLeft="@dimen/post_action_margin"/>
         <TextView
             android:id="@+id/replyCount"
