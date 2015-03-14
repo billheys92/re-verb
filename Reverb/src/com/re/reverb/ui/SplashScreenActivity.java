@@ -250,6 +250,10 @@ public class SplashScreenActivity extends Activity
                     makeNoConnectionToast();
                 }
             }
+            else
+            {
+                //TODO: try to log in user here
+            }
         } catch (NotSignedInException e)
         {
             Toast.makeText(this, R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();

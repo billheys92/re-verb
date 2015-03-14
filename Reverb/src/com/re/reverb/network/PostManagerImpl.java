@@ -10,6 +10,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.re.reverb.androidBackend.DatabaseResponse;
 import com.re.reverb.androidBackend.DatabaseResponseDto;
 import com.re.reverb.androidBackend.Feed;
@@ -57,7 +58,40 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     public static void getRepost(Integer messageIds, final AbstractFeed feed)
     {
         String params = String.format("?commandtype=get&command=getMessage&message=%s",messageIds);
-        getPosts(feed, params);
+        String url = baseURL + params;
+
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                Gson gson = new Gson();
+                ReceivePostDto postDto = gson.fromJson(response.toString(), ReceivePostDto.class);
+                try
+                {
+                    ParentPost p = PostFactory.createParentPost(postDto);
+                    if(!feed.getPosts().contains(p))
+                    {
+                        feed.getPosts().add(p);
+                    }
+                    else
+                    {
+                        //remove old copy and add new
+                        if(feed.getPosts().remove(p))
+                        {
+                            feed.getPosts().add(p);
+                        }
+                    }
+                    Collections.sort(feed.getPosts());
+
+                } catch (InvalidPostException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        requestJson(listener, new JsonObject(), Request.Method.POST, url);
     }
 
     public static void getRefreshPosts(double latitude, double longitude, float range, final AbstractFeed feed)
@@ -260,10 +294,21 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
         requestJson(replyPostDto, Request.Method.POST, baseURL + params);
     }
 
-    public static void submitRepost(CreateRepostDto repostDto)
+    public static void submitRepost(CreateRepostDto repostDto, final ParentPost parentPost, final TextView repostCount)
     {
         String params = "?commandtype=post&command=postMessageRepost";
-        requestJson(repostDto, Request.Method.POST, baseURL + params);
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                Gson gson = new Gson();
+                PostActionResponseDto postActionResponse = gson.fromJson(response.toString(), PostActionResponseDto.class);
+                parentPost.setNumReposts(parentPost.getNumReposts() + postActionResponse.increment);
+                repostCount.setText(parentPost.getNumReposts().toString().equals("0") ? " " : parentPost.getNumReposts().toString());
+            }
+        };
+        requestJson(listener, repostDto, Request.Method.POST, baseURL + params);
     }
 
     public static void submitReplyPost(final CreateReplyPostDto replyPostDto, File image)

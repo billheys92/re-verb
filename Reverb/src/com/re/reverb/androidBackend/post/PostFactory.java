@@ -56,6 +56,7 @@ public class PostFactory
             }
             return new ParentPost(gsonPost.getRegion_id(),
                     gsonPost.getNum_replies(),
+                    gsonPost.getNum_reposts(),
                     new ArrayList<ChildPost>(0),
                     gsonPost.getPoster_id(),
                     gsonPost.getMessage_id(),
