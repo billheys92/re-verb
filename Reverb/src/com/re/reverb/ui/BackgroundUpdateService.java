@@ -1,10 +1,12 @@
 package com.re.reverb.ui;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -50,6 +52,17 @@ public class BackgroundUpdateService extends Service
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("re:verb notification")
                         .setContentText(""+cur_cal.getTime());
+
+        Intent resultIntent = new Intent(this, MainViewPagerActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainViewPagerActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
 
         // Sets an ID for the notification
         int mNotificationId = 001;
