@@ -128,13 +128,13 @@ public class RegionManagerImpl extends PersistenceManagerImpl
 
     public static void followRegion(Response.Listener<JSONObject> listener, FollowRegionDto followRegionDto)
     {
-        String params = "?commandtype=post&command=postRegion2Users";
+        String params = "?commandtype=post&command=regionSubscriptionToggle";
         requestJson(listener, followRegionDto, Request.Method.PUT, baseURL + params);
     }
 
     public static void unfollowRegion(Response.Listener<JSONObject> listener, UnfollowRegionDto unfollowRegionDto)
     {
-        String params = "?commandtype=delete&command=deleteRegion2Users";
+        String params = "?commandtype=delete&command=regionSubscriptionToggle";
         requestJson(listener, unfollowRegionDto, Request.Method.PUT, baseURL + params);
     }
 }
