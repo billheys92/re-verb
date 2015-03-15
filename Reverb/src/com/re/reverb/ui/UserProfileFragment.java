@@ -150,6 +150,18 @@ public class UserProfileFragment extends FeedFragment
         }, 3000);
     }
 
+    public void updateUserInfo()
+    {
+        TextView nameText = (TextView) view.findViewById(R.id.nameTextView);
+        nameText.setText(profile.Name);
+        TextView handleText = (TextView) view.findViewById(R.id.handleTextView);
+        handleText.setText(profile.Handle);
+        TextView descriptionText = (TextView) view.findViewById(R.id.userDescription);
+        descriptionText.setText(profile.About_me);
+        TextView emailText = (TextView) view.findViewById(R.id.emailTextView);
+        emailText.setText(profile.Email_address);
+    }
+
     private class SendTask extends AsyncTask<Bitmap, String, Bitmap> {
 
         @Override

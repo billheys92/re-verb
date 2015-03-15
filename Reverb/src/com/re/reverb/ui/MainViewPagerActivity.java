@@ -238,4 +238,9 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
     {
         return newFeedFragment;
     }
+
+    public void updateUserInfo()
+    {
+        userProfileFragment.updateUserInfo();
+    }
 }

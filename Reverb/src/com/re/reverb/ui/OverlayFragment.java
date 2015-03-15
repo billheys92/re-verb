@@ -94,20 +94,30 @@ public abstract class OverlayFragment extends ListFragment
 
                     if(!(((EditText)activity.findViewById(R.id.edit_username)).getText().toString() == null || ((EditText)activity.findViewById(R.id.edit_username)).getText().toString().isEmpty()))
                     {
-                        UpdateUsernameDto updateUsernameDto = new UpdateUsernameDto(userId, ((EditText)activity.findViewById(R.id.edit_username)).getText().toString());
+                        String text = ((EditText)activity.findViewById(R.id.edit_username)).getText().toString();
+                        UpdateUsernameDto updateUsernameDto = new UpdateUsernameDto(userId, text);
                         AccountManagerImpl.updateUsername(updateUsernameDto);
+                        Reverb.getInstance().getCurrentUser().Name = text;
                     }
                     if(!(((EditText)activity.findViewById(R.id.edit_handle)).getText().toString() == null || ((EditText)activity.findViewById(R.id.edit_handle)).getText().toString().isEmpty()))
                     {
-                        UpdateHandleDto updateHandleDto = new UpdateHandleDto(userId, ((EditText)activity.findViewById(R.id.edit_handle)).getText().toString());
+                        String text = ((EditText)activity.findViewById(R.id.edit_handle)).getText().toString();
+                        UpdateHandleDto updateHandleDto = new UpdateHandleDto(userId, text);
                         AccountManagerImpl.updateHandle(activity, updateHandleDto);
+                        Reverb.getInstance().getCurrentUser().Handle = text;
                     }
                     if(!(((EditText)activity.findViewById(R.id.edit_aboutMe)).getText().toString() == null || ((EditText)activity.findViewById(R.id.edit_aboutMe)).getText().toString().isEmpty()))
                     {
-                        UpdateAboutMeDto updateAboutMeDto = new UpdateAboutMeDto(userId, ((EditText)activity.findViewById(R.id.edit_aboutMe)).getText().toString());
+                        String text = ((EditText)activity.findViewById(R.id.edit_aboutMe)).getText().toString();
+                        UpdateAboutMeDto updateAboutMeDto = new UpdateAboutMeDto(userId, text);
                         AccountManagerImpl.updateAboutMe(updateAboutMeDto);
+                        Reverb.getInstance().getCurrentUser().About_me = text;
                     }
                     editUserInfoOverlay.removeOverlays();
+                    if(activity instanceof MainViewPagerActivity)
+                    {
+                        ((MainViewPagerActivity)activity).updateUserInfo();
+                    }
                 } catch (NotSignedInException e)
                 {
                     Toast.makeText(activity, R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
