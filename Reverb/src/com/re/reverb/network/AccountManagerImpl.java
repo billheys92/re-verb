@@ -224,6 +224,8 @@ public class AccountManagerImpl extends PersistenceManagerImpl
                 else
                 {
                     updateProfilePictureDto.Profile_picture = response;
+                    final String url = baseURL + "?commandtype=put&command=updateUserProfilePicture";
+                    requestJson(updateProfilePictureDto, Request.Method.PUT, url);
                 }
 
             }

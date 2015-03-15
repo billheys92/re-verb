@@ -211,6 +211,7 @@ public abstract class OverlayFragment extends ListFragment
                 try
                 {
                     imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    profilePic = (ImageView)getActivity().findViewById(R.id.edit_profilePicture);
                     profilePic.setImageBitmap(BitmapFactory.decodeStream(imageStream));
                     TextView selectingText = (TextView) getActivity().findViewById(R.id.edit_selectingPictureText);
                     selectingText.setVisibility(View.INVISIBLE);
