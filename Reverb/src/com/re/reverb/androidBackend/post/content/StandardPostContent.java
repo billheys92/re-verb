@@ -66,7 +66,7 @@ public class StandardPostContent implements PostContent
     @Override
     public String getMessageString()
     {
-        return null;
+        return postBody;
     }
 
     public String getUsername()

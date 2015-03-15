@@ -55,7 +55,7 @@ public class CreatePostActivity extends ReverbActivity {
         attachedPhoto = (ImageView) findViewById(R.id.editPostIncludedImageView);
         cameraButton = (ImageButton) findViewById(R.id.cameraButton);
         sendButton = (ImageButton) findViewById(R.id.sendButton);
-        setActionBarTitle("Posting to " + Reverb.getInstance().getRegionManager().getCurrentRegion().getName());
+        setActionBarTitle(("Posting to " + Reverb.getInstance().getRegionManager().getCurrentRegion().getName()).toLowerCase());
         super.setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
     }
 

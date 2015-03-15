@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
@@ -61,6 +62,8 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     {
         this.currentRegion = region;
         fetchCurrentRegionDetails();
+        Reverb.getInstance().notifyRegionChangedListeners();
+
     }
 
     public void fetchCurrentRegionDetails()
@@ -133,6 +136,18 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
         return this.currentRegion;
     }
 
+    public boolean isRegionSubscribed(int regionId)
+    {
+        for(Region r: Reverb.getInstance().getRegionManager().getSubscribedRegions())
+        {
+            if(regionId == r.getRegionId())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public ArrayList<Region> getNearbyRegions()
     {
@@ -149,6 +164,7 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     public void setNearbyRegions(ArrayList<Region> regions)
     {
         this.nearbyRegions = regions;
+        this.nearbyRegions.add(0,new CommonsRegion(Reverb.getInstance().getCurrentLocation()));
         Reverb.notifyAvailableRegionsUpdateListeners();
     }
 
@@ -156,6 +172,7 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     public void setSubscribedRegions(ArrayList<Region> regions)
     {
         this.subscribedRegions = regions;
+        this.subscribedRegions.add(0,new CommonsRegion(Reverb.getInstance().getCurrentLocation()));
         Reverb.notifyAvailableRegionsUpdateListeners();
     }
 
@@ -187,15 +204,14 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
             CreateRegionDto regionDto = buildRegionDto(region);
             if(region.getThumbnail() != null)
             {
-                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region.getThumbnail());
+                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region.getThumbnail(), region);
             }
             else
             {
-                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto);
+                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region);
             }
-            //TODO: add next two lines to listener for submitNewRegion if we want it upon success
-            this.nearbyRegions.add(region);
-            Reverb.notifyAvailableRegionsUpdateListeners();
+//            this.nearbyRegions.add(region);
+//            Reverb.notifyAvailableRegionsUpdateListeners();
         }
     }
 
@@ -221,7 +237,8 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     public void subscribeToRegion(Region region)
     {
         final Region r = region;
-        if(region != null) {
+        if (region != null)
+        {
             FollowRegionDto followRegionDto;
             Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
             {
@@ -300,18 +317,31 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
 //        this.update();
         if(this.currentRegion == null)
         {
-            this.currentRegion = new CommonsRegion(newLocation);
+            setCurrentRegion(new CommonsRegion(newLocation));
             this.nearbyRegions.add(this.currentRegion);
             this.subscribedRegions.add(this.currentRegion);
         }
         else
         {
             this.currentRegion.update();
-            this.currentRegion.setReadPermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()) || this.subscribedRegions.contains(this.currentRegion));
-            this.currentRegion.setWritePermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()));
+//            this.currentRegion.setReadPermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()) || this.subscribedRegions.contains(this.currentRegion));
+//            this.currentRegion.setWritePermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()));
         }
         Reverb.notifyAvailableRegionsUpdateListeners();
 //        Log.d("Reverb", "Current region is at location"+newLocation.getLatitude()+", "+newLocation.getLongitude());
+    }
+
+    @Override
+    public boolean insideRegion(int regionId)
+    {
+        for(Region r: nearbyRegions)
+        {
+            if(r.getRegionId() == regionId)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 

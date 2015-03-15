@@ -1,14 +1,10 @@
 package com.re.reverb.ui;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +17,8 @@ import android.widget.Toast;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.feed.AbstractFeed;
-import com.re.reverb.androidBackend.feed.DummyNetworkFeed;
-import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
-import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.post.Post;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulFetchPostsException;
-import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.utils.GenericOverLay;
 import com.re.reverb.androidBackend.utils.MessageOverlay;
 import com.re.reverb.network.RequestQueueSingleton;
@@ -82,6 +73,7 @@ public abstract class FeedFragment extends OverlayFragment implements OnRefreshL
 
     protected class FeedScrollListener implements AbsListView.OnScrollListener
     {
+        private int preLastItem = -2;
 
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState)
@@ -95,28 +87,32 @@ public abstract class FeedFragment extends OverlayFragment implements OnRefreshL
         {
             if(view.getLastVisiblePosition() == view.getAdapter().getCount()-1)
             {
-                try
+                if (preLastItem != view.getLastVisiblePosition() || view.getLastVisiblePosition() == -1)
                 {
-                    if(dataFeed.fetchMore()){
-                        ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
-                    }
+                    try
+                    {
+                        if(dataFeed.fetchMore()){
+                            ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
+                        }
 
-                } catch (Exception e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (NotSignedInException e)
-                {
-                    Toast.makeText(getActivity(), R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                    } catch (Exception e)
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (NotSignedInException e)
+                    {
+                        Toast.makeText(getActivity(), R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    Log.d("Reverb","Scrolled to the bottom");
+                    preLastItem = view.getLastVisiblePosition();
                 }
-                Log.d("Reverb","Scrolled to the bottom");
             }
 
         }
     }
 
-    public abstract void onOpenOverlayClick(final int messageId);
+    public abstract void onOpenOverlayClick(final int messageId, final Post post);
 
     public View displayOverlay(int layoutResource, int containerId)
     {
@@ -138,6 +134,28 @@ public abstract class FeedFragment extends OverlayFragment implements OnRefreshL
             ViewGroup parent = (ViewGroup) this.currentOverlay.getParent();
             parent.removeView(this.currentOverlay);
             this.currentOverlay = null;
+        }
+    }
+
+    protected abstract void extraAnonymousUISetup();
+
+    public void switchUIToAnonymous()
+    {
+        extraAnonymousUISetup();
+        if(adapter != null)
+        {
+            adapter.switchUIToAnonymous();
+        }
+    }
+
+    protected abstract void extraPublicUISetup();
+
+    public void switchUIToPublic()
+    {
+        extraPublicUISetup();
+        if(adapter != null)
+        {
+            adapter.switchUIToPublic();
         }
     }
 }

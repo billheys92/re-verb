@@ -1,7 +1,10 @@
 package com.re.reverb.ui;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -17,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,9 +31,15 @@ import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.utils.GenericOverLay;
 
+import java.util.Calendar;
+
 public abstract class ReverbActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
 {
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000; //for checking playservices
+
+    private final static int BACKGROUND_UPDATE_PERIOD_MIN = 60;
+//    private final static int BACKGROUND_UPDATE_PERIOD_MILLIS = BACKGROUND_UPDATE_PERIOD_MIN*60*1000;
+    private final static int BACKGROUND_UPDATE_PERIOD_MILLIS = 10000;
 
     protected LocationClient mLocationClient;
     protected SharedPreferences mPrefs;
@@ -37,6 +47,8 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
     private ActionBar actionBar;
     private GenericOverLay logoutEditOverlay;
     private GenericOverLay editUserInfoOverlay;
+    private PendingIntent pendingIntent;
+    private AlarmManager alarmManager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +67,11 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
         logoutEditOverlay = new GenericOverLay(this);
         editUserInfoOverlay = new GenericOverLay(this);
         setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
+
+
+        /* Retrieve a PendingIntent that will perform a broadcast */
+        Intent intent = new Intent(ReverbActivity.this, BackgroundUpdateService.class);
+        pendingIntent = PendingIntent.getService(ReverbActivity.this, 0, intent, 0);
 
     }
 
@@ -225,7 +242,14 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
         mEditor.putFloat("LAST_KNOWN_LAT", (float) Reverb.getInstance().getCurrentLocation().getLatitude());
         mEditor.putFloat("LAST_KNOWN_LONG", (float) Reverb.getInstance().getCurrentLocation().getLatitude());
         mEditor.commit();
+//        startAlarmManager();
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        cancelAlarmManager();
     }
 
 
@@ -246,8 +270,12 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
                 toggleAnonymity();
                 return true;
             case R.id.action_logout_and_edit:
-                getCurrentFragmentOverlay().onOpenLogoutEditOverlayClick();
-                return true;
+                if(getCurrentFragmentOverlay() != null)
+                {
+                    getCurrentFragmentOverlay().onOpenLogoutEditOverlayClick();
+                    return true;
+                }
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -297,4 +325,31 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
             actionBar.setDisplayShowTitleEnabled(true);
         }
     }
+
+    public void startAlarmManager() {
+        cancelAlarmManager();
+        Calendar cur_cal = Calendar.getInstance();
+        cur_cal.setTimeInMillis(System.currentTimeMillis());
+
+        Log.d("Reverb Activity","Starting alarm manager");
+        if(alarmManager == null)
+        {
+            alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        }
+        //TODO: Do we want the phone to wake up when a re:verb notification comes in?
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+    }
+
+    public void cancelAlarmManager()
+    {
+        if(alarmManager != null)
+        {
+            alarmManager.cancel(pendingIntent);
+            Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+
 }

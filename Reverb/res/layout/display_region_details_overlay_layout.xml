@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="X"
-            android:id="@+id/closeDetailsButton"
+            android:id="@+id/closeConfirmSaveRegionOverlayButton"
             android:layout_gravity="right"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"/>
@@ -30,30 +30,27 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:id="@+id/displayRegionName"
-            android:layout_margin="10dp"
             android:layout_alignParentStart="true"
             android:textSize="@dimen/region_title_text_size"
             android:textIsSelectable="false"
-            android:layout_toLeftOf="@+id/closeDetailsButton"/>
+            android:layout_toLeftOf="@+id/closeConfirmSaveRegionOverlayButton"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/scrollView"
-            android:layout_below="@+id/closeDetailsButton"
-            android:layout_marginTop="10dp">
+            android:layout_below="@+id/closeConfirmSaveRegionOverlayButton"
+            android:layout_margin="10dp">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/displayRegionDescription"
-                    />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:id="@+id/displayRegionDescription"
+                android:textColor="@color/dark_grey"/>
         </ScrollView>
 
     </RelativeLayout>

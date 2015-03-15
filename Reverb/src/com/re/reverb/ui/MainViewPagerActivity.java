@@ -9,8 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.androidBackend.regions.RegionChangeListener;
 
-public class MainViewPagerActivity extends ReverbActivity
+public class MainViewPagerActivity extends ReverbActivity implements RegionChangeListener
 {
 
     static final int CREATE_POST_REQUEST = 1;  // The request code for creating a post activity
@@ -62,13 +64,23 @@ public class MainViewPagerActivity extends ReverbActivity
             }
         };
 
+        Reverb.getInstance().attachRegionChangedListener(this);
         mViewPager.setOnPageChangeListener(mViewPageChangeListener);
     }
 
     public void returnToDefaultPage() {
         mViewPager.setCurrentItem(defaultPage);
     }
-    
+
+    @Override
+    public void onRegionChanged(Region region)
+    {
+        if(region != null && region.getName() != null)
+        {
+            setActionBarTitle("re: " + region.getName().toLowerCase());
+        }
+    }
+
     public class MainViewPagerAdapter extends FragmentPagerAdapter
     {
     	private int currentFragment = 1;
@@ -92,13 +104,10 @@ public class MainViewPagerActivity extends ReverbActivity
     	public OverlayFragment getItem(int i) {
     	    switch(i){
     	    	case 0:
-                    currentFragment = 0;
                     return userProfileFragment;
     	    	case 1:
-                    currentFragment = 1;
                     return newFeedFragment;
     	    	case 2:
-                    currentFragment = 2;
                     return regionsFragment;
     	    	default: //TODO throw an error
     	   	 	return null;
@@ -121,6 +130,7 @@ public class MainViewPagerActivity extends ReverbActivity
     protected void switchUIToAnonymousMode()
     {
         newFeedFragment.switchUIToAnonymous();
+        userProfileFragment.switchUIToAnonymous();
         regionsFragment.switchUIToAnonymous();
     }
 
@@ -128,19 +138,37 @@ public class MainViewPagerActivity extends ReverbActivity
     protected void switchUIToPublicMode()
     {
         newFeedFragment.switchUIToPublic();
+        userProfileFragment.switchUIToPublic();
         regionsFragment.switchUIToPublic();
     }
 
     public void startCreatePostActivity(View view){
-        Intent intent = new Intent(this, CreatePostActivity.class);
-        startActivityForResult(intent, CREATE_POST_REQUEST);
+        boolean canWriteToRegion = Reverb.getInstance().getRegionManager().insideRegion(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId());
+        if(canWriteToRegion)
+        {
+            Intent intent = new Intent(this, CreatePostActivity.class);
+            startActivityForResult(intent, CREATE_POST_REQUEST);
+        }
+        else
+        {
+            Toast.makeText(this, "You must be inside a region to post to it!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void startCreateReplyPostActivity(View view, int postId)
     {
-        Intent intent = new Intent(this, CreateReplyPostActivity.class);
-        intent.putExtra(CreateReplyPostActivity.POST_ID_EXTRA, postId);
-        startActivityForResult(intent, CREATE_REPLY_POST_REQUEST);
+        boolean canWriteToRegion = Reverb.getInstance().getRegionManager().insideRegion(Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId());
+        if(canWriteToRegion)
+        {
+
+            Intent intent = new Intent(this, CreateReplyPostActivity.class);
+            intent.putExtra(CreateReplyPostActivity.POST_ID_EXTRA, postId);
+            startActivityForResult(intent, CREATE_REPLY_POST_REQUEST);
+        }
+        else
+        {
+            Toast.makeText(this, "You must be inside a region to post to it!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void startCreateRegionActivity(View view) {
@@ -193,5 +221,10 @@ public class MainViewPagerActivity extends ReverbActivity
     public NewFeedFragment getNewFeedFragment()
     {
         return newFeedFragment;
+    }
+
+    public void updateUserInfo()
+    {
+        userProfileFragment.updateUserInfo();
     }
 }

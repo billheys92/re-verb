@@ -4,6 +4,8 @@ import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.feed.Feed;
 import com.re.reverb.androidBackend.post.dto.CreatePostDto;
+import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.androidBackend.regions.RegionChangeListener;
 import com.re.reverb.network.AWSPersistenceManager;
 import com.re.reverb.network.PostManagerImpl;
 
@@ -22,6 +24,7 @@ public class Reverb {
     //listeners
     private static Collection<LocationUpdateListener> locationUpdateListeners;
     private static Collection<AvailableRegionsUpdateRegion> availableRegionsUpdateListeners;
+    private static Collection<RegionChangeListener> regionChangeListeners;
 
     //private UserProfile currentUser;
     private UserProfile currentUser;
@@ -34,6 +37,7 @@ public class Reverb {
     {
         locationUpdateListeners = new ArrayList<LocationUpdateListener>();
         availableRegionsUpdateListeners = new ArrayList<AvailableRegionsUpdateRegion>();
+        regionChangeListeners = new ArrayList<RegionChangeListener>();
         locationManager = new LocationManager();
         this.regionManager = new RegionManagerImpl();
 
@@ -112,6 +116,17 @@ public class Reverb {
     public static void notifyAvailableRegionsUpdateListeners(){
         for(AvailableRegionsUpdateRegion l: availableRegionsUpdateListeners){
             l.onAvailableRegionsUpdated();
+        }
+    }
+
+    public static void attachRegionChangedListener(RegionChangeListener listener) {
+        regionChangeListeners.add(listener);
+    }
+
+    public static void notifyRegionChangedListeners(){
+        Region newRegion = getInstance().getRegionManager().getCurrentRegion();
+        for(RegionChangeListener l: regionChangeListeners){
+            l.onRegionChanged(newRegion);
         }
     }
 

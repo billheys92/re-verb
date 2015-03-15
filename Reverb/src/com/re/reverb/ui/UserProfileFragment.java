@@ -19,12 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.gms.maps.LocationSource;
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.LocationUpdateListener;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.UserPostFeed;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.network.PostManagerImpl;
 import com.re.reverb.network.RequestQueueSingleton;
@@ -37,7 +41,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class UserProfileFragment extends FeedFragment
+public class UserProfileFragment extends FeedFragment implements LocationUpdateListener
 {
     private static final String BASE_PROFILE_PICTURE = "http://ec2-54-209-100-107.compute-1.amazonaws.com/";
     private static final int SELECT_PHOTO = 100;
@@ -82,9 +86,11 @@ public class UserProfileFragment extends FeedFragment
         profilePic.setImageUrl(BASE_PROFILE_PICTURE + profile.Profile_picture, RequestQueueSingleton.getInstance().getImageLoader());
         newProfilePic = (ImageView) view.findViewById(R.id.edit_profilePicture);
         backgroundMapImageView = (ImageView) view.findViewById(R.id.userinfo);
-        new SendTask().execute();
+//        new SendTask().execute();
+        Reverb.getInstance().attachLocationListener(this);
 
         view = setupDataFeed(view, new UserPostFeed());
+        ((ReverbActivity) getActivity()).setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
 
         return view;
 	}
@@ -142,6 +148,24 @@ public class UserProfileFragment extends FeedFragment
         }, 3000);
     }
 
+    public void updateUserInfo()
+    {
+        TextView nameText = (TextView) view.findViewById(R.id.nameTextView);
+        nameText.setText(profile.Name);
+        TextView handleText = (TextView) view.findViewById(R.id.handleTextView);
+        handleText.setText(profile.Handle);
+        TextView descriptionText = (TextView) view.findViewById(R.id.userDescription);
+        descriptionText.setText(profile.About_me);
+        TextView emailText = (TextView) view.findViewById(R.id.emailTextView);
+        emailText.setText(profile.Email_address);
+    }
+
+    @Override
+    public void onLocationChanged(Location newLocation)
+    {
+        new SendTask().execute();
+    }
+
     private class SendTask extends AsyncTask<Bitmap, String, Bitmap> {
 
         @Override
@@ -160,9 +184,7 @@ public class UserProfileFragment extends FeedFragment
 
     public Bitmap getGoogleMapThumbnail(double latitude, double longitude){
 
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String mapType = sharedPrefs.getString("pref_map_type","roadmap");
-        String URL = "http://maps.google.com/maps/api/staticmap?center=" +latitude + "," + longitude + "&zoom=13&size=600x600&sensor=false&maptype="+mapType;
+        String URL = "http://maps.google.com/maps/api/staticmap?center=" +latitude + "," + longitude + "&zoom=13&size=600x600&sensor=false&maptype=roadmap";
 
         Bitmap bmp = null;
         HttpClient httpclient = new DefaultHttpClient();
@@ -188,7 +210,7 @@ public class UserProfileFragment extends FeedFragment
     }
 
     @Override
-    public void onOpenOverlayClick(final int messageId)
+    public void onOpenOverlayClick(final int messageId, final Post post)
     {
         final Activity activity = this.getActivity();
         displayOverlay(R.layout.overlay_more_options_user, R.id.overlayUserFeedLayoutContainer);
@@ -201,7 +223,7 @@ public class UserProfileFragment extends FeedFragment
                 try
                 {
                     PostActionDto postActionDto = new PostActionDto(messageId, Reverb.getInstance().getCurrentUserId());
-                    PostManagerImpl.deletePost(postActionDto, activity);
+                    PostManagerImpl.deletePost(postActionDto, activity, post, dataFeed);
                 } catch (NotSignedInException e)
                 {
                     e.printStackTrace();
@@ -223,6 +245,18 @@ public class UserProfileFragment extends FeedFragment
     }
 
     @Override
+    protected void extraAnonymousUISetup()
+    {
+
+    }
+
+    @Override
+    protected void extraPublicUISetup()
+    {
+
+    }
+
+    @Override
     public void onOpenLogoutEditOverlayClick()
     {
         standardOnOpenLogoutEditOverlayClick(R.id.overlayUserFeedLayoutContainer);
@@ -233,4 +267,5 @@ public class UserProfileFragment extends FeedFragment
     {
         standardOnEditUserInfoOverlayClick(R.id.overlayUserFeedLayoutContainer);
     }
+
 }

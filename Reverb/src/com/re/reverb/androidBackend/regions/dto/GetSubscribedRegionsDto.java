@@ -12,4 +12,9 @@ public class GetSubscribedRegionsDto
     {
         this.Poster_id = currentUserId;
     }
+
+    public int getPoster_id()
+    {
+        return Poster_id;
+    }
 }

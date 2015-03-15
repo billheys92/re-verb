@@ -88,13 +88,14 @@ public class PersistenceManagerImpl implements PersistenceManager
 
     public static boolean requestJsonArray(Response.Listener<JSONArray> listener, String url)
     {
+        final String urll = url;
         JsonArrayRequest jsonRequest = new JsonArrayRequest(url, listener, new Response.ErrorListener()
         {
             @Override
             public void onErrorResponse(VolleyError error)
             {
                 error.printStackTrace();
-                System.out.println("Error Getting Message");
+                System.out.println("Error Getting Message at URL: "+urll);
             }
         });
 

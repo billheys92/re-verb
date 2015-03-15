@@ -6,13 +6,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -203,8 +199,35 @@ public class CreateRegionActivity extends ReverbActivity
     }
 
     public void onSaveRegionClick(View view) {
-        region.editShapes(regionShapes);
-        new DownloadThumbnailTask().execute(region);
+        displayOverlay(R.layout.confirm_save_overlay_layout);
+        View.OnClickListener confirmListener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                removeOverlays();
+                region.editShapes(regionShapes);
+                new DownloadThumbnailTask().execute(region);
+                finish();
+            }
+        };
+        View.OnClickListener cancelListener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                removeOverlays();
+            }
+        };
+        TextView confirmMessage = (TextView) findViewById(R.id.confirmSaveMessageTextView);
+        confirmMessage.setText(R.string.confirm_save_message);
+        Button b = (Button)findViewById(R.id.confirmSaveRegionButton);
+        b.setOnClickListener(confirmListener);
+        Button b2 = (Button)findViewById(R.id.cancelSaveRegionButton);
+        b2.setOnClickListener(cancelListener);
+        Button b3 = (Button)findViewById(R.id.closeConfirmSaveRegionOverlayButton);
+        b3.setOnClickListener(cancelListener);
+
     }
 
 
@@ -324,7 +347,10 @@ public class CreateRegionActivity extends ReverbActivity
         Button b2 = (Button)findViewById(R.id.discardChangesButton);
         b2.setOnClickListener(listener);
         EditText nameExitText = (EditText)findViewById(R.id.editRegionName);
-//        nameExitText.setText(region.getName() == null ? "Region Name" : region.getName());
+        if(region.getName() != null)
+        {
+            nameExitText.setText(region.getName());
+        }
         nameExitText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
@@ -341,7 +367,10 @@ public class CreateRegionActivity extends ReverbActivity
             }
         });
         EditText descriptionEditText = (EditText)findViewById(R.id.editRegionDescription);
-//        descriptionEditText.setText(region.getDescription() == null ? "Description" : region.getDescription());
+        if(region.getDescription() != null)
+        {
+            descriptionEditText.setText(region.getDescription());
+        }
         descriptionEditText.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
@@ -365,7 +394,7 @@ public class CreateRegionActivity extends ReverbActivity
         nameTextView.setText(region.getName());
         TextView descriptionTextView = (TextView)findViewById(R.id.displayRegionDescription);
         descriptionTextView.setText(region.getDescription());
-        Button b2 = (Button)findViewById(R.id.closeDetailsButton);
+        Button b2 = (Button)findViewById(R.id.closeConfirmSaveRegionOverlayButton);
         b2.setOnClickListener(new View.OnClickListener()
         {
 
@@ -445,8 +474,11 @@ public class CreateRegionActivity extends ReverbActivity
 
     public void undoAddShape(View view)
     {
-        this.regionShapes.pop();
-        drawMapShapes();
+        if(!this.regionShapes.empty())
+        {
+            this.regionShapes.pop();
+            drawMapShapes();
+        }
     }
 
     public void toggleEditingToolsLayout(View view) {
@@ -519,6 +551,7 @@ public class CreateRegionActivity extends ReverbActivity
                 region = RegionFactory.createRegionFromDto(regionDto);
                 if(region != null)
                 {
+                    region.disableEditing();
                     setActionBarTitle(region.getName());
                     for (RegionShape shape : region.getShapes())
                     {

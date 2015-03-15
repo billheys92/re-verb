@@ -16,10 +16,13 @@ import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
+import com.re.reverb.androidBackend.regions.Region;
+import com.re.reverb.androidBackend.regions.RegionChangeListener;
 import com.re.reverb.network.PostManagerImpl;
 
-public class NewFeedFragment extends FeedFragment
+public class NewFeedFragment extends FeedFragment implements RegionChangeListener
 {
 
     ImageButton createPostButton;
@@ -32,7 +35,8 @@ public class NewFeedFragment extends FeedFragment
         View rootView = inflater.inflate(R.layout.fragment_new_main_feed, container, false);
 
         createPostButton = (ImageButton) rootView.findViewById(R.id.buttonPost);
-
+        ((ReverbActivity) getActivity()).setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
+        Reverb.getInstance().attachRegionChangedListener(this);
         return setupDataFeed(rootView, new NewPostFeed(this.getActivity().getApplicationContext()));
     }
 
@@ -64,7 +68,7 @@ public class NewFeedFragment extends FeedFragment
     }
 
     @Override
-    public void onOpenOverlayClick(final int messageId)
+    public void onOpenOverlayClick(final int messageId, final Post post)
     {
         final Activity activity = this.getActivity();
         displayOverlay(R.layout.overlay_more_options_main, R.id.overlayMainFeedLayoutContainer);
@@ -110,7 +114,7 @@ public class NewFeedFragment extends FeedFragment
         standardOnEditUserInfoOverlayClick(R.id.overlayMainFeedLayoutContainer);
     }
 
-    public void switchUIToAnonymous()
+    protected void extraAnonymousUISetup()
     {
         if (createPostButton != null)
         {
@@ -118,11 +122,20 @@ public class NewFeedFragment extends FeedFragment
         }
     }
 
-    public void switchUIToPublic()
+    public void extraPublicUISetup()
     {
         if (createPostButton != null)
         {
             createPostButton.setImageResource(R.drawable.compose_image);
         }
+    }
+
+    @Override
+    public void onRegionChanged(Region newRegion)
+    {
+        this.dataFeed.setEarliestPostTime(null);
+        this.dataFeed.setLastPostTime(null);
+        this.dataFeed.clearPosts();
+        onRefresh();
     }
 }

@@ -23,7 +23,7 @@ import java.io.File;
 
 public class AccountManagerImpl extends PersistenceManagerImpl
 {
-    private static final String profilePictureURL = "https://www.googleapis.com/plus/v1/people/christopher.howse@gmail.com?fields=image&key=";
+    private static final String profilePictureURL = "https://www.googleapis.com/plus/v1/people/me?fields=image&key=";
 
     private static final String key = "AIzaSyCAxP36YmffW458--oYRGzeTNExcUwNOb4";
 
@@ -149,7 +149,7 @@ public class AccountManagerImpl extends PersistenceManagerImpl
                 UserProfile userProfile = gson.fromJson(response.toString(), UserProfile.class);
                 userProfile.Token = token;
                 Reverb.getInstance().signInUser(userProfile);
-                //getUserProfilePicture();
+                //getUserProfilePicture(); no longer using google plus profile pictures
                 activity.onScreenClick(null);
             }
         };
