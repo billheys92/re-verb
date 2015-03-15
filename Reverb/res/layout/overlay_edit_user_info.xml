@@ -26,6 +26,32 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/user_display_pic_side"
+                        android:layout_height="@dimen/user_display_pic_side"
+                        android:id="@+id/edit_profilePicture"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
+                        android:background="@color/lighter_grey" />
+
+                    <TextView
+                        android:layout_width="@dimen/user_display_pic_side"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_centerInParent="true"
+                        android:text="Select Profile Picture"
+                        android:id="@+id/edit_selectingPictureText"
+                        android:textColor="@android:color/black"
+                        android:clickable="false" />
+
+                </RelativeLayout>
+
 
                 <EditText
                     android:layout_width="match_parent"

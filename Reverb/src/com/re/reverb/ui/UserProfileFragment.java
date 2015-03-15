@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,25 +27,27 @@ import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.UserPostFeed;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.network.PostManagerImpl;
+import com.re.reverb.network.RequestQueueSingleton;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class UserProfileFragment extends FeedFragment
 {
-
+    private static final String BASE_PROFILE_PICTURE = "http://ec2-54-209-100-107.compute-1.amazonaws.com/";
     private static final int SELECT_PHOTO = 100;
     private static View view;
 
     UserProfile profile = new UserProfile("test@test.com","bheys","Bill Heys","description", "token", 1);
     private ImageView backgroundMapImageView;
     NetworkImageView profilePic;
+    ImageView newProfilePic;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,15 +79,8 @@ public class UserProfileFragment extends FeedFragment
         TextView emailText = (TextView) view.findViewById(R.id.emailTextView);
         emailText.setText(profile.Email_address);
         profilePic = (NetworkImageView) view.findViewById(R.id.profilePicture);
-        profilePic.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                Log.d("Reverb","profile picture clicked");
-                choosePictureFromGallery();
-            }
-
-        });
+        profilePic.setImageUrl(BASE_PROFILE_PICTURE + profile.Profile_picture, RequestQueueSingleton.getInstance().getImageLoader());
+        newProfilePic = (ImageView) view.findViewById(R.id.edit_profilePicture);
         backgroundMapImageView = (ImageView) view.findViewById(R.id.userinfo);
         new SendTask().execute();
 
@@ -108,19 +101,19 @@ public class UserProfileFragment extends FeedFragment
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        switch(requestCode) {
-            case SELECT_PHOTO:
-                if(resultCode == Activity.RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    InputStream imageStream = null;
-                    try {
-                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    profilePic.setImageBitmap(BitmapFactory.decodeStream(imageStream));
-                }
-        }
+//        switch(requestCode) {
+//            case SELECT_PHOTO:
+//                if(resultCode == Activity.RESULT_OK){
+//                    Uri selectedImage = imageReturnedIntent.getData();
+//                    InputStream imageStream = null;
+//                    try {
+//                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                    super.profilePic.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+//                }
+//        }
     }
 
     @Override
