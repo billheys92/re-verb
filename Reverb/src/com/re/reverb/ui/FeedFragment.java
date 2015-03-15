@@ -72,6 +72,7 @@ public abstract class FeedFragment extends OverlayFragment implements OnRefreshL
 
     protected class FeedScrollListener implements AbsListView.OnScrollListener
     {
+        private int preLastItem = -2;
 
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState)
@@ -85,22 +86,26 @@ public abstract class FeedFragment extends OverlayFragment implements OnRefreshL
         {
             if(view.getLastVisiblePosition() == view.getAdapter().getCount()-1)
             {
-                try
+                if (preLastItem != view.getLastVisiblePosition() || view.getLastVisiblePosition() == -1)
                 {
-                    if(dataFeed.fetchMore()){
-                        ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
-                    }
+                    try
+                    {
+                        if(dataFeed.fetchMore()){
+                            ((BaseAdapter) view.getAdapter()).notifyDataSetChanged();
+                        }
 
-                } catch (Exception e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (NotSignedInException e)
-                {
-                    Toast.makeText(getActivity(), R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                    } catch (Exception e)
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (NotSignedInException e)
+                    {
+                        Toast.makeText(getActivity(), R.string.not_signed_in_message, Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    Log.d("Reverb","Scrolled to the bottom");
+                    preLastItem = view.getLastVisiblePosition();
                 }
-                Log.d("Reverb","Scrolled to the bottom");
             }
 
         }
