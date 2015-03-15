@@ -269,8 +269,9 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
     public void unsubscribeFromRegion(Region region)
     {
         final Region r = region;
-        if(region != null) {
-            UnfollowRegionDto unfollowRegionDto;
+        if (region != null)
+        {
+            FollowRegionDto followRegionDto;
             Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
             {
                 @Override
@@ -280,8 +281,8 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
                 }
             };
             try {
-                unfollowRegionDto = new UnfollowRegionDto(Reverb.getInstance().getCurrentUserId(), region.getRegionId());
-                com.re.reverb.network.RegionManagerImpl.unfollowRegion(listener, unfollowRegionDto);
+                followRegionDto = new FollowRegionDto(Reverb.getInstance().getCurrentUserId(), region.getRegionId());
+                com.re.reverb.network.RegionManagerImpl.followRegion(listener, followRegionDto);
             }
             catch (NotSignedInException e) {
                 e.printStackTrace();
