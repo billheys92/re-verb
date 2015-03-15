@@ -99,7 +99,7 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
     {
         if(region != null && region.getName() != null)
         {
-            setActionBarTitle(region.getName());
+            setActionBarTitle("re: " + region.getName().toLowerCase());
         }
     }
 

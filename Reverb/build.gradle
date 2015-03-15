@@ -31,7 +31,7 @@ android {
     defaultConfig {
         applicationId "com.re.reverb"
         minSdkVersion 11
-        targetSdkVersion 20
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
