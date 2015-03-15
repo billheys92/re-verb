@@ -18,6 +18,7 @@ import com.re.reverb.R;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.feed.AbstractFeed;
 import com.re.reverb.androidBackend.OnFeedDataChangedListener;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.utils.GenericOverLay;
 import com.re.reverb.androidBackend.utils.MessageOverlay;
 import com.re.reverb.network.RequestQueueSingleton;
@@ -106,7 +107,7 @@ public abstract class FeedFragment extends OverlayFragment implements OnRefreshL
         }
     }
 
-    public abstract void onOpenOverlayClick(final int messageId);
+    public abstract void onOpenOverlayClick(final int messageId, final Post post);
 
     public View displayOverlay(int layoutResource, int containerId)
     {

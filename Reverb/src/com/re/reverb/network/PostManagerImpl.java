@@ -39,7 +39,6 @@ import java.util.Collections;
 
 public class PostManagerImpl extends PersistenceManagerImpl implements PostManager
 {
-    //TODO: introduce concept of paging for post retrieval
 
     public static void getPosts(final AbstractFeed feed)
     {
@@ -420,7 +419,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
 
     }
 
-    public static void deletePost(final PostActionDto postActionDto, final Activity activity)
+    public static void deletePost(final PostActionDto postActionDto, final Activity activity, final Post post, final AbstractFeed feed)
     {
         String params = "?commandtype=delete&command=deleteMessage";
         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
@@ -433,6 +432,23 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                 if(databaseResponse.db_response == DatabaseResponse.SUCCESS.value)
                 {
                     Toast.makeText(activity.getApplicationContext(), "Message Deleted", Toast.LENGTH_SHORT).show();
+                    if(feed.getPosts().contains(post))
+                    {
+                        feed.getPosts().remove(post);
+                        feed.notifyListenersOfDataChange();
+                    }
+                    else
+                    {
+                        for(Post parentPost : feed.getPosts())
+                        {
+                            if(((ParentPost)parentPost).getChildPosts().contains(post))
+                            {
+                                ((ParentPost)parentPost).getChildPosts().remove(post);
+                                feed.notifyListenersOfDataChange();
+                                break;
+                            }
+                        }
+                    }
                 }
                 else if(databaseResponse.db_response == DatabaseResponse.FAILURE.value)
                 {
