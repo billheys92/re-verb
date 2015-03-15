@@ -116,7 +116,8 @@ public class Post
         boolean equal = false;
         if(object != null && object instanceof Post)
         {
-            equal = this.postId == ((Post) object).postId;
+            equal = (this.postId == ((Post) object).postId);
+
         }
 
         return equal;

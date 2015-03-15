@@ -132,6 +132,8 @@ public class NewFeedFragment extends FeedFragment implements RegionChangeListene
     @Override
     public void onRegionChanged(Region newRegion)
     {
+        this.dataFeed.setEarliestPostTime(null);
+        this.dataFeed.setLastPostTime(null);
         this.dataFeed.clearPosts();
         onRefresh();
     }
