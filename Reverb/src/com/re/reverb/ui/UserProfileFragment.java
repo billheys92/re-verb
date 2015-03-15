@@ -21,7 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.gms.maps.LocationSource;
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.LocationUpdateListener;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
@@ -40,7 +43,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class UserProfileFragment extends FeedFragment
+public class UserProfileFragment extends FeedFragment implements LocationUpdateListener
 {
 
     private static final int SELECT_PHOTO = 100;
@@ -90,7 +93,8 @@ public class UserProfileFragment extends FeedFragment
 
         });
         backgroundMapImageView = (ImageView) view.findViewById(R.id.userinfo);
-        new SendTask().execute();
+//        new SendTask().execute();
+        Reverb.getInstance().attachLocationListener(this);
 
         view = setupDataFeed(view, new UserPostFeed());
         ((ReverbActivity) getActivity()).setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
@@ -149,6 +153,24 @@ public class UserProfileFragment extends FeedFragment
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 3000);
+    }
+
+    public void updateUserInfo()
+    {
+        TextView nameText = (TextView) view.findViewById(R.id.nameTextView);
+        nameText.setText(profile.Name);
+        TextView handleText = (TextView) view.findViewById(R.id.handleTextView);
+        handleText.setText(profile.Handle);
+        TextView descriptionText = (TextView) view.findViewById(R.id.userDescription);
+        descriptionText.setText(profile.About_me);
+        TextView emailText = (TextView) view.findViewById(R.id.emailTextView);
+        emailText.setText(profile.Email_address);
+    }
+
+    @Override
+    public void onLocationChanged(Location newLocation)
+    {
+        new SendTask().execute();
     }
 
     private class SendTask extends AsyncTask<Bitmap, String, Bitmap> {

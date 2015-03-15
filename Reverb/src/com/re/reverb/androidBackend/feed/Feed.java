@@ -25,6 +25,8 @@ public interface Feed<T extends Post>
 
     public String getEarliestPostTime();
 
+    public void clearPosts();
+
     public void setOnDataChangedListener(OnFeedDataChangedListener listener);
 
     /**

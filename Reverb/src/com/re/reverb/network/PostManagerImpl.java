@@ -51,7 +51,7 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     {
         String lastUpdate = feed.getEarliestPostTime();
         String params = String.format("?commandtype=get&command=getMessagesByLocationPaging&lat=%s&lon=%s&range=%s&lastupdate='%s'",Double.toString(latitude), Double.toString(longitude), range, lastUpdate);
-        getPosts(feed, params);
+        getPostsPaging(feed, params);
     }
 
     public static void getRepost(Integer messageIds, final AbstractFeed feed)
@@ -103,6 +103,20 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
     public static void getPostsForRegion(int regionId, final AbstractFeed feed)
     {
         String params = String.format("?commandtype=get&command=getMessagesByRegion&region=%s",Integer.toString(regionId));
+        getPosts(feed, params);
+    }
+
+    public static void getPostsForRegionPaging(int regionId, final AbstractFeed feed)
+    {
+        String lastUpdate = feed.getEarliestPostTime();
+        String params = String.format("?commandtype=get&command=getMessagesByRegionPaging&region=%s&lastupdate='%s'",Integer.toString(regionId),lastUpdate);
+        getPostsPaging(feed, params);
+    }
+
+    public static void getRefreshPostsForRegion(int regionId, final AbstractFeed feed)
+    {
+        String lastUpdate = feed.getLastPostTime();
+        String params = String.format("?commandtype=get&command=getMessagesByRegionUpdateToLatest&region=%s&lastupdate='%s'",Integer.toString(regionId), lastUpdate);
         getPosts(feed, params);
     }
 
@@ -221,6 +235,73 @@ public class PostManagerImpl extends PersistenceManagerImpl implements PostManag
                     }
                 }
                 feed.getPosts().addAll(0, returnedPosts);
+                Collections.sort(feed.getPosts());
+                feed.notifyListenersOfDataChange();
+                if(feed.getPosts().get(0) != null) {
+                    feed.setLastPostTime(((Post)feed.getPosts().get(0)).getLatestTime());
+                }
+                if(feed.getPosts().size() > 0) {
+                    feed.setEarliestPostTime(((Post)feed.getPosts().get(feed.getPosts().size()-1)).getLatestTime());
+                }
+
+                for(int j = 0; j < reposts.size(); j++)
+                {
+                    getRepost(reposts.get(j), feed);
+                }
+
+            }
+        };
+
+        requestJsonArray(listener, url);
+    }
+
+    public static void getPostsPaging(final AbstractFeed feed, final String params)
+    {
+        String url = baseURL + params;
+
+        Response.Listener<JSONArray> listener = new Response.Listener<JSONArray>()
+        {
+            @Override
+            public void onResponse(JSONArray response)
+            {
+                System.out.println("Response is: "+ response);
+
+
+                ArrayList<ParentPost> returnedPosts = new ArrayList<ParentPost>();
+                ArrayList<Integer> reposts = new ArrayList<Integer>();
+                for(int i = 0; i < response.length(); i++)
+                {
+                    try {
+                        Gson gson = new Gson();
+                        ReceivePostDto postDto = gson.fromJson(response.get(i).toString(), ReceivePostDto.class);
+                        if(postDto.getRepost_link() != 0)
+                        {
+                            reposts.add(postDto.getRepost_link());
+                        }
+                        else
+                        {
+                            ParentPost p = PostFactory.createParentPost(postDto);
+
+                            if (!feed.getPosts().contains(p))
+                            {
+                                returnedPosts.add(p);
+                            } else
+                            {
+                                //remove old copy and add new
+                                if (feed.getPosts().remove(p))
+                                {
+                                    returnedPosts.add(p);
+                                }
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (InvalidPostException e) {
+                        e.printStackTrace();
+                    }
+                }
+                feed.getPosts().addAll(returnedPosts);
                 Collections.sort(feed.getPosts());
                 feed.notifyListenersOfDataChange();
                 if(feed.getPosts().get(0) != null) {

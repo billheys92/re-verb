@@ -70,6 +70,12 @@ public class DummyNetworkFeed implements Feed
         return null;
     }
 
+    @Override
+    public void clearPosts()
+    {
+        this.posts.clear();
+    }
+
     protected void notifyListenersOfDataChange()
     {
         for(OnFeedDataChangedListener l : onDataChangedListeners) {

@@ -204,15 +204,14 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
             CreateRegionDto regionDto = buildRegionDto(region);
             if(region.getThumbnail() != null)
             {
-                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region.getThumbnail());
+                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region.getThumbnail(), region);
             }
             else
             {
-                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto);
+                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region);
             }
-            //TODO: add next two lines to listener for submitNewRegion if we want it upon success
-            this.nearbyRegions.add(region);
-            Reverb.notifyAvailableRegionsUpdateListeners();
+//            this.nearbyRegions.add(region);
+//            Reverb.notifyAvailableRegionsUpdateListeners();
         }
     }
 
@@ -325,11 +324,24 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
         else
         {
             this.currentRegion.update();
-            this.currentRegion.setReadPermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()) || this.subscribedRegions.contains(this.currentRegion));
-            this.currentRegion.setWritePermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()));
+//            this.currentRegion.setReadPermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()) || this.subscribedRegions.contains(this.currentRegion));
+//            this.currentRegion.setWritePermission(this.currentRegion.containsPoint(Reverb.getInstance().getCurrentLocation()));
         }
         Reverb.notifyAvailableRegionsUpdateListeners();
 //        Log.d("Reverb", "Current region is at location"+newLocation.getLatitude()+", "+newLocation.getLongitude());
+    }
+
+    @Override
+    public boolean insideRegion(int regionId)
+    {
+        for(Region r: nearbyRegions)
+        {
+            if(r.getRegionId() == regionId)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 
