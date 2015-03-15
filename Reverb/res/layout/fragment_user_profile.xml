@@ -42,17 +42,26 @@
                     android:scaleType="centerCrop"
                     android:onClick="choosePictureFromGallery"/>
 
-                <TextView
+                <ScrollView
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Description"
-                    android:id="@+id/userDescription"
-                    android:layout_toEndOf="@+id/profilePicture"
-                    android:textIsSelectable="false"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/scrollView3"
+                    android:layout_toRightOf="@+id/profilePicture"
                     android:layout_below="@+id/handleTextView"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_above="@+id/emailTextView">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Description"
+                        android:id="@+id/userDescription"
+                        android:layout_toEndOf="@+id/profilePicture"
+                        android:textIsSelectable="false"
+                        android:layout_below="@+id/handleTextView"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+                </ScrollView>
 
                 <TextView
                     style="@style/userProfileNameFont"
@@ -76,7 +85,8 @@
                     android:layout_toRightOf="@+id/profilePicture"
                     android:layout_toEndOf="@+id/profilePicture"
                     android:textSize="18dp"
-                    android:textIsSelectable="true" />
+                    android:textIsSelectable="true"
+                    android:textColor="@color/dark_grey"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -85,8 +95,10 @@
                     android:text="email@email.email"
                     android:id="@+id/emailTextView"
                     android:layout_marginRight="@dimen/email_text_margin"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"/>
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    />
             </RelativeLayout>
 
         </FrameLayout>

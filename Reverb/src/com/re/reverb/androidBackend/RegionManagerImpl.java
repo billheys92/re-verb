@@ -204,15 +204,14 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
             CreateRegionDto regionDto = buildRegionDto(region);
             if(region.getThumbnail() != null)
             {
-                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region.getThumbnail());
+                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region.getThumbnail(), region);
             }
             else
             {
-                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto);
+                com.re.reverb.network.RegionManagerImpl.submitNewRegion(regionDto, region);
             }
-            //TODO: add next two lines to listener for submitNewRegion if we want it upon success
-            this.nearbyRegions.add(region);
-            Reverb.notifyAvailableRegionsUpdateListeners();
+//            this.nearbyRegions.add(region);
+//            Reverb.notifyAvailableRegionsUpdateListeners();
         }
     }
 
