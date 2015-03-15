@@ -30,6 +30,7 @@ import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.UserPostFeed;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.network.PostManagerImpl;
 
@@ -216,7 +217,7 @@ public class UserProfileFragment extends FeedFragment implements LocationUpdateL
     }
 
     @Override
-    public void onOpenOverlayClick(final int messageId)
+    public void onOpenOverlayClick(final int messageId, final Post post)
     {
         final Activity activity = this.getActivity();
         displayOverlay(R.layout.overlay_more_options_user, R.id.overlayUserFeedLayoutContainer);
@@ -229,7 +230,7 @@ public class UserProfileFragment extends FeedFragment implements LocationUpdateL
                 try
                 {
                     PostActionDto postActionDto = new PostActionDto(messageId, Reverb.getInstance().getCurrentUserId());
-                    PostManagerImpl.deletePost(postActionDto, activity);
+                    PostManagerImpl.deletePost(postActionDto, activity, post, dataFeed);
                 } catch (NotSignedInException e)
                 {
                     e.printStackTrace();

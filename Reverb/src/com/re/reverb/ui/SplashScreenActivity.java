@@ -252,7 +252,7 @@ public class SplashScreenActivity extends Activity
             }
             else
             {
-                //TODO: try to log in user here
+                onResume();
             }
         } catch (NotSignedInException e)
         {

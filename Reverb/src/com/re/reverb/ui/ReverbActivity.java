@@ -269,8 +269,12 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
                 toggleAnonymity();
                 return true;
             case R.id.action_logout_and_edit:
-                getCurrentFragmentOverlay().onOpenLogoutEditOverlayClick();
-                return true;
+                if(getCurrentFragmentOverlay() != null)
+                {
+                    getCurrentFragmentOverlay().onOpenLogoutEditOverlayClick();
+                    return true;
+                }
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }
