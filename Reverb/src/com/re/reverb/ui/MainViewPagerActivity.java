@@ -1,37 +1,14 @@
 package com.re.reverb.ui;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionChangeListener;
 
@@ -40,6 +17,7 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
 
     static final int CREATE_POST_REQUEST = 1;  // The request code for creating a post activity
     static final int CREATE_REPLY_POST_REQUEST = 3;
+    static final int SELECT_PHOTO = 100;
 
 	static final int NUM_PAGES = 3;
 	private int defaultPage = 1;
@@ -219,6 +197,12 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
                         newFeedFragment.onRefresh();
                         break;
 
+                }
+            case SELECT_PHOTO:
+                switch (resultCode) {
+                    case Activity.RESULT_OK :
+                        userProfileFragment.onActivityResult(requestCode, resultCode, data);
+                        break;
                 }
                 break;
         }

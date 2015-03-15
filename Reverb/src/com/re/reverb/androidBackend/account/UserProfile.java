@@ -8,6 +8,7 @@ public class UserProfile {
     public String About_me;
     public String Token;
     public int User_id;
+    public final String Profile_picture;
 
     public UserProfile(String email,
                        String name,
@@ -21,6 +22,7 @@ public class UserProfile {
         About_me = about_me;
         Token = token;
         User_id = user_id;
+        Profile_picture = null;
     }
 
     public String getEmail_address()
