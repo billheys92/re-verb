@@ -204,13 +204,13 @@ public class RegionsFragment extends OverlayFragment implements AvailableRegions
                     {
                         Reverb.getInstance().getRegionManager().subscribeToRegion(selectedRegion);
                         toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.checkmark ));
-                        Toast.makeText(getActivity(), "Subscribed to region "+selectedRegion.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "You are now following region "+selectedRegion.getName(), Toast.LENGTH_SHORT).show();
                     }
                     else if(selectedRegion.canUnsubscribe())
                     {
                         Reverb.getInstance().getRegionManager().unsubscribeFromRegion(selectedRegion);
                         toggleSubscribedImage.setImageDrawable(getResources().getDrawable( R.drawable.plus_sign ));
-                        Toast.makeText(getActivity(), "Unsubscribed From region "+selectedRegion.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "You have stopped following region "+selectedRegion.getName(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
