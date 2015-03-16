@@ -17,7 +17,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:text="Subscribed"
+            android:text="Following"
             android:id="@+id/subscribedRegionsTabButton"
             android:layout_weight="1"
             android:background="@drawable/selected_tab"/>
