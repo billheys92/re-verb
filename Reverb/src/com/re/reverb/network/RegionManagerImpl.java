@@ -86,7 +86,7 @@ public class RegionManagerImpl extends PersistenceManagerImpl
         requestJson(listener, getRegionByIdDto ,Request.Method.POST, baseURL + params);
     }
 
-    public static void submitNewRegion(CreateRegionDto regionDto, final Region region)
+    public static void submitNewRegion(CreateRegionDto regionDto)
     {
 
         final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
@@ -94,6 +94,9 @@ public class RegionManagerImpl extends PersistenceManagerImpl
             @Override
             public void onResponse(JSONObject response)
             {
+                Gson gson = new Gson();
+                ReceiveRegionSummaryDto regionSummaryDto = gson.fromJson(response.toString(), ReceiveRegionSummaryDto.class);
+                Region region = RegionFactory.createRegionFromSummary(regionSummaryDto);
 
                 Reverb.getInstance().getRegionManager().subscribeToRegion(region);
                 Reverb.getInstance().getRegionManager().updateRegionLists();
@@ -105,7 +108,7 @@ public class RegionManagerImpl extends PersistenceManagerImpl
         requestJson(listener, regionDto, Request.Method.PUT, baseURL + params);
     }
 
-    public static void submitNewRegion(final CreateRegionDto regionDto, File thumbnail, final Region region)
+    public static void submitNewRegion(final CreateRegionDto regionDto, File thumbnail)
     {
 
         final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
@@ -113,6 +116,9 @@ public class RegionManagerImpl extends PersistenceManagerImpl
             @Override
             public void onResponse(JSONObject response)
             {
+                Gson gson = new Gson();
+                ReceiveRegionSummaryDto regionSummaryDto = gson.fromJson(response.toString(), ReceiveRegionSummaryDto.class);
+                Region region = RegionFactory.createRegionFromSummary(regionSummaryDto);
 
                 Reverb.getInstance().getRegionManager().subscribeToRegion(region);
                 Reverb.getInstance().getRegionManager().updateRegionLists();
