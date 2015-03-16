@@ -10,13 +10,13 @@ public class UserPostFeed extends AbstractFeed
     @Override
     public void refreshPosts() throws UnsuccessfulRefreshException, NotSignedInException
     {
-        //TODO: link getUserPosts here
         PostManagerImpl.getPostsForUser(Reverb.getInstance().getCurrentUserId(), this);
     }
 
     @Override
     public boolean fetchMore() throws Exception, NotSignedInException
     {
+        //TODO: introduce paging so that this isn't unnecessary
         PostManagerImpl.getPostsForUser(Reverb.getInstance().getCurrentUserId(), this);
         return false;
     }
