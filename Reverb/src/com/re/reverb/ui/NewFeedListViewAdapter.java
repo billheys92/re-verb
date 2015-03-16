@@ -62,11 +62,11 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         inflater = act.getLayoutInflater();
         if(Reverb.getInstance().isAnonymous())
         {
-            defaultProfPicResource = R.mipmap.anonymous_pp_dark;
+            defaultProfPicResource = R.drawable.anonymous_pp_dark;
         }
         else
         {
-            defaultProfPicResource = R.mipmap.anonymous_pp;
+            defaultProfPicResource = R.drawable.anonymous_pp;
         }
         this.feedFragment = feedFragment;
     }
@@ -320,6 +320,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
     private void setSharedPostParameters(View convertView, final StandardPostContent postContent, final int postId, final Post post)
     {
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
+        netProfilePicture.setScaleType(ImageView.ScaleType.FIT_XY);
         netProfilePicture.setDefaultImageResId(defaultProfPicResource);
         if(postContent.getProfilePictureName() != null && !postContent.getProfilePictureName().equals("null") && !postContent.getProfilePictureName().equals(""))
         {
@@ -385,13 +386,13 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 
     public void switchUIToAnonymous()
     {
-        this.defaultProfPicResource = R.mipmap.anonymous_pp_dark;
+        this.defaultProfPicResource = R.drawable.anonymous_pp_dark;
         notifyDataSetChanged();
     }
 
     public void switchUIToPublic()
     {
-        this.defaultProfPicResource = R.mipmap.anonymous_pp;
+        this.defaultProfPicResource = R.drawable.anonymous_pp;
         notifyDataSetChanged();
     }
 } 

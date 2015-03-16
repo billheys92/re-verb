@@ -39,8 +39,10 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:scaleType="centerCrop"
-                    android:onClick="choosePictureFromGallery"/>
+                    android:padding="3dp"
+                    android:background="@color/white"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="centerCrop"/>
 
                 <ScrollView
                     android:layout_width="fill_parent"
