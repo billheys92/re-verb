@@ -49,6 +49,13 @@ public class RegionFactory
         return r;
     }
 
+    public static Region createBlankRegionWithId(int id)
+    {
+        Region r = new Region();
+        r.setRegionId(id);
+        return r;
+    }
+
     public static Region createRegionFromDto(ReceiveRegionDto dto)
     {
         if(dto.getCircles() == null || dto.getRectangles() == null || (dto.getCircles().size() == 0 && dto.getRectangles().size() == 0))

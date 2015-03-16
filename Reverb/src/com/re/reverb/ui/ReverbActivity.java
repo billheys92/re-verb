@@ -140,8 +140,8 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
     @Override
     public void onConnected(Bundle dataBundle) {
         // Display the connection status
-        Toast.makeText(this, "Connected to location services", Toast.LENGTH_SHORT).show();
-        Log.d("Reverb", "Connected to location services");
+//        Toast.makeText(this, "Connected to location services", Toast.LENGTH_SHORT).show();
+//        Log.d("Reverb", "Connected to location services");
         updateLocation();
     }
 
@@ -153,7 +153,7 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
             String msg = "Updated Location: " +
                     Double.toString(location.getLatitude()) + "," +
                     Double.toString(location.getLongitude());
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 //            PostManagerImpl.getNumNewPosts(location.getLatitude(),location.getLongitude(),1.0f,"2015-02-25 00:46:15");
             Reverb.getInstance().setCurrentLocation((float) location.getLatitude(), (float) location.getLongitude());
         }
@@ -338,7 +338,7 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
         }
         //TODO: Do we want the phone to wake up when a re:verb notification comes in?
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
     }
 
     public void cancelAlarmManager()
@@ -346,7 +346,7 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
         if(alarmManager != null)
         {
             alarmManager.cancel(pendingIntent);
-            Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
 
         }
     }

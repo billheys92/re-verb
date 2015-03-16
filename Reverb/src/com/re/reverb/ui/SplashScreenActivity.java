@@ -145,7 +145,7 @@ public class SplashScreenActivity extends Activity
                     new GetUsernameTask(this, mEmail, SCOPE).execute();
                 }
             } else {
-                Toast.makeText(this, "Not Online", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG).show();
             }
         }
     }
