@@ -153,7 +153,7 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
         }
         else
         {
-            Toast.makeText(this, "You must be inside a region to post to it!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sorry, you must be inside a region to post to it!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -169,7 +169,7 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
         }
         else
         {
-            Toast.makeText(this, "You must be inside a region to post to it!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sorry, you must be inside a region to post to it!", Toast.LENGTH_SHORT).show();
         }
     }
 
