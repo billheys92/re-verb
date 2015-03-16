@@ -60,32 +60,33 @@
     </LinearLayout>
 
     <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="75dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:id="@+id/subscribeToRegionToggleButton"
         android:src="@drawable/plus_sign"
         android:layout_gravity="center|right"
         android:clickable="false"
         android:scaleType="centerCrop"
         android:layout_alignParentEnd="false"
-        android:padding="20dp"
+        android:padding="10dp"
         android:focusable="false"
         android:background="@android:color/transparent"
         android:layout_toLeftOf="@+id/regionViewInfoButton"
-        android:layout_alignParentTop="true"/>
+        android:layout_centerVertical="true"/>
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="75dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:src="@drawable/details_arrow_icon"
         android:layout_gravity="center|right"
         android:clickable="false"
         android:scaleType="centerCrop"
-        android:padding="15dp"
+        android:padding="10dp"
         android:focusable="false"
         android:id="@+id/regionViewInfoButton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

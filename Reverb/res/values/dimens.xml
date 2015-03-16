@@ -20,8 +20,8 @@
 
     <dimen name="post_action_margin">15dp</dimen>
 
-    <dimen name="big_font">16sp</dimen>
-    <dimen name="medium_font">14sp</dimen>
-    <dimen name="small_font">12sp</dimen>
+    <dimen name="big_font">15sp</dimen>
+    <dimen name="medium_font">13sp</dimen>
+    <dimen name="small_font">11sp</dimen>
 
 </resources>
