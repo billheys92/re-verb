@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -269,8 +270,12 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
                 toggleAnonymity();
                 return true;
             case R.id.action_logout_and_edit:
-                getCurrentFragmentOverlay().onOpenLogoutEditOverlayClick();
-                return true;
+                if(getCurrentFragmentOverlay() != null)
+                {
+                    getCurrentFragmentOverlay().onOpenLogoutEditOverlayClick();
+                    return true;
+                }
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }

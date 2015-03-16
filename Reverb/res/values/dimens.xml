@@ -3,9 +3,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="user_profile_header_height">120dp</dimen>
+    <dimen name="user_profile_header_height">150dp</dimen>
     <dimen name="map_header_height">160dp</dimen>
-    <dimen name="user_display_pic_side">120dp</dimen>
+    <dimen name="user_display_pic_side">110dp</dimen>
     <dimen name="user_display_pic_margin">20dp</dimen>
     <dimen name="email_text_margin">10dp</dimen>
     <dimen name="post_display_pic_thumbnail_side">80dp</dimen>
@@ -20,5 +20,8 @@
 
     <dimen name="post_action_margin">15dp</dimen>
 
+    <dimen name="big_font">16sp</dimen>
+    <dimen name="medium_font">14sp</dimen>
+    <dimen name="small_font">12sp</dimen>
 
 </resources>

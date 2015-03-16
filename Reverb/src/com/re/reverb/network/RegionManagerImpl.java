@@ -86,14 +86,40 @@ public class RegionManagerImpl extends PersistenceManagerImpl
         requestJson(listener, getRegionByIdDto ,Request.Method.POST, baseURL + params);
     }
 
-    public static void submitNewRegion(CreateRegionDto regionDto)
+    public static void submitNewRegion(CreateRegionDto regionDto, final Region region)
     {
+
+        final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+
+                Reverb.getInstance().getRegionManager().subscribeToRegion(region);
+                Reverb.getInstance().getRegionManager().updateRegionLists();
+//                Reverb.notifyAvailableRegionsUpdateListeners();
+            }
+        };
+
         String params = "?commandtype=post&command=postRegion";
-        requestJson(regionDto, Request.Method.PUT, baseURL + params);
+        requestJson(listener, regionDto, Request.Method.PUT, baseURL + params);
     }
 
-    public static void submitNewRegion(final CreateRegionDto regionDto, File thumbnail)
+    public static void submitNewRegion(final CreateRegionDto regionDto, File thumbnail, final Region region)
     {
+
+        final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+
+                Reverb.getInstance().getRegionManager().subscribeToRegion(region);
+                Reverb.getInstance().getRegionManager().updateRegionLists();
+//                Reverb.notifyAvailableRegionsUpdateListeners();
+            }
+        };
+
         RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
 
         MultipartRequest multiRequest = new MultipartRequest(uploadImageURL, thumbnail, "", new Response.Listener<String>() {
@@ -110,7 +136,7 @@ public class RegionManagerImpl extends PersistenceManagerImpl
                 {
                     regionDto.Picture_name = response;
                     String params = "?commandtype=post&command=postRegion";
-                    requestJson(regionDto, Request.Method.PUT, baseURL + params);
+                    requestJson(listener, regionDto, Request.Method.PUT, baseURL + params);
                 }
 
             }

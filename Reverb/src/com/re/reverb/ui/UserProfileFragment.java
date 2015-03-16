@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,33 +19,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.gms.maps.LocationSource;
 import com.re.reverb.R;
+import com.re.reverb.androidBackend.Location;
+import com.re.reverb.androidBackend.LocationUpdateListener;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.UserPostFeed;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.network.PostManagerImpl;
+import com.re.reverb.network.RequestQueueSingleton;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class UserProfileFragment extends FeedFragment
+public class UserProfileFragment extends FeedFragment implements LocationUpdateListener
 {
-
+    private static final String BASE_PROFILE_PICTURE = "http://ec2-54-209-100-107.compute-1.amazonaws.com/";
     private static final int SELECT_PHOTO = 100;
     private static View view;
 
     UserProfile profile = new UserProfile("test@test.com","bheys","Bill Heys","description", "token", 1);
     private ImageView backgroundMapImageView;
     NetworkImageView profilePic;
+    ImageView newProfilePic;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,17 +83,11 @@ public class UserProfileFragment extends FeedFragment
         TextView emailText = (TextView) view.findViewById(R.id.emailTextView);
         emailText.setText(profile.Email_address);
         profilePic = (NetworkImageView) view.findViewById(R.id.profilePicture);
-        profilePic.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                Log.d("Reverb","profile picture clicked");
-                choosePictureFromGallery();
-            }
-
-        });
+        profilePic.setImageUrl(BASE_PROFILE_PICTURE + profile.Profile_picture, RequestQueueSingleton.getInstance().getImageLoader());
+        newProfilePic = (ImageView) view.findViewById(R.id.edit_profilePicture);
         backgroundMapImageView = (ImageView) view.findViewById(R.id.userinfo);
-        new SendTask().execute();
+//        new SendTask().execute();
+        Reverb.getInstance().attachLocationListener(this);
 
         view = setupDataFeed(view, new UserPostFeed());
         ((ReverbActivity) getActivity()).setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
@@ -109,19 +107,19 @@ public class UserProfileFragment extends FeedFragment
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        switch(requestCode) {
-            case SELECT_PHOTO:
-                if(resultCode == Activity.RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    InputStream imageStream = null;
-                    try {
-                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    profilePic.setImageBitmap(BitmapFactory.decodeStream(imageStream));
-                }
-        }
+//        switch(requestCode) {
+//            case SELECT_PHOTO:
+//                if(resultCode == Activity.RESULT_OK){
+//                    Uri selectedImage = imageReturnedIntent.getData();
+//                    InputStream imageStream = null;
+//                    try {
+//                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                    super.profilePic.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+//                }
+//        }
     }
 
     @Override
@@ -148,6 +146,24 @@ public class UserProfileFragment extends FeedFragment
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 3000);
+    }
+
+    public void updateUserInfo()
+    {
+        TextView nameText = (TextView) view.findViewById(R.id.nameTextView);
+        nameText.setText(profile.Name);
+        TextView handleText = (TextView) view.findViewById(R.id.handleTextView);
+        handleText.setText(profile.Handle);
+        TextView descriptionText = (TextView) view.findViewById(R.id.userDescription);
+        descriptionText.setText(profile.About_me);
+        TextView emailText = (TextView) view.findViewById(R.id.emailTextView);
+        emailText.setText(profile.Email_address);
+    }
+
+    @Override
+    public void onLocationChanged(Location newLocation)
+    {
+        new SendTask().execute();
     }
 
     private class SendTask extends AsyncTask<Bitmap, String, Bitmap> {
@@ -194,7 +210,7 @@ public class UserProfileFragment extends FeedFragment
     }
 
     @Override
-    public void onOpenOverlayClick(final int messageId)
+    public void onOpenOverlayClick(final int messageId, final Post post)
     {
         final Activity activity = this.getActivity();
         displayOverlay(R.layout.overlay_more_options_user, R.id.overlayUserFeedLayoutContainer);
@@ -207,7 +223,7 @@ public class UserProfileFragment extends FeedFragment
                 try
                 {
                     PostActionDto postActionDto = new PostActionDto(messageId, Reverb.getInstance().getCurrentUserId());
-                    PostManagerImpl.deletePost(postActionDto, activity);
+                    PostManagerImpl.deletePost(postActionDto, activity, post, dataFeed);
                 } catch (NotSignedInException e)
                 {
                     e.printStackTrace();

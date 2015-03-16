@@ -49,7 +49,13 @@ public class NewPostFeed extends AbstractFeed implements LocationUpdateListener
     @Override
     public boolean fetchMore() throws Exception
     {
-        int regionId = Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId();
+        int regionId = 0;
+        try{
+            regionId = Reverb.getInstance().getRegionManager().getCurrentRegion().getRegionId();
+        } catch(NullPointerException e)
+        {
+
+        }
         if(regionId == 0)
         {
             Location location = Reverb.getInstance().getCurrentLocation();

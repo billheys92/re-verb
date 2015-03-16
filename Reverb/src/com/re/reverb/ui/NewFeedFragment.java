@@ -16,6 +16,7 @@ import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.errorHandling.UnsuccessfulRefreshException;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionChangeListener;
@@ -67,7 +68,7 @@ public class NewFeedFragment extends FeedFragment implements RegionChangeListene
     }
 
     @Override
-    public void onOpenOverlayClick(final int messageId)
+    public void onOpenOverlayClick(final int messageId, final Post post)
     {
         final Activity activity = this.getActivity();
         displayOverlay(R.layout.overlay_more_options_main, R.id.overlayMainFeedLayoutContainer);
@@ -132,6 +133,8 @@ public class NewFeedFragment extends FeedFragment implements RegionChangeListene
     @Override
     public void onRegionChanged(Region newRegion)
     {
+        this.dataFeed.setEarliestPostTime(null);
+        this.dataFeed.setLastPostTime(null);
         this.dataFeed.clearPosts();
         onRefresh();
     }

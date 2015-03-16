@@ -20,6 +20,7 @@ import com.re.reverb.androidBackend.feed.AbstractFeed;
 import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.post.ChildPost;
 import com.re.reverb.androidBackend.post.ParentPost;
+import com.re.reverb.androidBackend.post.Post;
 import com.re.reverb.androidBackend.post.content.PostContent;
 import com.re.reverb.androidBackend.post.content.StandardPostContent;
 import com.re.reverb.androidBackend.post.dto.CreateRepostDto;
@@ -27,10 +28,13 @@ import com.re.reverb.androidBackend.post.dto.PostActionDto;
 import com.re.reverb.network.PostManagerImpl;
 import com.re.reverb.network.RequestQueueSingleton;
 
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 {
@@ -58,11 +62,11 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         inflater = act.getLayoutInflater();
         if(Reverb.getInstance().isAnonymous())
         {
-            defaultProfPicResource = R.mipmap.anonymous_pp_dark;
+            defaultProfPicResource = R.drawable.anonymous_pp_dark;
         }
         else
         {
-            defaultProfPicResource = R.mipmap.anonymous_pp;
+            defaultProfPicResource = R.drawable.anonymous_pp;
         }
         this.feedFragment = feedFragment;
     }
@@ -113,7 +117,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         }
         StandardPostContent postContent = (StandardPostContent) child.getContent();
 
-        setSharedPostParameters(convertView, postContent, child.getPostId());
+        setSharedPostParameters(convertView, postContent, child.getPostId(), child);
 
         Calendar now = GregorianCalendar.getInstance();
         now.setTime(new Date());
@@ -216,7 +220,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
 
         StandardPostContent postContent = (StandardPostContent) parentPost.getContent();
 
-        setSharedPostParameters(convertView, postContent, parentPost.getPostId());
+        setSharedPostParameters(convertView, postContent, parentPost.getPostId(), parentPost);
 
         final ImageView replyImage = (ImageView) convertView.findViewById(R.id.replyIcon);
         replyImage.setImageResource(R.mipmap.reply_icon);
@@ -313,11 +317,12 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         }
     }
 
-    private void setSharedPostParameters(View convertView, final StandardPostContent postContent, final int postId)
+    private void setSharedPostParameters(View convertView, final StandardPostContent postContent, final int postId, final Post post)
     {
         NetworkImageView netProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePicture);
+        netProfilePicture.setScaleType(ImageView.ScaleType.FIT_XY);
         netProfilePicture.setDefaultImageResId(defaultProfPicResource);
-        if(postContent.getProfilePictureName() != null && postContent.getProfilePictureName() != "null" && postContent.getProfilePictureName() != "")
+        if(postContent.getProfilePictureName() != null && !postContent.getProfilePictureName().equals("null") && !postContent.getProfilePictureName().equals(""))
         {
             netProfilePicture.setImageUrl(postContent.getProfilePictureURL(), RequestQueueSingleton.getInstance().getImageLoader());
         }
@@ -326,7 +331,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             netProfilePicture.setImageUrl(null,RequestQueueSingleton.getInstance().getImageLoader());
         }
         NetworkImageView netMessageImage = (NetworkImageView) convertView.findViewById(R.id.messageImage);
-        if( postContent.getMessageImageName() != null && postContent.getMessageImageName() != "" && postContent.getMessageImageName() != "null")
+        if( postContent.getMessageImageName() != null && !postContent.getMessageImageName().equals("") && !postContent.getMessageImageName().equals("null"))
         {
             netMessageImage.setDefaultImageResId(R.drawable.default_image);
             netMessageImage.setImageUrl(postContent.getMessageImage(), RequestQueueSingleton.getInstance().getImageLoader());
@@ -374,20 +379,20 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             @Override
             public void onClick(View v)
             {
-                feedFragment.onOpenOverlayClick(postId);
+                feedFragment.onOpenOverlayClick(postId, post);
             }
         });
     }
 
     public void switchUIToAnonymous()
     {
-        this.defaultProfPicResource = R.mipmap.anonymous_pp_dark;
+        this.defaultProfPicResource = R.drawable.anonymous_pp_dark;
         notifyDataSetChanged();
     }
 
     public void switchUIToPublic()
     {
-        this.defaultProfPicResource = R.mipmap.anonymous_pp;
+        this.defaultProfPicResource = R.drawable.anonymous_pp;
         notifyDataSetChanged();
     }
 } 

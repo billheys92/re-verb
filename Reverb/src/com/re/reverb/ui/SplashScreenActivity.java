@@ -6,16 +6,23 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +37,13 @@ import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.network.AccountManagerImpl;
 import com.re.reverb.network.RequestQueueSingleton;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Created by Bill on 2014-10-10.
  */
@@ -37,6 +51,9 @@ public class SplashScreenActivity extends Activity
 {
     String mEmail; // Received from newChooseAccountIntent(); passed to getToken()
     private View currentOverlay = null;
+    ImageView profilePic;
+    private static final int SELECT_PHOTO = 100;
+    private static boolean PHOTO_SELECTING = false;
 
     public static final String USER_EMAIL = "userEmail";
     public static final String NO_SAVED_EMAIL = "no saved email";
@@ -60,7 +77,27 @@ public class SplashScreenActivity extends Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode == REQUEST_CODE_PICK_ACCOUNT)
+        PHOTO_SELECTING = false;
+        if(requestCode == SELECT_PHOTO)
+        {
+            if(resultCode == Activity.RESULT_OK)
+            {
+                Uri selectedImage = data.getData();
+                InputStream imageStream = null;
+                try
+                {
+                    imageStream = getContentResolver().openInputStream(selectedImage);
+                    profilePic.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                    PHOTO_SELECTING = true;
+                    TextView selectingText = (TextView)findViewById(R.id.selectingPictureText);
+                    selectingText.setVisibility(View.INVISIBLE);
+                } catch (FileNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (requestCode == REQUEST_CODE_PICK_ACCOUNT)
         {
             // Receiving a result from the AccountPicker
             if (resultCode == RESULT_OK)
@@ -103,7 +140,10 @@ public class SplashScreenActivity extends Activity
             pickUserAccount();
         } else {
             if (testInternetConnection()) {
-                new GetUsernameTask(this, mEmail, SCOPE).execute();
+                if(!PHOTO_SELECTING)
+                {
+                    new GetUsernameTask(this, mEmail, SCOPE).execute();
+                }
             } else {
                 Toast.makeText(this, "Not Online", Toast.LENGTH_LONG).show();
             }
@@ -160,11 +200,10 @@ public class SplashScreenActivity extends Activity
         super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         String userEmail = sharedPreferences.getString(USER_EMAIL, NO_SAVED_EMAIL);
-        if(userEmail.equals(NO_SAVED_EMAIL))
+        if (userEmail.equals(NO_SAVED_EMAIL))
         {
             pickUserAccount();
-        }
-        else
+        } else
         {
             mEmail = userEmail;
             getUsername();
@@ -178,6 +217,17 @@ public class SplashScreenActivity extends Activity
         final SplashScreenActivity activity = this;
         displayOverlay(R.layout.overlay_create_user);
         Button b = (Button)findViewById(R.id.createUserButton);
+        profilePic = (ImageView)findViewById(R.id.profilePicture);
+        profilePic.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Log.d("Reverb", "profile picture clicked");
+                choosePictureFromGallery();
+            }
+
+        });
+
         View.OnClickListener listener = new View.OnClickListener()
         {
             @Override
@@ -202,7 +252,15 @@ public class SplashScreenActivity extends Activity
                             aboutMe
                     );
 
-                    AccountManagerImpl.createUser(createUserDto, activity);
+                    if(profilePic.getDrawable() == null)
+                    {
+                        AccountManagerImpl.createUser(createUserDto, activity);
+                    }
+                    else
+                    {
+                        AccountManagerImpl.createUser(createUserDto, activity, attachPhoto());
+                    }
+
                 }
             }
         };
@@ -252,7 +310,7 @@ public class SplashScreenActivity extends Activity
             }
             else
             {
-                //TODO: try to log in user here
+                onResume();
             }
         } catch (NotSignedInException e)
         {
@@ -273,5 +331,44 @@ public class SplashScreenActivity extends Activity
     public void onExit()
     {
         finish();
+    }
+
+    private void choosePictureFromGallery() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+    }
+
+    protected File attachPhoto()
+    {
+        File f = new File(getCacheDir(), "profilePicture");
+        //Convert bitmap to byte array
+        Bitmap bitmap = ((BitmapDrawable) profilePic.getDrawable()).getBitmap();
+
+        bitmap = ThumbnailUtils.extractThumbnail(bitmap, profilePic.getWidth(), profilePic.getWidth());
+
+        //Bitmap bitmap = ((BitmapDrawable) profilePic.getDrawable()).getBitmap();
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        //write the bytes in file
+        FileOutputStream fos = null;
+        try
+        {
+            fos = new FileOutputStream(f);
+            try
+            {
+                fos.write(bitmapdata);
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        return f;
     }
 }

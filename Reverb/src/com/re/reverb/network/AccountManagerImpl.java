@@ -1,22 +1,25 @@
 package com.re.reverb.network;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.account.CreateUserDto;
 import com.re.reverb.androidBackend.account.UpdateAboutMeDto;
 import com.re.reverb.androidBackend.account.UpdateHandleDto;
+import com.re.reverb.androidBackend.account.UpdateProfilePictureDto;
 import com.re.reverb.androidBackend.account.UpdateUsernameDto;
 import com.re.reverb.androidBackend.account.UserProfile;
 import com.re.reverb.ui.SplashScreenActivity;
 
 import org.json.JSONObject;
+
+import java.io.File;
 
 public class AccountManagerImpl extends PersistenceManagerImpl
 {
@@ -36,7 +39,7 @@ public class AccountManagerImpl extends PersistenceManagerImpl
             {
                 Gson gson = new Gson();
                 UserExistsDto userExists = gson.fromJson(response.toString(), UserExistsDto.class);
-                if(userExists.user_exists)
+                if( userExists.user_exists)
                 {
                     System.out.println("User Exists:" + userExists.toString());
                     loginUser(email, "", activity);
@@ -94,6 +97,41 @@ public class AccountManagerImpl extends PersistenceManagerImpl
         };
 
         requestJson(listener, createUserDto, Request.Method.POST, url);
+    }
+
+    public static void createUser(final CreateUserDto createUserDto, final SplashScreenActivity activity, File image)
+    {
+        RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
+
+        MultipartRequest multiRequest = new MultipartRequest(uploadImageURL, image, "", new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                // public void onResponse(String response) {
+                // Display the response string.
+                System.out.println("Picture Sent!");
+                if (response.contains("Error"))
+                {
+                    System.out.println("Picture Response Error is: "+ response);
+                }
+                else
+                {
+                    createUserDto.Profile_picture = response;
+                    createUser(createUserDto, activity);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                System.out.println("Error Sending Profile Picture");
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(multiRequest);
+
     }
 
     public static void loginUser(final String email, final String token, final SplashScreenActivity activity)
@@ -166,5 +204,41 @@ public class AccountManagerImpl extends PersistenceManagerImpl
     {
         final String url = baseURL + "?commandtype=put&command=updateUserAboutMe";
         requestJson(updateAboutMeDto, Request.Method.PUT, url);
+    }
+
+    public static void updateProfilePicture(final UpdateProfilePictureDto updateProfilePictureDto, File image)
+    {
+        RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
+
+        MultipartRequest multiRequest = new MultipartRequest(uploadImageURL, image, "", new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                // public void onResponse(String response) {
+                // Display the response string.
+                System.out.println("Picture Sent!");
+                if (response.contains("Error"))
+                {
+                    System.out.println("Picture Response Error is: "+ response);
+                }
+                else
+                {
+                    updateProfilePictureDto.Profile_picture = response;
+                    final String url = baseURL + "?commandtype=put&command=updateUserProfilePicture";
+                    requestJson(updateProfilePictureDto, Request.Method.PUT, url);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                System.out.println("Error Sending Profile Picture");
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(multiRequest);
+
     }
 }

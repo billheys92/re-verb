@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 public class PersistenceManagerImpl implements PersistenceManager
 {
-    protected static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/jacob_test/Reverb.php";
+    protected static final String baseURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/chris_test/Reverb.php";
     protected static final String uploadImageURL = "http://ec2-54-209-100-107.compute-1.amazonaws.com/colin_test/uploadimage.php";
 
     private static final RequestQueue queue = RequestQueueSingleton.getInstance().getRequestQueue();
