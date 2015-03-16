@@ -281,7 +281,7 @@ public class RegionManagerImpl implements RegionManager, LocationUpdateListener
             };
             try {
                 followRegionDto = new FollowRegionDto(Reverb.getInstance().getCurrentUserId(), region.getRegionId());
-                com.re.reverb.network.RegionManagerImpl.followRegion(listener, followRegionDto);
+                 com.re.reverb.network.RegionManagerImpl.followRegion(listener, followRegionDto);
             }
             catch (NotSignedInException e) {
                 e.printStackTrace();

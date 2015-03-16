@@ -271,7 +271,10 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         Calendar now = GregorianCalendar.getInstance();
         now.setTime(new Date());
         Calendar then = GregorianCalendar.getInstance();
+        TimeZone temp = then.getTimeZone();
+//        then.setTimeZone(TimeZone.getTimeZone("UTC"));
         then.setTime(parentPost.getTimeCreated());
+//        then.setTimeZone(temp);
         setPostTime(now, then, convertView);
 
         return convertView;
@@ -299,6 +302,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
         {
             String hourOfDay = Integer.toString(then.get(Calendar.HOUR));
             String minuteOfDay = Integer.toString(then.get(Calendar.MINUTE));
+            Date time = then.getTime();
             if(minuteOfDay.length() < 2) minuteOfDay += "0";
 
             ((TextView) convertView.findViewById(R.id.timeNumber)).setText(hourOfDay + ":" + minuteOfDay);

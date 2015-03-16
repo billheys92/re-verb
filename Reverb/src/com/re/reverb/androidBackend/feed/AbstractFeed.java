@@ -59,7 +59,6 @@ public abstract class AbstractFeed implements Feed<ParentPost>
     public String getLastPostTime()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         if(latestPostTime != null)
         {
             return sdf.format(latestPostTime);
