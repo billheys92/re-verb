@@ -21,3 +21,4 @@ public class UserPostFeed extends AbstractFeed
         return false;
     }
 }
+
