@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +52,7 @@ public class CreatePostActivity extends ReverbActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_activity_up, R.anim.activity_stay);
         setContentView(R.layout.activity_create_post);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         attachedPhoto = (ImageView) findViewById(R.id.editPostIncludedImageView);
         cameraButton = (ImageButton) findViewById(R.id.cameraButton);
         sendButton = (ImageButton) findViewById(R.id.sendButton);
@@ -193,7 +194,7 @@ public class CreatePostActivity extends ReverbActivity {
     private void setPic() {
         // Get the dimensions of the View
         int targetW = attachedPhoto.getWidth();
-//        int targetH = attachedPhoto.getHeight();
+        int targetH = attachedPhoto.getHeight();
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -203,8 +204,8 @@ public class CreatePostActivity extends ReverbActivity {
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-        int scaleFactor = photoW/targetW;
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+//        int scaleFactor = photoW/targetW;
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
