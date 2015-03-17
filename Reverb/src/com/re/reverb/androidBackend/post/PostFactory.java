@@ -40,7 +40,7 @@ public class PostFactory
     public static Post createPost(ReceivePostDto gsonPost) throws InvalidPostException
     {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date date = sdf.parse(gsonPost.getTime_stamp());
             return new Post(gsonPost.getPoster_id(), gsonPost.getMessage_id(), new Location(gsonPost.getLocation_lat(), gsonPost.getLocation_long()), date, null, new TextPostContent(gsonPost.getMessage_body()), gsonPost.getAnon_flag() == 1);
@@ -53,12 +53,12 @@ public class PostFactory
     {
         try
         {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date createTime = sdf.parse(gsonPost.getCreate_time());
             Date updateTime = null;
             if(gsonPost.getUpdate_time() != null){
-                SimpleDateFormat sdfupdate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
+                SimpleDateFormat sdfupdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 sdfupdate.setTimeZone(TimeZone.getTimeZone("UTC"));
                 updateTime = sdfupdate.parse(gsonPost.getUpdate_time());
             }
@@ -83,12 +83,12 @@ public class PostFactory
     {
         try
         {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date createTime = sdf.parse(gsonPost.getCreate_time());
             Date updateTime = null;
             if(gsonPost.getUpdate_time() != null){
-                SimpleDateFormat sdfupdate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
+                SimpleDateFormat sdfupdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 sdfupdate.setTimeZone(TimeZone.getTimeZone("UTC"));
                 updateTime = sdfupdate.parse(gsonPost.getUpdate_time());
             }

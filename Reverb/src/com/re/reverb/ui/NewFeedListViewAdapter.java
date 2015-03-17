@@ -303,7 +303,7 @@ public class NewFeedListViewAdapter extends BaseExpandableListAdapter
             String hourOfDay = Integer.toString(then.get(Calendar.HOUR));
             String minuteOfDay = Integer.toString(then.get(Calendar.MINUTE));
             Date time = then.getTime();
-            if(minuteOfDay.length() < 2) minuteOfDay += "0";
+            if(minuteOfDay.length() < 2 ) minuteOfDay = "0" + minuteOfDay;
 
             ((TextView) convertView.findViewById(R.id.timeNumber)).setText(hourOfDay + ":" + minuteOfDay);
 
