@@ -70,6 +70,22 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
         mViewPager.setOnPageChangeListener(mViewPageChangeListener);
     }
 
+    public void onResume()
+    {
+        super.onResume();
+        if(Reverb.getInstance() != null
+                && Reverb.getInstance().getRegionManager() != null
+                && Reverb.getInstance().getRegionManager().getCurrentRegion() != null
+                && Reverb.getInstance().getRegionManager().getCurrentRegion().getName() != null)
+        {
+            setActionBarTitle("re: " + Reverb.getInstance().getRegionManager().getCurrentRegion().getName().toLowerCase());
+        }
+        else
+        {
+            setActionBarTitle("re: commons");
+        }
+    }
+
     public void returnToDefaultPage() {
         mViewPager.setCurrentItem(defaultPage);
     }
