@@ -45,7 +45,15 @@ public class NewFeedFragment extends FeedFragment implements RegionChangeListene
     {
         try
         {
-            ((MainViewPagerActivity) this.getActivity()).updateLocation();
+            MainViewPagerActivity activity = (MainViewPagerActivity) this.getActivity();
+            if(activity != null)
+            {
+                activity.updateLocation();
+            }
+            else
+            {
+                System.out.println("Could not update location due to null activity");
+            }
             dataFeed.refreshPosts();
             adapter.notifyDataSetChanged();
         } catch (UnsuccessfulRefreshException e)
