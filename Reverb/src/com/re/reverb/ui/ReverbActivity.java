@@ -66,7 +66,6 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
 
         logoutEditOverlay = new GenericOverLay(this);
         editUserInfoOverlay = new GenericOverLay(this);
-        setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
 
 
         /* Retrieve a PendingIntent that will perform a broadcast */
@@ -153,6 +152,7 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
             String msg = "Updated Location: " +
                     Double.toString(location.getLatitude()) + "," +
                     Double.toString(location.getLongitude());
+            System.out.println(msg);
 //            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 //            PostManagerImpl.getNumNewPosts(location.getLatitude(),location.getLongitude(),1.0f,"2015-02-25 00:46:15");
             Reverb.getInstance().setCurrentLocation((float) location.getLatitude(), (float) location.getLongitude());
