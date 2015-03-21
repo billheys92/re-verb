@@ -48,7 +48,7 @@ public class UserProfileFragment extends FeedFragment implements LocationUpdateL
     private static View view;
 
     UserProfile profile = new UserProfile("test@test.com","bheys","Bill Heys","description", "token", 1);
-    private ImageView backgroundMapImageView;
+    private NetworkImageView backgroundMapImageView;
     NetworkImageView profilePic;
     ImageView newProfilePic;
 
@@ -85,7 +85,9 @@ public class UserProfileFragment extends FeedFragment implements LocationUpdateL
         profilePic = (NetworkImageView) view.findViewById(R.id.profilePicture);
         profilePic.setImageUrl(BASE_PROFILE_PICTURE + profile.Profile_picture, RequestQueueSingleton.getInstance().getImageLoader());
         newProfilePic = (ImageView) view.findViewById(R.id.edit_profilePicture);
-        backgroundMapImageView = (ImageView) view.findViewById(R.id.userinfo);
+        backgroundMapImageView = (NetworkImageView) view.findViewById(R.id.userinfo);
+        backgroundMapImageView.setDefaultImageResId(R.drawable.staticmap_world);
+        backgroundMapImageView.setImageUrl(getGoogleMapThumbnailURL(), RequestQueueSingleton.getInstance().getImageLoader());
 //        new SendTask().execute();
         Reverb.getInstance().attachLocationListener(this);
 
@@ -163,7 +165,9 @@ public class UserProfileFragment extends FeedFragment implements LocationUpdateL
     @Override
     public void onLocationChanged(Location newLocation)
     {
-        new SendTask().execute();
+//        new SendTask().execute();
+        backgroundMapImageView.setImageUrl(getGoogleMapThumbnailURL(), RequestQueueSingleton.getInstance().getImageLoader());
+
     }
 
     private class SendTask extends AsyncTask<Bitmap, String, Bitmap> {
@@ -182,9 +186,15 @@ public class UserProfileFragment extends FeedFragment implements LocationUpdateL
 
     };
 
+    public String getGoogleMapThumbnailURL()
+    {
+        return "http://maps.google.com/maps/api/staticmap?center=" +Reverb.getInstance().locationManager.getCurrentLatitude() + "," + Reverb.getInstance().locationManager.getCurrentLongitude() + "&zoom=12&size=600x600&sensor=false&maptype=roadmap";
+
+    }
+
     public Bitmap getGoogleMapThumbnail(double latitude, double longitude){
 
-        String URL = "http://maps.google.com/maps/api/staticmap?center=" +latitude + "," + longitude + "&zoom=13&size=600x600&sensor=false&maptype=roadmap";
+        String URL = getGoogleMapThumbnailURL();
 
         Bitmap bmp = null;
         HttpClient httpclient = new DefaultHttpClient();

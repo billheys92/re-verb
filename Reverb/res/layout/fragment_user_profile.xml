@@ -20,7 +20,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <com.android.volley.toolbox.NetworkImageView
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/user_profile_header_height"
                 android:id="@+id/userinfo"
@@ -30,7 +30,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/user_profile_header_height"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:background="@color/semi_transparent_light_grey">
 
                 <com.android.volley.toolbox.NetworkImageView
                     android:layout_width="@dimen/user_display_pic_side"
