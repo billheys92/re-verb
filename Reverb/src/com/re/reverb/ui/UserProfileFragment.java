@@ -86,7 +86,7 @@ public class UserProfileFragment extends FeedFragment implements LocationUpdateL
         profilePic.setImageUrl(BASE_PROFILE_PICTURE + profile.Profile_picture, RequestQueueSingleton.getInstance().getImageLoader());
         newProfilePic = (ImageView) view.findViewById(R.id.edit_profilePicture);
         backgroundMapImageView = (ImageView) view.findViewById(R.id.userinfo);
-//        new SendTask().execute();
+        new SendTask().execute();
         Reverb.getInstance().attachLocationListener(this);
 
         view = setupDataFeed(view, new UserPostFeed());
