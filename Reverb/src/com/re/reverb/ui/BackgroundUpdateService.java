@@ -15,11 +15,14 @@ import android.widget.Toast;
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
+import com.re.reverb.androidBackend.notifications.Notification;
 import com.re.reverb.network.UpdateManagerImpl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Bill on 2015-03-13.
@@ -40,11 +43,12 @@ public class BackgroundUpdateService extends Service
 
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String nowString = sdf.format(now);
         mEditor.putString("LAST_BACKGROUND_UPDATE_TIME", nowString);
         mEditor.commit();
 
-        Log.d("Testing", "Service got created");
+//        Log.d("Testing", "Service got created");
     }
 
     @Override
@@ -68,21 +72,28 @@ public class BackgroundUpdateService extends Service
 
         try
         {
-            UpdateManagerImpl.getNewUpdates(lastUpdateTimestamp);
+            UpdateManagerImpl.getNewUpdates(lastUpdateTimestamp, this);
         } catch (NotSignedInException e)
         {
             e.printStackTrace();
         }
 
+    }
+
+    public void onNotificationsReceived(Notification notification)
+    {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("re:verb notification")
-                        .setContentText("Updates since "+lastUpdateTimestamp);
+                        .setSmallIcon(R.drawable.notification_icon)
+                        .setColor(getResources().getColor(R.color.reverb_blue_1))
+                        .setContentTitle("re:verb")
+                        .setContentText(notification.getNotificationBody())
+                        .setVibrate(new long[] { 200,200,200,200 })
+                        .setAutoCancel(true);
 
-        Intent resultIntent = new Intent(this, MainViewPagerActivity.class);
+        Intent resultIntent = new Intent(this, SplashScreenActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainViewPagerActivity.class);
+        stackBuilder.addParentStack(SplashScreenActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
@@ -98,6 +109,11 @@ public class BackgroundUpdateService extends Service
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Builds the notification and issues it.
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
+        stopSelf();
+    }
+
+    public void onNoNotificationsReceived()
+    {
         stopSelf();
     }
 }

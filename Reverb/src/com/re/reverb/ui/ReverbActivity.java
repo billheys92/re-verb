@@ -337,7 +337,7 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
             alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         }
         //TODO: Do we want the phone to wake up when a re:verb notification comes in?
-        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, BACKGROUND_UPDATE_PERIOD_MILLIS, BACKGROUND_UPDATE_PERIOD_MILLIS, pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
 //        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
     }
 
