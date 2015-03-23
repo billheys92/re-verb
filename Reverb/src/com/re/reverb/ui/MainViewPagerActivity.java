@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.re.reverb.R;
 import com.re.reverb.androidBackend.Reverb;
-import com.re.reverb.androidBackend.feed.NewPostFeed;
 import com.re.reverb.androidBackend.regions.Region;
 import com.re.reverb.androidBackend.regions.RegionChangeListener;
 
@@ -27,6 +26,11 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
 	
 	MainViewPagerAdapter mPagerAdapter;
     ViewPager mViewPager;
+
+    //FeedFragment feedFragment = new FeedFragment();
+    NewFeedFragment newFeedFragment = new NewFeedFragment();
+    UserProfileFragment userProfileFragment = new UserProfileFragment();
+    RegionsFragment regionsFragment = new RegionsFragment();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +66,8 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
             }
         };
 
-        mViewPager.setOnPageChangeListener(mViewPageChangeListener);
         Reverb.getInstance().attachRegionChangedListener(this);
-        setupUIBasedOnAnonymity(Reverb.getInstance().isAnonymous());
+        mViewPager.setOnPageChangeListener(mViewPageChangeListener);
     }
 
     public void onResume()
@@ -119,11 +122,11 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
     	public OverlayFragment getItem(int i) {
     	    switch(i){
     	    	case 0:
-                    return new UserProfileFragment();
+                    return userProfileFragment;
     	    	case 1:
-                    return new NewFeedFragment();
+                    return newFeedFragment;
     	    	case 2:
-                    return new RegionsFragment();
+                    return regionsFragment;
     	    	default: //TODO throw an error
     	   	 	return null;
     	    }
@@ -144,18 +147,17 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
     @Override
     protected void switchUIToAnonymousMode()
     {
-
-        getNewFeedFragment().switchUIToAnonymous();
-        getUserProfileFragment().switchUIToAnonymous();
-        getRegionsFragment().switchUIToAnonymous();
+        newFeedFragment.switchUIToAnonymous();
+        userProfileFragment.switchUIToAnonymous();
+        regionsFragment.switchUIToAnonymous();
     }
 
     @Override
     protected void switchUIToPublicMode()
     {
-        getNewFeedFragment().switchUIToPublic();
-        getUserProfileFragment().switchUIToPublic();
-        getRegionsFragment().switchUIToPublic();
+        newFeedFragment.switchUIToPublic();
+        userProfileFragment.switchUIToPublic();
+        regionsFragment.switchUIToPublic();
     }
 
     public void startCreatePostActivity(View view){
@@ -202,7 +204,7 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
             case CREATE_POST_REQUEST :
                 switch (resultCode) {
                     case Activity.RESULT_OK :
-                        getNewFeedFragment().onRefresh();
+                        newFeedFragment.onRefresh();
                         break;
 
                 }
@@ -210,14 +212,14 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
             case CREATE_REPLY_POST_REQUEST :
                 switch (resultCode) {
                     case Activity.RESULT_OK :
-                        getNewFeedFragment().onRefresh();
+                        newFeedFragment.onRefresh();
                         break;
 
                 }
             case SELECT_PHOTO:
                 switch (resultCode) {
                     case Activity.RESULT_OK :
-                        getUserProfileFragment().onActivityResult(requestCode, resultCode, data);
+                        userProfileFragment.onActivityResult(requestCode, resultCode, data);
                         break;
                 }
                 break;
@@ -236,40 +238,11 @@ public class MainViewPagerActivity extends ReverbActivity implements RegionChang
 
     public NewFeedFragment getNewFeedFragment()
     {
-        NewFeedFragment fragment = (NewFeedFragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(1));
-        if(fragment == null)
-        {
-            fragment = (NewFeedFragment) mPagerAdapter.getItem(1);
-        }
-        return fragment;
-    }
-
-    public UserProfileFragment getUserProfileFragment()
-    {
-        UserProfileFragment fragment = (UserProfileFragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(0));
-        if(fragment == null)
-        {
-            fragment = (UserProfileFragment) mPagerAdapter.getItem(0);
-        }
-        return fragment;
-    }
-
-    public RegionsFragment getRegionsFragment()
-    {
-        RegionsFragment fragment = (RegionsFragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(2));
-        if(fragment == null)
-        {
-            fragment = (RegionsFragment) mPagerAdapter.getItem(2);
-        }
-        return fragment;
+        return newFeedFragment;
     }
 
     public void updateUserInfo()
     {
-        getUserProfileFragment().updateUserInfo();
-    }
-
-    private static String makeFragmentName(int index) {
-        return "android:switcher:" + R.id.mainViewPager + ":" + index;
+        userProfileFragment.updateUserInfo();
     }
 }
