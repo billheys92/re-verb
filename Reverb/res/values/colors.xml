@@ -14,6 +14,7 @@
     <color name="light_grey">#ff929292</color>
     <color name="lighter_grey">#ffd6d6d6</color>
     <color name="very_light_grey">#ffbbbbbb</color>
+    <color name="semi_transparent_light_grey">#66dddddd</color>
     <color name="overlay_background">#82000000</color>
     <color name="white">#FFFFFF</color>
     <color name="map_shape_color">#66929292</color>
