@@ -38,8 +38,8 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000; //for checking playservices
 
     private final static int BACKGROUND_UPDATE_PERIOD_MIN = 60;
-//    private final static int BACKGROUND_UPDATE_PERIOD_MILLIS = BACKGROUND_UPDATE_PERIOD_MIN*60*1000;
-    private final static int BACKGROUND_UPDATE_PERIOD_MILLIS = 10000;
+    private final static int BACKGROUND_UPDATE_PERIOD_MILLIS = BACKGROUND_UPDATE_PERIOD_MIN*60*1000;
+//    private final static int BACKGROUND_UPDATE_PERIOD_MILLIS = 10000;
 
     protected LocationClient mLocationClient;
     protected SharedPreferences mPrefs;
@@ -242,14 +242,14 @@ public abstract class ReverbActivity extends ActionBarActivity implements Google
         mEditor.putFloat("LAST_KNOWN_LAT", (float) Reverb.getInstance().getCurrentLocation().getLatitude());
         mEditor.putFloat("LAST_KNOWN_LONG", (float) Reverb.getInstance().getCurrentLocation().getLatitude());
         mEditor.commit();
-//        startAlarmManager();
+        startAlarmManager();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        cancelAlarmManager();
+        cancelAlarmManager();
     }
 
 

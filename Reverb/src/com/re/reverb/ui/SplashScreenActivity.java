@@ -186,7 +186,6 @@ public class SplashScreenActivity extends Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen_layout);
-        testInternetConnection();
         if(!testInternetConnection()) {
             makeNoConnectionToast();
         }
