@@ -9,18 +9,14 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.re.reverb.R;
-import com.re.reverb.androidBackend.Reverb;
 import com.re.reverb.androidBackend.errorHandling.NotSignedInException;
 import com.re.reverb.androidBackend.notifications.Notification;
+import com.re.reverb.network.RequestQueueSingleton;
 import com.re.reverb.network.UpdateManagerImpl;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -47,6 +43,8 @@ public class BackgroundUpdateService extends Service
         String nowString = sdf.format(now);
         mEditor.putString("LAST_BACKGROUND_UPDATE_TIME", nowString);
         mEditor.commit();
+
+        RequestQueueSingleton.getInstance(this.getApplicationContext());
 
 //        Log.d("Testing", "Service got created");
     }
